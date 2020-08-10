@@ -1,8 +1,17 @@
 ---
 title: "كيف تنشاء مدونة باستخدام R"
 description: |
+  بإستخدام Distill Framework
 author:name: Naif Alsader
 date: 07-04-2020
+categories:
+  - R Markdown
+  - Pandoc
+  - Knitr
+  - YAML
+  - Distill
+  - Git
+  
 output:
   distill::distill_article:
     self_contained: false
