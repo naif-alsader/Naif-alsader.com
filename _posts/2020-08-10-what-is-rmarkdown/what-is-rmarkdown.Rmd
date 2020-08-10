@@ -1,11 +1,16 @@
 ---
-title: "what-is-rmarkdown"
+title: "مدخل الى R Markdown"
 description: |
-  A short description of the post.
+  شرح لطريقة استخدام R Markdown لإنشاء مستندات تفاعلية
 author:
   - name: Naif Alsader
     url: {}
 date: 08-10-2020
+categories:
+  - R Markdown
+  - Pandoc
+  - Knitr
+  - YAML
 output:
   distill::distill_article:
     self_contained: false
@@ -177,17 +182,15 @@ R Markdown
 ثم
 قم بمسح جميع ماتحت
 
-<div dir = "ltr">
-
-\```{r setup, include=FALSE}
+````md
+```{r setup, include=FALSE} `r ''`
 
 
 knitr::opts_chunk$set(echo = TRUE)
   
-\```
+```
 
-
-</div>
+`````
 
 
 ليصبح شكل المستند بهذا الشكل
@@ -227,7 +230,7 @@ include_graphics("img/skeleton_analysis_rmd.png")
 include_graphics("img/Rcodeadded.png")
 ```
 
-<div style = "background-color:#455a64; color:white; margin-right: 5em;
+<div style = "background-color:#455a64; color:white;
     border-radius: 10px;">
 <p style = "margin-right: 1em">
 ملاحظة: يمكننا الكتابة بأكثر من لغة
@@ -244,7 +247,15 @@ awk, bash, coffee, gawk, groovy, haskell, lein, mysql, node, octave, perl, psql,
 
 في الواقع يمكنك ذالك بإضافة
 
-``` ` r ثم تكتب الكود هنا` ```
+
+````md
+
+
+` r ثم تكتب الكود هنا` 
+
+
+`````
+
 
 مثلا 
 تاريخ اليوم هو ``` ` ()r Sys.Date` ```
@@ -306,9 +317,10 @@ css code
 (بعد البيانات الوصفية)
 لتحسين الدعم للغة العربية
 
-<div dir = "ltr">
 
-\```{css, echo = FALSE}
+````md
+
+```{css} `r ''`
 
 body {
   direction: rtl
@@ -316,13 +328,12 @@ body {
 
 pre {
   direction: ltr;
-  
   text-align: left;
 }
 
-\```
+```
 
-</div>
+````
 
 
 
@@ -348,12 +359,12 @@ include_graphics("img/deoc_before_apperance.gif")
 هناك شيئين يمكن التحكم بهم وهما
 
 
-* البيانات الوصفية (YAML headr)
+* البيانات الوصفية (YAML headr).
 
-* knitr options (R code)
+* Knitr Options (Code Chunks). 
 
 
-#### knitr options (R code)
+#### knitr options
 
 بإستخدام 
 `knitr` 
@@ -369,12 +380,17 @@ include_graphics("img/deoc_before_apperance.gif")
 `warning = FALSE`
 
 
-الى
+الى بداية ال
+Code Chunk،
+بعد حرف ال
+`r`
+ويفصل بين الجميع علامة
+`,`
 
 
-<div dir = "ltr">
+````md
 
-\```{r, message = FALSE, warning = FALSE}
+```{r, message = FALSE, warning = FALSE} `r ''`
 
 library(tidyverse)
 library(rmarkdown)
@@ -383,10 +399,8 @@ data <- read_csv("saudi-population-10-years-and-over-by-gender-age-groups-and-ed
 
 paged_table(data)
 
-\```
-
-
-</div>
+```
+````
 
 
 
@@ -397,16 +411,18 @@ paged_table(data)
 قم بإضافة 
 
 `echo = TRUE`
-اذا اردت إظهار او
+اذا اردت إظهار الكود او
 
 
 `FALSE` 
-إذا إخفاءة
+إذا اردت إخفاءة
 
 
-<div dir = "ltr">
 
-\```{r, echo = FALSE}
+````md
+
+```{r, echo = FALSE} `r ''`
+
 
 library(tidyverse)
 library(rmarkdown)
@@ -415,10 +431,9 @@ data <- read_csv("saudi-population-10-years-and-over-by-gender-age-groups-and-ed
 
 paged_table(data)
 
-\```
+```
+````
 
-
-</div>
 
 
 وغيرها الكثير تجدها 
@@ -430,9 +445,27 @@ paged_table(data)
 
 البيانات الوصفية تساعدنا عى التحكم بمظهر النص
 
+وابسط صورة لها تكون بهذا الشكل 
+
+
+````md
+---
+title: "حالة عدد السكان حسب المرحلة التعلمية في المملكة العربية السعودية (2016)"
+author: "Naif"
+date: "8/9/2020"
+output: html_document:
+
+---   
+
+````
+
+لاكن
+
+
 * مثلا إذا اردنا إضافة الفهرس
 
-```
+
+````md
 ---
 title: "حالة عدد السكان حسب المرحلة التعلمية في المملكة العربية السعودية (2016)"
 author: "Naif"
@@ -443,12 +476,12 @@ output:
     toc_depth: 2
 ---   
 
-```
+````
 
 * إضافة ثيم
 
 
-```
+````md
 ---
 title: "حالة عدد السكان حسب المرحلة التعلمية في المملكة العربية السعودية (2016)"
 author: "Naif"
@@ -462,7 +495,7 @@ output:
 
 ---   
 
-```
+````
 
 لاحظ هنا إضافتي لجزئيتين وهما
 
@@ -492,13 +525,11 @@ output:
     theme: darkly
     highlight: tango
     code_folding: hide
-
-
 ---   
 
 ```
 
-وغيرها الكثير تجدها في الكتابين المذكورات في الأعلى
+وغيرها الكثير تجدها في المصادر المذكورة بالأعلي
 
 
 
@@ -508,13 +539,14 @@ output:
 include_graphics("img/final_document.gif")
 ```
 
-
+يمكنك تحميل الملف من 
+[هنا](https://drive.google.com/file/d/176LbdCQ3DSggcDgWf6dFPpbh_yBdsu1m/view?usp=sharing)
 
 ## كيف يتم تحويل R Markdown الى HTML او غيرها.
 
 لاحظ معي المخطط التالي
 
-```{r, fig.cap="source:https://bookdown.org/yihui/rmarkdown-cookbook"}
+```{r, fig.cap="source:https://bookdown.org/yihui/rmarkdown-cookbook", preview=TRUE}
 include_graphics("img/rmarkdown_markdown_pandoc.png")
 ```
 

@@ -423,15 +423,14 @@ listing: posts
 ```{r, eval=F, echo=T}
 
 # Reading files from naif-alsader/my_blog/
-file1 = readLines("https://raw.githubusercontent.com/naif-alsader/my_blog/master/rtl_blog.css") 
-file2  = readLines("https://raw.githubusercontent.com/naif-alsader/my_blog/master/rtl_rmk.css") 
+file1 = readLines("https://raw.githubusercontent.com/naif-alsader/Naif-Alsader.com/master/rtl_blog.css") 
 
 # Creat new file for css 
 file.create(paste0(here::here(),"/rtl_blog.css"))
 
 # writing into rtl_blog
 sink(paste0(here::here(),"/rtl_blog.css"))
-cat("/* https://github.com/shamindras/ss_personal_distill_blog ,\n https://github.com/naif-alsader/my_blog */")
+cat("/* https://github.com/shamindras/ss_personal_distill_blog ,\n https://github.com/naif-alsader/Naif-Alsader.com */")
 cat(file1,"\n ", sep = "\n")
 cat(file2, sep = "\n" )
 sink()
