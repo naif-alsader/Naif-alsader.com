@@ -6,7 +6,7 @@ body {
 
 
 
-.posts-list {
+.posts-list, d-appendix {
   direction: rtl;
 }
 
