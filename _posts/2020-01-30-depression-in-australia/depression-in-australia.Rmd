@@ -1,0 +1,1343 @@
+---
+title: "Depression in Australia"
+description: |
+  A short description of the post.
+author:
+  - name: Naif Alsader
+    url: https://example.com/norajones
+date: 01-30-2020
+output:
+  distill::distill_article:
+    self_contained: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+
+# Executive summary
+
+This work aims to model the search of the word `depressin`, in Google search engine, in six Australian states. seven monthly times series were loaded from Google Trend showing a period between January 2008  and October 2019. After that,Proper visualizations, such as ACF plot and subseries plot, were used to observe the characteristics of each time series. Then, We splitted the data into training and testing. In the modeling part, we considers only models with seasonal component as the data has an obvious seasonality, 16 models were fitted per series (112 in total). We then performed Shapiro test to test the Normality assumption in the residuals as well as applying Ljung-box to test the Autocorrelation in the residuals plot. Only 55% of the models passed both tests. Finally we choosed best models based on their Information Criterion (AIC) and The model Accuracy (MASE). In addition we compared the results of fitting only one model to the seven series, against fitting one model per series. The results showed the best model that can explain the data is the Local additive seasonality with Mean MASE equal to 0.783 compared to 0.745 if we fit one model per series. In conclusion we suggest fitting independent models rather than one model for all the data as it improve Accuracy as well as residuals. The tables below shows best model per series. We also have built a Shiny app specifically for this assignment. The link is https://naif-alsader.shinyapps.io/ets_app/. 
+
+
+| Series               | Model         | MASE    |
+| -------------        |:-------------:| -----:  |
+| Total Australia      | MNM           | 0.765   |
+| New South Wales      | ANA           | 1.32    |
+| Queensland            | MAdA_admis    | 0.643   |
+| South Australia       | ANA_admis     | 0.852   |
+| Tasmania             |  MNA          | 0.494   |
+| Victoria             | MAdA          | 0.430   |
+| Western Australia   | AAdA          | 0.712   |
+
+Table 1
+
+# Introduction
+
+Depression is a medical condition. It significantly affects the way someone feels, causing a persistent lowering of mood  .[(SANE, 2018)](https://www.sane.org/information-stories/facts-and-guides/depression). Globally, more than 300 million people suffer from Depression, and 10% of Australians suffer from depression in 2018. [(abs, 2018)](https://www.ausstats.abs.gov.au/ausstats/subscriber.nsf/0/4B3976684C09F43FCA258399001CE630/$File/4364.0.55.001%20-%20national%20health%20survey,%20first%20results,%202017-18.pdf). Depression in its extreme cases could lead to suicide, [(hhs,2014)](https://www.hhs.gov/answers/mental-health-and-substance-abuse/does-depression-increase-risk-of-suicide/index.html) According to [Black Dog Institue](https://www.blackdoginstitute.org.au/docs/default-source/factsheets/facts_figures.pdf?sfvrsn=8), the main cause of death among young Austrlaians is suicide. The government of Austrlaia provides a hot lines to support people in need for help with their depression, for example, 
+
+* Black Dog Institute
+
+Information on symptoms, treatment and prevention of depression and bipolar disorder.
+
+
+
+* MindSpot Clinic
+
+An online and telephone clinic providing free assessment and treatment services for Australian adults with anxiety or depression.
+
+
+There are many types and causes of depression, one of these types is Seasonal effective disorder (SAD). This type has two types, the common  one rise in winter and fall with the sunny dates in summer and spring, the other one has  an opposite cycle. [mayoclinic, 2017](https://www.mayoclinic.org/diseases-conditions/seasonal-affective-disorder/symptoms-causes/syc-20364651).  We will focus in this work to analyse the search of the word "depression" on the well known search engine "Google". After that, we will try to fit the best possible model to predict the moments of it. We will collect the data from Google Trend.
+
+# What is Google Trend.
+
+On 2012 Google launched its dynamic website to show the popularity of a phrase or word in the internet. Using its powerful databases Google allows users to type in any word or phrase in any language and then show an adjusted time series from 2004 as maximum until most recent results. The way Google adjust these results is basically by dividing the number of times the word in interest has been typed in Google search engine by the total number of all other enquirers. Therefore, we will be able to compare people interest in a topic compare to other topics but to itself. For example, the depression is recording a downward trend in Google search, this trend dose not necessarily mean that people search about "depression" is decreasing but it means that the popularity of "depression" is decreasing compared to other enquirers. 
+
+# Data description
+
+We will use `gtrends()` from the function `gtrendsR` to download the search of depression in all of the Australian territories
+
+```{r message=FALSE, warning=FALSE}
+
+library(tidyverse)
+library(fable)
+library(tsibble)
+library(feasts)
+library(gtrendsR)
+library(lubridate)
+library(ggfortify)
+library(dplyr)
+
+theme_set(theme_light())
+# ISO
+terr <- c("AU", "AU-NSW", "AU-QLD", "AU-SA", "AU-TAS", "AU-VIC", "AU-WA")
+
+terr <- purrr::set_names(terr)
+
+
+# only interse over time
+
+# gtrends_df <- function(x) {
+#   ls <- gtrendsR::gtrends("depression", time = "all", geo = x, onlyInterest = T)
+#   df <- ls$interest_over_time
+# }
+# 
+# # Loop the territories
+# dep_terr <- purrr::map(terr, gtrends_df)
+
+#####
+
+
+#AU<-gtrendsR::gtrends("depression", time = "all", geo = "AU", onlyInterest = T)
+#NSW <-gtrendsR::gtrends("depression", time = "all", geo = "AU-NSW", onlyInterest = T)
+#qld<-gtrendsR::gtrends("depression", time = "all", geo = "AU-QLD", onlyInterest = T)
+#sa <-gtrendsR::gtrends("depression", time = "all", geo = "AU-SA", onlyInterest = T)
+#tas<-gtrendsR::gtrends("depression", time = "all", geo = "AU-TAS", onlyInterest = T)
+#vic <-gtrendsR::gtrends("depression", time = "all", geo = "AU-VIC", onlyInterest = T)
+#wa <-gtrendsR::gtrends("depression", time = "all", geo = "AU-WA", onlyInterest = T)
+
+# all_terr <- list(AU$interest_over_time,
+#                  NSW$interest_over_time,
+#                  qld$interest_over_time,
+#                  sa$interest_over_time,
+#                  tas$interest_over_time,
+#                  vic$interest_over_time,
+#                  wa$interest_over_time)
+# 
+# # Binding all the datasets
+# dep_terr_table <- bind_rows(all_terr)
+
+#saveRDS(hits, "hits.rds")
+
+# Creating Tssible object
+# hits <- dep_terr_table %>%
+#   transmute(geo, date = yearmonth(date), hits) %>%
+#   as_tsibble(key = geo)
+
+
+#load the data
+
+# Ploting the series
+
+hits <- readRDS("data/hits.rds")
+
+#a<-hits$date %>% ConvCalendar::as.OtherDate(calendar = "islamic")
+
+hits_2 <- hits %>% filter(year(date) > 2007) #date < yearmonth("2019 Oct")
+```
+
+```{r, fig.width=16, fig.height=10}
+hits_2 %>%
+  ggplot(aes(x = date, y = hits)) +
+  geom_line() +
+  geom_point() +
+  facet_wrap(~geo) + ggtitle("Search of Depression in Google in Australia")
+```
+Figure 1
+
+
+From the time series plot above we can see that there has been a steady decrease in the search of `depression` since 2004. This contradict the stats from the Australian beauru of statistics, as in 1995 the proportion was 5.9%, in 2001 it was 9.6% and in 2004-05 it was 11.0%,  [abs, 2006](https://www.abs.gov.au/ausstats/abs@.nsf/mf/4824.0.55.001). and 10% in 2018. One reason for the drop in search of the phrase depression in Australia is due to the way Google trends is measured. We estimate that there has not been any decrease in the depression rate, however people interest in searching for depression is decreasing. We will have a look at the time series seasons plot and the acf plot to determinate the charstics of each series.  
+
+
+
+
+```{r,fig.width=16, fig.height=10, message=F, warning=F}
+
+
+# Ploting the seasons series
+# plot_seasons <- function(ggob) {
+#  p1<- hits %>%
+#    filter(geo == ggob) %>% tail(12*5) %>%
+#    gg_season() +
+#    ggtitle("Seasons plot ", paste(ggob))
+#
+#  return(p1)
+# }
+#
+# seasons <- map(terr,plot_seasons)
+#
+# cowplot::plot_grid(plotlist = seasons)
+
+# Plotting the ACF
+hits_2 %>% 
+  group_map(~ACF(.x) %>% autoplot() + ggtitle("ACF plot of the search of"))
+autop
+```
+Figure 2
+```{r,fig.width=16, fig.height=10, message=F, warning=F}
+# Plotting the subseries
+hits_2 %>% gg_subseries()+ ggtitle("Subseries plot")
+
+```
+Figure 3
+```{r,fig.width=16, fig.height=10, message=F, warning=F}
+# Plotting the subseries
+
+hits_2 %>% gg_season()+ ggtitle("Subseries plot")
+
+
+```
+Figure 4
+```{r fig.height=10, message=FALSE, warning=FALSE}
+# Decompsition
+hits_2 %>%
+  model(STL(hits ~ season())) %>%
+  components() %>% 
+  autoplot()
+
+
+# Subseries
+# 
+# hits_2 %>% as_tibble() %>%
+#   mutate(month = months(date), year = year(date)) %>%  filter( geo != "AU") %>% 
+#   ggplot(aes(x = hits, y= geo, alpha = 0.5)) +
+#   ggridges::geom_density_ridges()
+
+```
+Figure 5
+
+**Time series characteristics.**
+
+1- Trend, only between 2008 and 2010 then the data started to fluctuate around its mean.
+
+2- Seasonality, yes there in obvious seasonality. 
+
+3- Change in variance, yes there is a decrease in fluctuating since 2010 as the data became more stable. which can be seen in the STL decomposition
+
+4- Intervention point, there is no intervention points
+
+5- the behavior of the all the series is estimated to be Autoregressive as there some successive points and Moving average. 
+
+
+**Subseries plot.**
+
+<!-- We observe that there was a significant drop between 2004 and the following few series which was pushing the mean level high. therefore we will concentrate our focus on the last ten years from 2008 and 2019.   -->
+
+
+
+<!-- We will subset the series to only include the time between 2008 and 2019.  -->
+
+<!-- ```{r} -->
+
+<!-- # Plotting the  -->
+<!-- hits_2 %>%  -->
+<!--   ACF() %>% autoplot() + ggtitle("ACF plot ") -->
+
+<!-- # Plotting the subseries -->
+<!-- hits_2 %>% gg_subseries()+ ggtitle("Subseries plot") -->
+
+
+<!-- # Plotting the subseries -->
+
+<!-- hits_2 %>% gg_season()+ ggtitle("Subseries plot") -->
+
+
+
+<!-- # Decomposition -->
+<!-- hits_2 %>% -->
+<!--   STL(hits ~ season()) %>% -->
+<!--   autoplot() + -->
+<!--   ggtitle("STL Decomposition") -->
+<!-- ``` -->
+
+We can see from the subseries and the season plots above that there as different seasonality in each Territory as well as that all series agrees that the the lowest months are January, July and  December. In the next section, we will compare Trend and Seasonality per each series.
+
+**Feature Extraction.**
+
+We will use the function `features()` provided from the package `feasts` to extract the Trend Strength and Seasonal Strength.
+
+```{r}
+
+hits_features <- hits_2 %>%
+  features(hits, feature_set(pkgs = "feasts"))
+
+# hits_features %>%
+#  select(
+#     -geo, -seasonal_trough_year, -ndiffs, -nsdiffs, -pp_pvalue,
+#     -lambda_guerrero, -kpss_stat, -kpss_pvalue, -pp_stat, -pp_pvalue,
+#     -ndiffs, -nsdiffs, -bp_stat, -bp_pvalue, -lb_stat, -lb_pvalue, -stat_arch_lm,
+#     -spikiness,  var_tiled_var, -var_tiled_mean, -shift_level_max, -shift_level_max,
+#     -shift_var_max, -shift_var_index, -shift_kl_max,
+#     -shift_kl_index, -n_crossing_points, -n_flat_spots, -var_tiled_var
+#   ) %>%
+#   colnames() %>%
+#   stringr::str_replace("_", " ") %>%
+#   as.list() %>%
+#   pander::pander()
+
+```
+
+```{r, fig.width=16, , fig.height=10}
+hits_features %>% ggplot(aes(x = trend_strength, y = seasonal_strength_year, color = geo)) +
+  geom_text(aes(label = geo)) + labs(title = "Trend Strength vs Seasonality Strength ")
+```
+Figure 6
+
+
+Refere to [tsfeatures](https://pkg.robjhyndman.com/tsfeatures/articles/tsfeatures.html#stl_features) and [Hyndman, Wang & Laptev (ICDM 2015)](https://robjhyndman.com/papers/icdm2015.pdf) for more information about the calculation. 
+
+
+From the previous plot we can say that the AU-SA series estimated model might be without trend and with seasonality, and for the AU series the appropriate model might be with seasonality and trend.
+
+
+
+## PCA
+
+```{r}
+
+
+hits_pcs <- hits_features %>%
+ select(
+    -geo, -seasonal_trough_year, -ndiffs, -nsdiffs, -pp_pvalue,
+    -lambda_guerrero, -kpss_stat, -kpss_pvalue, -pp_stat, -pp_pvalue,
+    -ndiffs, -nsdiffs, -bp_stat, -bp_pvalue, -lb_stat, -lb_pvalue, -stat_arch_lm,
+    -spikiness,  var_tiled_var, -var_tiled_mean, -shift_level_max, -shift_level_max,
+    -shift_var_max, -shift_var_index, -shift_kl_max,
+    -shift_kl_index, -n_crossing_points, -n_flat_spots, -var_tiled_var
+  ) %>%
+  prcomp(scale. = TRUE) %>%
+  augment(hits_features)
+
+
+hits_pcs %>%
+  ggplot(aes(x = .fittedPC1, y = .fittedPC2, col = geo)) +
+  geom_point() +
+  theme(aspect.ratio = 1) +
+  labs(x = "Pc1", y = "Pc2", title = "Principle Components Analysis for Depression\n time series\n of the Austrlaian Territeries") +
+  ggrepel::geom_text_repel(aes(label = geo))
+
+
+
+# Draw the eigenvectors.
+hits_features %>%
+ select(
+    -geo, -seasonal_trough_year, -ndiffs, -nsdiffs, -pp_pvalue,
+    -lambda_guerrero, -kpss_stat, -kpss_pvalue, -pp_stat, -pp_pvalue,
+    -ndiffs, -nsdiffs, -bp_stat, -bp_pvalue, -lb_stat, -lb_pvalue, -stat_arch_lm,
+    -spikiness,  var_tiled_var, -var_tiled_mean, -shift_level_max, -shift_level_max,
+    -shift_var_max, -shift_var_index, -shift_kl_max,
+    -shift_kl_index, -n_crossing_points, -n_flat_spots, -var_tiled_var
+  ) %>%
+  prcomp(scale. = TRUE) %>%
+  ggplot2::autoplot(
+    color = "geo",
+    loadings = TRUE, loadings.colour = "blue",
+    loadings.label = TRUE, loadings.label.size = 3
+  )
+
+
+
+# hits_features %>%
+#   select(-geo, -seasonal_trough_year, -ndiffs, -nsdiffs)  %>% map(var) == 0 %>% sum()
+```
+
+There are 5 groups, the first group is Victoria and Western Australia and perhaps Total Austrlaia. The second group consist of New south Wales, Queensland and Southern Australia with higher distances between them than the first group. and Tasmania a group by it self. the first PC explains 38% of the variance in the data and the second PC explains 29%.
+
+
+
+# Modeling
+
+We will split the data into training and testing. The testing data will contain the last 10% of the observations
+
+## Splitting the data
+Full data
+```{r, warning=F, message=F}
+
+# Calculate number of obs per group
+hits_2 %>%
+  as_tibble() %>%
+  group_by(geo) %>%
+  summarise(
+    "# of obs" = n(),
+    "Min date" = min(date),
+    "Max date" = max(date)
+  )
+
+```
+
+Test
+
+```{r, warning=F, message=F}
+rows_per_group <- nrow(hits_2[hits_2$geo == "AU", ])
+
+
+split_by <- (rows_per_group * 0.1) %>% round()
+
+test <- hits_2 %>%
+  group_by(geo) %>%
+  group_modify(~ tail(.x, split_by)) %>%
+  ungroup() %>%
+  mutate(date = yearmonth(date)) %>%
+  as_tsibble(key = geo, index = date)
+
+test %>%
+  as_tibble() %>%
+  group_by(geo) %>%
+  summarise(
+    "# of obs" = n(),
+    "Min date" = min(date),
+    "Max date" = max(date)
+  )
+
+
+```
+
+Train
+
+```{r, warning=F, message=F}
+train <- hits_2 %>%
+  group_by(geo) %>%
+  group_modify(~ head(.x, rows_per_group - split_by)) %>%
+  ungroup() %>%
+  mutate(date = yearmonth(date)) %>%
+  as_tsibble(key = geo, index = date)
+
+
+train %>%
+  as_tibble() %>%
+  group_by(geo) %>%
+  summarise(
+    "# of obs" = n(),
+    "Min date" = min(date),
+    "Max date" = max(date)
+  )
+
+```
+
+
+## Fitting
+We will only fit models with seasonality components.
+
+
+```{r, message=F, warning=F}
+
+
+# 
+# hits_fit <- train %>% fabletools::model(
+# 
+#   #### Models Without Trend ########################
+# 
+#   ANA = ETS(hits ~ error("A") + season("A",
+#     gamma = NULL,
+#     gamma_range = c(1e-04, 0.9999)
+#   )),
+#   NNETAR(scale_inputs = T ))
+
+
+
+hits_fit <- train %>% fabletools::model(
+
+  #### Models Without Trend ########################
+
+  ANA = ETS(hits ~ error("A") + season("A",
+    gamma = NULL,
+    gamma_range = c(1e-04, 0.9999)
+  )),
+
+  # restricted ANM = ETS(hits ~ error("A") + season("M"),restrict = F),
+
+  MNA = ETS(hits ~ error("M") + season("A",
+    gamma = NULL,
+    gamma_range = c(1e-04, 0.9999)
+  )),
+
+  ANA_admis = ETS(hits ~ error("A") + season("A",
+    gamma = NULL,
+    gamma_range = c(1e-04, 0.9999)
+  ),
+  bounds = "admissible"
+  ),
+
+  # restricted ANM_admis = ETS(hits ~ error("A") + season("M"),bounds = "admissible", restrict = F),
+
+  MNA_admis = ETS(hits ~ error("M") + season("A",
+    gamma = NULL,
+    gamma_range = c(1e-04, 0.9999)
+  ),
+  bounds = "admissible"
+  ),
+
+  ANA_amse = ETS(hits ~ error("A") + season("A",
+    gamma = NULL,
+    gamma_range = c(1e-04, 0.9999)
+  ),
+  opt_crit = "amse"
+  ),
+
+  # restricted  ANM_amse = ETS(hits ~ error("A") + season("M"), opt_crit = "amse", restrict = F),
+  MNA_amse = ETS(hits ~ error("M") +
+    season("A",
+      gamma = NULL,
+      gamma_range = c(1e-04, 0.9999)
+    ),
+  opt_crit = "amse"
+  ),
+
+  ANA_admis_amse = ETS(hits ~ error("A") +
+    season("A",
+      gamma = NULL,
+      gamma_range = c(1e-04, 0.9999)
+    ),
+  bounds = "admissible", opt_crit = "amse"
+  ),
+  # restricted  ANM_admis_amse = ETS(hits ~ error("A") + season("M"),bounds = "admissible", opt_crit = "amse", restrict = F),
+  MNA_admis_amse = ETS(hits ~ error("M") +
+    season("A",
+      gamma = NULL,
+      gamma_range = c(1e-04, 0.9999)
+    ),
+  bounds = "admissible", opt_crit = "amse"
+  ),
+
+  ########### Models With Trend ##################
+
+
+  AAdA = ETS(hits ~ error("A") +
+    trend("Ad",
+      alpha = NULL,
+      alpha_range = c(1e-04, 0.9999),
+      beta = NULL,
+      beta_range = c(1e-04, 0.9999),
+      phi = NULL, phi_range = c(1e-04, 0.98)
+    ) +
+    season("A",
+      gamma = NULL,
+      gamma_range = c(1e-04, 0.9999)
+    )),
+
+  # AAdM = ETS(hits ~ error("A")+ trend("Ad") + season("M")),
+  MAdA = ETS(hits ~ error("M") +
+    trend("Ad",
+      alpha = NULL,
+      alpha_range = c(1e-04, 0.9999),
+      beta = NULL,
+      beta_range = c(1e-04, 0.9999),
+      phi = NULL, phi_range = c(1e-04, 0.98)
+    ) +
+    season("A",
+      gamma = NULL,
+      gamma_range = c(1e-04, 0.9999)
+    )),
+
+  AAdA_admis = ETS(hits ~ error("A") +
+    trend("Ad",
+      alpha = NULL,
+      alpha_range = c(1e-04, 0.9999),
+      beta = NULL,
+      beta_range = c(1e-04, 0.9999),
+      phi = NULL, phi_range = c(1e-04, 0.98)
+    ) +
+    season("A",
+      gamma = NULL,
+      gamma_range = c(1e-04, 0.9999)
+    ),
+  bounds = "admissible"
+  ),
+
+  #AAdM_admis = ETS(hits ~ error("A")+ trend("Ad") + season("M"),bounds = "admissible"),
+  
+  MAdA_admis = ETS(hits ~ error("M") +
+    trend("Ad",
+      alpha = NULL,
+      alpha_range = c(1e-04, 0.9999),
+      beta = NULL,
+      beta_range = c(1e-04, 0.9999),
+      phi = NULL, phi_range = c(1e-04, 0.98)
+    ) +
+    season("A",
+      gamma = NULL,
+      gamma_range = c(1e-04, 0.9999)
+    ),
+  bounds = "admissible"
+  ),
+
+  AAdA_amse = ETS(hits ~ error("A") + trend("Ad",
+    alpha = NULL,
+    alpha_range = c(1e-04, 0.9999),
+    beta = NULL,
+    beta_range = c(1e-04, 0.9999),
+    phi = NULL, phi_range = c(1e-04, 0.98)
+  ) +
+    season("A",
+      gamma = NULL,
+      gamma_range = c(1e-04, 0.9999)
+    ), opt_crit = "amse"),
+
+
+  #AAdM_amse = ETS(hits ~ error("A") + trend("Ad")+ season("M"), opt_crit = "amse"),
+
+  MAdA_amse = ETS(hits ~ error("M") + trend("Ad",
+    alpha = NULL,
+    alpha_range = c(1e-04, 0.9999),
+    beta = NULL,
+    beta_range = c(1e-04, 0.9999),
+    phi = NULL, phi_range = c(1e-04, 0.98)
+  ) +
+    season("A",
+      gamma = NULL,
+      gamma_range = c(1e-04, 0.9999)
+    ), opt_crit = "amse"),
+
+  AAdA_admis_amse = ETS(hits ~ error("A") + trend("Ad",
+    alpha = NULL,
+    alpha_range = c(1e-04, 0.9999),
+    beta = NULL,
+    beta_range = c(1e-04, 0.9999),
+    phi = NULL, phi_range = c(1e-04, 0.98)
+  ) +
+    season("A",
+      gamma = NULL,
+      gamma_range = c(1e-04, 0.9999)
+    ),
+  bounds = "admissible", opt_crit = "amse"
+  ),
+  # restricted  AAdM_admis_amse = ETS(hits ~ error("A")+ trend("Ad") + season("M"),bounds = "admissible", opt_crit = "amse"),
+  auto = ETS()
+)
+
+
+train_forec <- hits_fit %>% forecast(test)
+
+# 
+# train_forec %>% filter(geo == "AU") %>%
+#   autoplot(level = NULL, alpha = 0.4) +
+#   geom_line(aes(x= date, y=hits, color = "Original"), data = (test %>% filter(geo == "AU")))
+# 
+ train_forec %>%
+  accuracy(hits_2) %>% 
+  select(geo, .model,MASE) %>% as_tibble() %>% 
+  group_by(.model) %>% 
+  mutate(Average =  mean(MASE) %>%   round(3),
+         MASE = round(MASE, 3)) %>% 
+  tidyr::pivot_wider(names_from = geo, values_from = MASE) %>% select(everything(), Average) %>% 
+  arrange(Average) %>%
+   rename(Model = .model) %>% 
+  DT::datatable()
+```
+Table 2
+
+
+## MASE Comparison
+```{r, fig.width=16, , fig.height=10}
+# By model
+train_forec %>%
+  accuracy(hits_2) %>%
+  arrange(MASE) %>%
+  ungroup() %>%
+  group_by(.model) %>%
+  summarise(t_test = list(tidy(t.test(MASE)))) %>%
+  tidyr::unnest(t_test) %>%
+  arrange(estimate) %>%
+  ggplot(aes(x = estimate, y = forcats::fct_reorder(.model, estimate, .desc = T))) +
+  geom_point() +
+  geom_errorbarh(aes(xmax = conf.high, xmin = conf.low)) +
+  ggrepel::geom_text_repel(aes(label = round(estimate,3) )) +
+  labs(x = "MASE",
+       y = "",
+       title = "Best models in terms of MASE", color = "Mean")
+
+
+
+```
+Figure 7
+
+
+From Table 2 and Figure 7, the bar is showing 95 CI and the point is the mean.  We obbserve that the best model is the Local Additive Seasonal model with damped. The second model is similar however, with multiplicative Error. Interestingly,The best became the worst model if we use the admissible space and the AMSE as accuracy measure. Figure 8 below will provide a better overview on how each model fits each series.
+
+```{r, fig.width=16, , fig.height=10}
+train_forec %>%
+  accuracy(hits_2) %>%
+  group_by(.model) %>%
+  ggplot(aes(MASE, forcats::fct_reorder(.model, MASE,.fun = mean, .desc = T))) +
+  geom_point() +
+  ggrepel::geom_text_repel(aes(label = geo, color = geo)) +
+  # ggridges::geom_density_ridges() +
+  # geom_point(aes(x = mean(MASE))) +
+  # geom_errorbarh(aes(xmax =conf.high, xmin = conf.low )) +
+  labs(x = "MASE", y = "", title = "Best models In terms of MASE + Name of series") +
+  theme(legend.position = "none")
+```
+Figure 8
+
+
+From figure 8 plot above we can observe that, the best two models are `AAda` (mean MASE equal to 0.78) Damped Local Additive Seasonal Model  then `MAda` (mean MASE equal to  0.79) Damped Local Additive Seasonal Model with multiplicative error. We will select best model per each series and then we will try fit it again and we will calculate the MASE again. However, before that we will disclude the models that have failed in the residuals analysis.
+
+
+Multiplicative Seasonal and Additive Error with admissible space, which means that we are allowing the model to search inside the region.
+
+## Residuals Analysis
+
+```{r, message=F, warning=F}
+
+hits_resd_check <- hits_fit %>%
+  augment() %>%
+  group_by(geo, .model) %>%
+  mutate(
+    white_noise =
+      Box.test(.resid, lag = 24, type = "Ljung-Box", fitdf = 0) %>%
+        tidy() %>%
+        setNames(paste0("Lj_", names(.))) %>%
+        list(),
+
+    Ljung_test =
+      shapiro.test(x = .resid) %>%
+        tidy() %>%
+        setNames(paste0("shp_", names(.))) %>%
+        list()
+  ) %>%
+  as_tibble() %>%
+  tidyr::nest(date, hits, .fitted, .resid) %>%
+  tidyr::unnest(cols = c(white_noise, Ljung_test))
+
+# Exclude models that have filled in res check
+best_hits_fit <- hits_resd_check %>%
+  filter(shp_p.value > 0.05 &
+    Lj_p.value > 0.05)
+
+# Select models
+passed_models <- best_hits_fit %>% transmute(geo,
+  Model = .model,
+  "Ljung-Box" = Lj_p.value,
+  "Shapiro" = shp_p.value
+)
+
+passed_models %>%
+  tidyr::pivot_wider(names_from = geo, values_from = c(`Ljung-Box`, `Shapiro`))   %>%
+  mutate_if(is.numeric, round, 3) %>%  DT::datatable()
+
+```
+Table 2
+
+These are the models that have passed the residuals check. As we can see the only Territories that passed the residuals check are `NSW`, `TAS`, `WA`, `QLD` and `AU`. and the ones that did not pass are `VIC` and `SA`.We will have a closer look at the series that could not pass the residuals check.  
+
+
+### VIC series
+
+```{r}
+
+hits_resd_check %>%
+  filter(geo == "AU-VIC") %>%
+  arrange(desc(shp_p.value)) %>% mutate_if(is.numeric, round, 3) %>% 
+  DT::datatable()
+```
+Table3
+
+By looking at the p-values from both residuals Normality and White Noise check tests, it appears that most models for `VIC` series have passed White Noise test in acf, however, all models fail in the Normality test. We will look at the residuals plot to identify the best candidate models that might pass the residuals for the `VIC` series. 
+
+
+```{r fig.height=10, fig.width=16, message=FALSE, warning=FALSE, include=FALSE}
+library(gridExtra)
+library(purrr)
+
+all_models <- colnames(hits_fit)[-1]
+all_models <- set_names(all_models)
+
+vic_resd <- map(all_models, ~ hits_fit %>%
+  filter(geo == "AU-VIC") %>%
+  select(.x) %>%
+  gg_tsresiduals())
+
+
+# Re creat the residuals plot
+resplot <- function(gg_tsresiduals) {
+  p1 <- cowplot::plot_grid(plotlist = c(gg_tsresiduals[2], gg_tsresiduals[3]))
+  cowplot::plot_grid(p1, plotlist = (gg_tsresiduals[1]), ncols = 1)
+}
+
+vic2 <- vic_resd %>% map(resplot)
+
+```
+
+```{r, fig.width=16, fig.height=10, warning=F, message=F}
+cowplot::plot_grid(plotlist = vic2, labels = as.list(all_models))
+
+
+```
+Figure 9
+
+all look almost the same there is a spike at the second lag in the acf plot, and there is a high values at the beginning of the residuals time series and the histogram of residuals is following the normal distribution despite some outliers. We will choose the models with the highest p-values from the Shapiro test test which are `MNA_admis` and `auto`. 
+
+
+```{r}
+
+
+best_teo_in_shp_vic <- hits_resd_check %>%
+  filter(geo == "AU-VIC") %>%
+  arrange(desc(shp_p.value)) %>%
+  head(2) %>% transmute(geo,  Model= .model,  `Ljung-Box test p-value`= Lj_p.value, `Shapiro test p-value`= shp_p.value) 
+
+passed_models <- list(passed_models) %>% bind_rows(list(best_teo_in_shp_vic))
+
+
+#passed_models %>% tail()
+```
+
+
+### SA series
+
+```{r}
+
+hits_resd_check %>%
+  filter(geo == "AU-SA") %>%
+  arrange(desc(shp_p.value)) %>% mutate_if(is.numeric, round, 3) %>% 
+  DT::datatable()
+```
+Table 4
+
+
+By looking at the p-values from both residuals Normality and White Noise check tests, it appears that models for `AA` series passes the Normality test, but fails in the White Noise in acf test. We will look at the residuals plot to identify the best candidate models for the SA series. 
+
+
+```{r message=FALSE, include=FALSE}
+
+
+sa_resd <- map(all_models, ~ hits_fit %>%
+  filter(geo == "AU-SA") %>%
+  select(.x) %>%
+  gg_tsresiduals())
+
+
+# Re creat the residuals plot
+resplot <- function(gg_tsresiduals) {
+  p1 <- cowplot::plot_grid(plotlist = c(gg_tsresiduals[2], gg_tsresiduals[3]))
+  cowplot::plot_grid(p1, plotlist = (gg_tsresiduals[1]), cols = 1)
+}
+
+sa2 <- sa_resd %>% map(resplot)
+
+```
+
+```{r, fig.width=16, fig.height=10, warning=F, message=F}
+cowplot::plot_grid(plotlist = sa2, labels = as.list(all_models))
+```
+Figure 10
+
+
+all look almost the same we can see that there is a three spikes at the acf plot, and the time series plot of residuals shows a Heteroscedasty which even after using a multiplicative error still exists. We will take the log of the values for only this series to see if we reduce the volatility of variance.
+
+
+### Refitting SA series with log transformation.
+
+
+```{r, warning=F, message=F}
+
+sa_fit<- train %>% filter(geo == "AU-SA") %>% fabletools::model(
+
+  #### Models Without Trend ########################
+
+  ANA = ETS(log(hits) ~ error("A") + season("A",
+    gamma = NULL,
+    gamma_range = c(1e-04, 0.9999)
+  )),
+
+  # restricted ANM = ETS(hits ~ error("A") + season("M"),restrict = F),
+
+  MNA = ETS(log(hits) ~ error("M") + season("A",
+    gamma = NULL,
+    gamma_range = c(1e-04, 0.9999)
+  )),
+
+  ANA_admis = ETS(log(hits) ~ error("A") + season("A",
+    gamma = NULL,
+    gamma_range = c(1e-04, 0.9999)
+  ),
+  bounds = "admissible"
+  ),
+
+  # restricted ANM_admis = ETS(hits ~ error("A") + season("M"),bounds = "admissible", restrict = F),
+
+  MNA_admis = ETS(log(hits) ~ error("M") + season("A",
+    gamma = NULL,
+    gamma_range = c(1e-04, 0.9999)
+  ),
+  bounds = "admissible"
+  ),
+
+  ANA_amse = ETS(log(hits) ~ error("A") + season("A",
+    gamma = NULL,
+    gamma_range = c(1e-04, 0.9999)
+  ),
+  opt_crit = "amse"
+  ),
+
+  # restricted  ANM_amse = ETS(hits ~ error("A") + season("M"), opt_crit = "amse", restrict = F),
+  MNA_amse = ETS(log(hits) ~ error("M") +
+    season("A",
+      gamma = NULL,
+      gamma_range = c(1e-04, 0.9999)
+    ),
+  opt_crit = "amse"
+  ),
+
+  ANA_admis_amse = ETS(log(hits) ~ error("A") +
+    season("A",
+      gamma = NULL,
+      gamma_range = c(1e-04, 0.9999)
+    ),
+  bounds = "admissible", opt_crit = "amse"
+  ),
+  # restricted  ANM_admis_amse = ETS(hits ~ error("A") + season("M"),bounds = "admissible", opt_crit = "amse", restrict = F),
+  MNA_admis_amse = ETS(log(hits) ~ error("M") +
+    season("A",
+      gamma = NULL,
+      gamma_range = c(1e-04, 0.9999)
+    ),
+  bounds = "admissible", opt_crit = "amse"
+  ),
+
+  ########### Models With Trend ##################
+
+
+  AAdA = ETS(log(hits) ~ error("A") +
+    trend("Ad",
+      alpha = NULL,
+      alpha_range = c(1e-04, 0.9999),
+      beta = NULL,
+      beta_range = c(1e-04, 0.9999),
+      phi = NULL, phi_range = c(1e-04, 0.98)
+    ) +
+    season("A",
+      gamma = NULL,
+      gamma_range = c(1e-04, 0.9999)
+    )),
+
+  # AAdM = ETS(hits ~ error("A")+ trend("Ad") + season("M")),
+  MAdA = ETS(log(hits) ~ error("M") +
+    trend("Ad",
+      alpha = NULL,
+      alpha_range = c(1e-04, 0.9999),
+      beta = NULL,
+      beta_range = c(1e-04, 0.9999),
+      phi = NULL, phi_range = c(1e-04, 0.98)
+    ) +
+    season("A",
+      gamma = NULL,
+      gamma_range = c(1e-04, 0.9999)
+    )),
+
+  AAdA_admis = ETS(log(hits) ~ error("A") +
+    trend("Ad",
+      alpha = NULL,
+      alpha_range = c(1e-04, 0.9999),
+      beta = NULL,
+      beta_range = c(1e-04, 0.9999),
+      phi = NULL, phi_range = c(1e-04, 0.98)
+    ) +
+    season("A",
+      gamma = NULL,
+      gamma_range = c(1e-04, 0.9999)
+    ),
+  bounds = "admissible"
+  ),
+
+ # AAdM_admis = ETS(log(hits) ~ error("A")+ trend("Ad") + season("M"),bounds = "admissible"),
+  
+  MAdA_admis = ETS(log(hits) ~ error("M") +
+    trend("Ad",
+      alpha = NULL,
+      alpha_range = c(1e-04, 0.9999),
+      beta = NULL,
+      beta_range = c(1e-04, 0.9999),
+      phi = NULL, phi_range = c(1e-04, 0.98)
+    ) +
+    season("A",
+      gamma = NULL,
+      gamma_range = c(1e-04, 0.9999)
+    ),
+  bounds = "admissible"
+  ),
+
+  AAdA_amse = ETS(log(hits) ~ error("A") + trend("Ad",
+    alpha = NULL,
+    alpha_range = c(1e-04, 0.9999),
+    beta = NULL,
+    beta_range = c(1e-04, 0.9999),
+    phi = NULL, phi_range = c(1e-04, 0.98)
+  ) +
+    season("A",
+      gamma = NULL,
+      gamma_range = c(1e-04, 0.9999)
+    ), opt_crit = "amse"),
+
+
+ # AAdM_amse = ETS(log(hits) ~ error("A") + trend("Ad")+ season("M"), opt_crit = "amse"),
+
+  MAdA_amse = ETS(log(hits) ~ error("M") + trend("Ad",
+    alpha = NULL,
+    alpha_range = c(1e-04, 0.9999),
+    beta = NULL,
+    beta_range = c(1e-04, 0.9999),
+    phi = NULL, phi_range = c(1e-04, 0.98)
+  ) +
+    season("A",
+      gamma = NULL,
+      gamma_range = c(1e-04, 0.9999)
+    ), opt_crit = "amse"),
+
+  AAdA_admis_amse = ETS(log(hits) ~ error("A") + trend("Ad",
+    alpha = NULL,
+    alpha_range = c(1e-04, 0.9999),
+    beta = NULL,
+    beta_range = c(1e-04, 0.9999),
+    phi = NULL, phi_range = c(1e-04, 0.98)
+  ) +
+    season("A",
+      gamma = NULL,
+      gamma_range = c(1e-04, 0.9999)
+    ),
+  bounds = "admissible", opt_crit = "amse"
+  ),
+  # restricted  AAdM_admis_amse = ETS(hits ~ error("A")+ trend("Ad") + season("M"),bounds = "admissible", opt_crit = "amse"),
+  auto = ETS(log(hits))
+)
+
+sa_train_forec <- sa_fit %>% forecast(test %>% filter(geo == "AU-SA"))
+
+
+sa_resd_check <- sa_fit %>%
+  augment() %>%
+  group_by(geo, .model) %>%
+  mutate(
+    white_noise =
+      Box.test(.resid, lag = 24, type = "Ljung-Box", fitdf = 0) %>%
+        tidy() %>%
+        setNames(paste0("Lj_", names(.))) %>%
+        list(),
+
+    Ljung_test =
+      shapiro.test(x = .resid) %>%
+        tidy() %>%
+        setNames(paste0("shp_", names(.))) %>%
+        list()
+  ) %>%
+  as_tibble() %>%
+  tidyr::nest(date, hits, .fitted, .resid) %>%
+  tidyr::unnest(cols = c(white_noise, Ljung_test))
+
+# Exclude models that have filled in res check
+
+
+sa_best_hits_fit <- sa_resd_check %>%
+  filter(shp_p.value > 0.05 &
+    Lj_p.value > 0.05)
+
+# Select models
+sa_passed_models <- sa_best_hits_fit %>% transmute(geo,
+  Model = .model,
+  "Ljung-Box test p-value" = Lj_p.value,
+  "Shapiro test p-value" = shp_p.value
+)
+
+ sa_passed_models %>% pander::pander()
+# 
+# sa_passed_models$geo %>% unique() %>% pander::pander()
+
+```
+
+After we add the log transformation we still could not deal with volatility clustering. we will visually inspect all the models to choose the best two models among them.
+
+
+
+
+```{r message=FALSE, warning=FALSE, include=FALSE}
+
+#models with log
+sa_resd_log <- map(all_models, ~ sa_fit %>%
+  select(.x) %>%
+  gg_tsresiduals())
+
+
+sa2_log <- sa_resd_log %>% map(resplot)
+
+```
+
+```{r, fig.height=10, fig.width=16 ,warning=F, message=F}
+cowplot::plot_grid(plotlist  = sa2_log, labels = as.list(all_models))
+
+
+```
+Figure 11
+
+```{r, fig.height=10, fig.width=16 ,warning=F, message=F}
+# models without log
+cowplot::plot_grid(plotlist = sa2, labels = as.list(all_models))
+
+```
+Figure 12
+
+The log transformation did not fix the issue we will choose the best two models that has the highest p-value of Ljung-Box test.
+
+
+```{r}
+
+# model with log
+sa_resd_check %>% 
+  arrange(desc(Lj_p.value)) %>% mutate_if(is.numeric, round, 3) %>% 
+  DT::datatable()
+
+
+
+bestmodel_as_log <- sa_resd_check %>%
+  arrange(desc(Lj_p.value)) %>%
+  head(2) %>% transmute(geo,  Model= .model,  `Ljung-Box test p-value`= Lj_p.value, `Shapiro test p-value`= shp_p.value) 
+
+
+passed_models <- list(passed_models) %>% bind_rows(list(bestmodel_as_log))
+
+```
+Table 6
+
+```{r}
+
+# model without log
+
+hits_resd_check %>%
+  filter(geo == "AU-SA") %>%
+  arrange(desc(Lj_p.value)) %>%  mutate_if(is.numeric, round, 3) %>% 
+  DT::datatable()
+
+
+bestmodel_as_ <- hits_resd_check %>%
+  filter(geo == "AU-SA") %>%
+  arrange(desc(Lj_p.value)) %>%
+  head(2) %>% transmute(geo,  Model= .model,  `Ljung-Box test p-value`= Lj_p.value, `Shapiro test p-value`= shp_p.value) 
+
+
+passed_models <- list(passed_models) %>% bind_rows(list(bestmodel_as_))
+
+#passed_models %>% tail()
+```
+Table 7
+ 
+ 
+As we can see the log transformation was not helpful in stabilizing the variance.
+
+## Results
+### MASE and AIC Comparison within each series that have passed the residuals check.
+
+**AU series**
+```{r}
+
+# test_au <- test %>% filter(geo == "AU")
+# 
+# hits_fit_au<-hits_fit %>%
+#   filter(geo == "AU") %>%
+#   select(passed_models$Model[passed_models$geo == "AU"]) 
+#   
+# forecast(hits_fit_au,test_au) %>% 
+#   accuracy(hits_2) %>% mutate_if(is.numeric, round, 3) %>% 
+#   DT::datatable()
+
+```
+Table 8
+
+The only model that have passed the residuals check for the series AU is the model with Multiplicative seasonality and Multiplicative error. and MASE = 0.765
+
+
+**AU-NSW Series**
+
+Accuracy Measures
+```{r}
+# MASE
+
+# hits_fit %>%
+#   filter(geo == "AU-NSW") %>%
+#   select(passed_models$Model[passed_models$geo == "AU-NSW"]) %>%  # -AAdM_admis , -AAdM_amse
+#   forecast(test %>% filter(geo == "AU-NSW")) %>% 
+#   accuracy(hits_2) %>% 
+#   arrange(MASE) %>% mutate_if(is.numeric, round, 3) %>% 
+#   DT::datatable()
+
+```
+Table 9
+
+Information Criterion
+
+```{r}
+# AIC
+hits_fit %>%
+  filter(geo == "AU-NSW") %>%
+  select(passed_models$Model[passed_models$geo == "AU-NSW"]) %>%
+  glance() %>%
+  arrange(AIC) %>%
+  head(7) %>%
+  mutate_if(is.numeric, round, 3) %>% 
+  DT::datatable()
+
+
+```
+Table 10
+
+
+All the models passed the residuals check. The AIC values for all models is close, therefore we will choose the Best model in terms of all the error measures which is the model with additive error and additive seasonality, and MASE = 1.32
+
+
+
+
+
+**AU-QLD series**
+
+Accuracy Measures
+
+```{r}
+
+# hits_fit %>%
+#   filter(geo == "AU-QLD") %>%
+#   select(passed_models$Model[passed_models$geo == "AU-QLD"]) %>% 
+#   forecast(test %>% filter(geo == "AU-QLD")) %>% 
+#   accuracy(hits_2) %>% 
+#   arrange(MASE) %>% 
+#   mutate_if(is.numeric, round, 3) %>% 
+#   DT::datatable()
+```
+Table 11
+
+
+
+Information Criterion
+```{r}
+# AIC
+hits_fit %>%
+  filter(geo == "AU-QLD") %>%
+  select(passed_models$Model[passed_models$geo == "AU-QLD"]) %>% glance() %>% arrange(AIC)  %>% mutate_if(is.numeric, round, 3) %>% 
+  DT::datatable()
+
+
+```
+Table 12
+
+
+only ten models passed the residuals check. The AIC values for all models are close, therefore we will choose the Best model in terms of all the error measures which is multiplicative seasonal and error with additive damped trend, and MASE = 0.643
+
+
+
+
+
+
+**AU-SA Series**
+
+Accuracy Measures
+```{r}
+# hits_fit %>%
+#   filter(geo == "AU-SA") %>%
+#   select(passed_models$Model[passed_models$geo == "AU-SA"]  ) %>% #-AAdM_admis  -AAdM_amse
+#   forecast(test %>% filter(geo == "AU-SA")) %>% 
+#   accuracy(hits_2) %>% 
+#   arrange(MASE) %>% mutate_if(is.numeric, round, 3) %>% 
+#   DT::datatable()
+```
+Table 13
+
+Information Criterion
+
+```{r}
+# AIC
+hits_fit %>%
+  filter(geo == "AU-SA") %>%
+  select(passed_models$Model[passed_models$geo == "AU-SA"]) %>% glance() %>% arrange(AIC) %>% mutate_if(is.numeric, round, 3) %>% 
+  DT::datatable()
+```
+Table 14
+
+Only two models passed the residuals check. Both models have similar AIC, as a result we will take a model based on the MASE. The best model is the model with additive error and seasonality and using the admissible space. which means that we have allowed the model to search withing the region. 
+
+
+
+
+
+
+**AU-VIC Series**
+
+Accuracy Measures
+```{r}
+
+# hits_fit %>%
+#   filter(geo == "AU-VIC") %>%
+#   select(passed_models$Model[passed_models$geo == "AU-VIC"]) %>% 
+#   forecast(test %>% filter(geo == "AU-VIC")) %>% 
+#   accuracy(hits_2) %>% 
+#   arrange(MASE) %>% mutate_if(is.numeric, round, 3) %>% 
+#   DT::datatable()
+```
+Table 15
+
+Information Criterion
+```{r}
+hits_fit %>%
+  filter(geo == "AU-VIC") %>%
+  select(passed_models$Model[passed_models$geo == "AU-VIC"]) %>% glance() %>% arrange(AIC) %>% mutate_if(is.numeric, round, 3) %>% 
+  DT::datatable()
+# %>% #  -AAdM_admis, -AAdM_amse 
+#   forecast(test %>% filter(geo == "AU-VIC")) %>% autoplot(hits_2 %>% filter(geo == "AU-VIC") ,level = NULL)
+```
+Table 16
+
+The best model in terms of all the error measures is the damped model with multiplicative Error and additive seasonality and trend 
+
+**AU-WA series**
+
+Accuracy Measures
+```{r}
+
+# hits_fit %>%
+#   filter(geo == "AU-WA") %>%
+#   select(passed_models$Model[passed_models$geo == "AU-WA"]) %>%  # -AAdM_admis, -AAdM_amse
+#   forecast(test %>% filter(geo == "AU-WA")) %>%  
+#   accuracy(hits_2) %>% 
+#   arrange(MASE) %>% mutate_if(is.numeric, round, 3) %>% 
+#   DT::datatable()
+# 
+# 
+# hits_fit %>%
+#     group_by(geo) %>% 
+#   group_map(~filter(.x) %>% 
+#               select(passed_models$Model[passed_models$geo == !!.x],  -AAdM_admis, -AAdM_amse) %>% 
+#   forecast(test %>% filter(geo == .x)) %>% 
+#   accuracy(hits_2) %>% 
+#   arrange(MASE) )
+# 
+# hits_fit %>%
+#   group_by(geo) %>% 
+#   group_map(~filter(colnames(.x) %in% passed_models))
+
+```
+Table 17
+
+
+Best model in terms of all error measures is the Local additive seasonal model with damp and MASE = 0.712.
+
+
+
+
+**AU-TAS series**
+
+Accuracy Measures
+
+```{r}
+
+# hits_fit %>%
+#   filter(geo == "AU-TAS") %>%
+#   select(passed_models$Model[passed_models$geo == "AU-TAS"]) %>% #  -AAdM_admis, -AAdM_amse 
+#   forecast(test %>% filter(geo == "AU-TAS")) %>% 
+#   accuracy(hits_2) %>% 
+#   arrange(MASE) %>% mutate_if(is.numeric, round, 3) %>% 
+#   DT::datatable()
+```
+Table 18
+
+
+Information Criterion
+```{r}
+hits_fit %>%
+  filter(geo == "AU-TAS") %>%
+  select(passed_models$Model[passed_models$geo == "AU-TAS"]) %>% glance() %>% arrange(AIC) %>% mutate_if(is.numeric, round, 3) %>% 
+  DT::datatable() 
+#  -AAdM_admis, -AAdM_amse 
+#  forecast(test %>% filter(geo == "AU-TAS")) %>% autoplot(hits_2 %>% filter(geo == "AU-TAS") ,level = NULL)
+```
+Table 19
+
+# Conclusion
+
+Depression is a global serious issue, In Australia 10% of people suffer from depression. As a result seven time series data were loaded from Google trend. We then applied Exponential smoothing methods to find the best model. As a result, we found that, the best model than can fit the data is the Local Additive Seasonality model (MASE = 0.783). And we also fit each series independently to find the best model per each series. The best model we found each series can be seen at Table.     

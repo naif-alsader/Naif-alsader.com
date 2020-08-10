@@ -1,0 +1,499 @@
+---
+title: "Relational Data"
+description: |
+  كيف تتعامل مع االعلاقات بين الجداول
+author: Naif Alsader
+date: 06-28-2020
+categories:
+  - nycflights13
+  - dplyr
+  - left_join()
+  - right_join()
+  - full_join()
+  - inner_join()
+  - semi_join()
+  - anti_join()
+output:
+  distill::distill_article:
+    css: "css/rtl_rmk.css"
+    self_contained: false
+    toc: true
+    toc_depth: 4
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = T)
+knitr::opts_chunk$set(fig.align = "center", out.width = "100%", out.height = "100%")
+knitr::opts_chunk$set(message = F)
+knitr::opts_chunk$set(warning = F)
+```
+
+هذا العمل هو تلخيص وترجمه للباب الثاني 
+(Wrangle > Relational Data) 
+من كتاب R for Data Science
+للكاتبين Hadly Wickham  و Garrett Grolemund
+مع بعض الاضافات
+
+
+الكود كامل هنا
+[code](https://github.com/naif-alsader/my_blog/blob/master/_posts/2020-06-30-relational-data/relational-data.Rmd)
+
+
+ تحتاج في البداية ان تقوم بتحميل مكتبة `tidyverse`  
+ 
+ 
+```{r, message = FALSE}
+library(tidyverse)
+```
+
+
+## مدخل
+
+ ال relational data 
+ تاتي في غالب الاحوال من قواعد البيانات
+ (RDBMS)
+
+وهي البيانات الي تكون مقسمة على اكثر من جدول مثلا ان يكون لديك جدول للرواتب وجدول لمعلومات الموظف الشخصية
+
+.هناك ثلاث طرق لاضافة اكثر من جدول الى بعض
+
+1- __Mutating joins__: اضافه اعمده جديده من جدول A تتطابق احد اعمدتها مع احد اعمدة جدول  B 
+
+
+2- __Filtering joins__ :  ازاله بعض المشاهدات من الجدول A  التي تطابق البيانات في احد الاعمدة من الجدولB
+
+
+3- __Set operations__: مثل عمليات المجموعات في الرياضيات (تقاطع، اتحاد)
+
+
+
+
+للتوضيح اكثر 
+سوف نعمل على عده جداول تخص شركات الطيران من مكتبة
+`nycflights13`
+
+
+```{r , message = FALSE}
+library(nycflights13)
+```
+
+
+الجداول هي:
+
+
+
+*   `airlines` 
+
+يعطينا اسم شركه الطيران مع الرمز الثنائي للشركة.
+
+
+```{r}
+    airlines
+```
+
+*   `airports`  
+
+يعطينا معلومات المطار. نستطيع ان نميز كل مطار عن طريق العمود
+`faa`
+اي رمز المطار
+.
+
+
+    
+
+```{r}
+    airports
+```
+
+*   `planes` 
+
+يعطينا معلومات كل طائرة، نستطيع تمييز كل طائره باستخدام العمود 
+`tailnum` 
+.
+
+```{r}
+    planes
+```
+
+*   `weather` 
+
+يعطينا معلومات الطقس في مطارات 
+NYC 
+لكل ساعة
+.
+
+```{r}
+    weather
+```
+
+ال 
+Diagram 
+التالي يشرح العلاقات بين جميع الجداول السابقة
+
+```{r, echo = FALSE, preview = T}
+knitr::include_graphics("diagrams/relational-nycflights.png")
+```
+
+الهدف من ال
+Diagram
+هو ان نعرف كيف نربط الجداول السابقة مع بعض 
+.
+
+مثلا
+
+* 
+`flights`
+يرتبط ب 
+`planes`
+عن طريق العمود
+`tailnum`
+.
+
+* 
+`flights`
+يرتبط ب 
+`airlines`
+عن طريق العمود 
+`carrier` 
+.
+  
+* 
+`flights`
+يرتبط ب 
+`airports`
+بطريقتين الاولى عن طريق
+`origin` 
+وذالك اذا اردنا الحصول عل معلومات مطار الاقلاع
+والثانيه عن طريق
+`dest` 
+وذالك اذا اردنا الحصول على معلومات مطار الوصول
+.
+
+
+
+* 
+`flights`
+يرتبط ب 
+`weather`
+عن طريق الاعمده التي تثمل الوقت
+(
+`year`,
+`month`,
+`day` 
+and `hour`
+)
+وعمود الموقع 
+`origin` 
+
+
+
+## Keys 
+
+
+* 
+__primary key__ 
+:
+يميز كل مشاهدة في جدولها 
+
+  
+  مثال 
+  :
+  `planes$tailnum` 
+  هي 
+  primary key
+  للجدول
+  `plans` 
+  لان كل طائره لها مشاهدة واحدة فقط 
+
+*
+__foreign key__
+:
+يميز كل مشاهدة في جدول آخر
+
+
+مثال 
+:
+`flights$tailnum` 
+هو 
+foreign key 
+لانه موجود في جدول
+`flights`
+لاكن يمكن ان يتكرر 
+(لان الطائره ممكن تعمل اكثر من رحلة)
+لاكنة 
+primaray key 
+لان من خلالة يمكننا الربط مع جدول
+`planes` 
+
+
+الان لنتاكد ان ان الشروط تنطبق هنا
+
+
+```{r}
+#tailnum هنا نختبر اذا كان لدينا اكثر من قيمه في العمود 
+# planes في الجدول  primary key حيث انه هو ال
+
+planes %>% 
+  count(tailnum) %>% 
+  filter(n > 1)
+
+weather %>% 
+  count(year, month, day, hour, origin) %>% 
+  filter(n > 1)
+```
+
+
+لاحظ ان الاعمده التي يجب ان تكون 
+primary key 
+في الجدول 
+weather،
+لم تفي بالشروط لذالك لايمكن اعتبارها 
+primary key
+.
+
+احيانا قد يكون كل صف بالفعل يمثل مشاهدة 
+لاكن لانستطيع ايجاد التوليفة المناسبه من الاعمدة لتشكيل
+primary key 
+
+
+في هذه الحاله ربما تحتاج الى البحث عن عمود يساعد في جعل 
+كل مشاهده مميزه او يمكنك اضافه 
+`row_number()`
+ويسمى هذا ال 
+key
+__surrogate key__
+
+
+
+
+### اضافة
+
+مصممو قواعد البيانات لايحبون تكرار البيانات لذالك يقومون بعملية تسمى 
+.Decomposition 
+ 
+.الهدف من هذه العملية هي ازاله البيانات المتكرره ووضعها في جدول اخر
+
+مثال
+
+كل شركة تزود موضفيها برقم وضيفي، الهدف منه هو تمييز كل موضف عن الاخر، بحيث اننا نستطيع معرفه .معلومات الموضف بمعرفه رقمة الوضيفي
+
+الان لنفرض اننا نريد عمل قاعده بيانات توضح رواتب الموظفين. هل نضع جميع معلومات الموضفين في جدول .الرواتب او نكتفي فقط برقمهم الوظيفي
+
+مصممين قواعد البيانات يرون انه من الافضل عمل جدولين. واحد لمعلومات الموضفين والاخر للرواتب
+
+.بحيث يكون الرقم الوضيفي هو الرابط بين الجدولين
+
+ الان نطلق على الرقم الوضيفي لقب
+ __Primary key__ 
+
+
+
+ لنفرض مثلا بان لدينا جدول اخر يمثل الحضور والغياب. لجميع الموضفين خلال السنه الفائته، يحتوي مثلا على رقم الموضف و التاريخ و الحاله
+ 
+ في هذه الحاله الرقم الوضيفي يفقد في هذا الجدول  لقب
+  __Primary key__ 
+  
+  لاننا لانستطيع من خلالة تميز المشاهدات. ويكون ال
+ __Primary key__ 
+هو تاريخ اليوم + الرقم الوضيفي.
+ويصبح الرقم الوضيفي 
+__foreign key__ 
+
+لاحظ انه الان 
+ الرقم الوضيفي اصبح
+__Primary key__ 
+في جدول العلومات الشخصية و 
+جدول الرواتب 
+
+و
+ __foreign key__  
+ في جدول الحضور 
+
+واصبح الرقم الوضيفي مع التاريخ هو 
+__Primary key__ 
+في جدول الحضور 
+
+
+## Mutating joins
+
+وهي عمليه عمليه شبية ب
+`()mutate` 
+.حيث نقوم بإضافة اعمده اضافيه
+
+
+ على سبيل المثال 
+ خذ الجدول 
+ `flights2`
+ 
+ 
+```{r}
+flights2 <- flights %>% 
+  select(year:day, hour, origin, dest, tailnum, carrier)
+flights2
+```
+
+
+الان سوف نقوم باضافة اسماء شركات الطيران من جدول 
+`airlines` 
+
+
+```{r}
+flights2 %>%
+  select(-origin, -dest) %>% 
+  left_join(airlines, by = "carrier")
+```
+
+
+##  كيف يعمل `*()_join`
+
+سوف نقوم بشرح طريقة الدمج باستخدام الجدولين التاليين
+
+```{r, echo = FALSE, out.width = "50%"}
+knitr::include_graphics("diagrams/join-setup.png")
+```
+
+
+```{r}
+x <- tribble(
+  ~key, ~val_x,
+     1, "x1",
+     2, "x2",
+     3, "x3"
+)
+y <- tribble(
+  ~key, ~val_y,
+     1, "y1",
+     2, "y2",
+     4, "y3"
+)
+```
+
+
+### inner join الربط الداخلي
+
+في الربط الداخلي نبقي فقط المشاهدات المتشابهة الموجوده في العمود 
+key 
+
+في كل من الجدول 
+x and y
+
+```{r, echo = FALSE, out.width = "50%"}
+knitr::include_graphics("diagrams/join-inner.png")
+```
+
+
+```{r}
+x %>% 
+  inner_join(y, by = "key")
+```
+
+
+### outer join الربط الخارجي  
+
+في الربط الخارجي نبقي كل المشاهدات الموجودة في الجدول 
+x 
+
+مع مايتقاطع معها من الجدول  
+y 
+
+
+وهي ثلاث انواع
+
+* left join
+
+* right join
+
+* full join
+
+
+```{r, echo = FALSE, out.width = "50%"}
+knitr::include_graphics("diagrams/join-outer.png")
+```
+
+
+### left join
+
+```{r}
+x %>% 
+  left_join(y, by = "key")
+
+```
+
+
+### right join
+
+```{r}
+x %>% 
+  right_join(y, by = "key")
+
+```
+
+
+### full join
+
+
+```{r}
+x %>% 
+  full_join(y, by = "key")
+
+```
+
+
+
+## filter join
+
+
+### Semi join
+
+```{r, echo = FALSE, out.width = "50%"}
+knitr::include_graphics("diagrams/join-semi.png")
+```
+
+يبقي فقط المشاهدات الموجودة  في 
+x 
+التي تتطابق مع   
+y 
+لاكن بدون تضمين قيم
+y
+
+
+
+```{r}
+
+x %>% 
+  semi_join(y, by = "key")
+
+```
+
+
+### anti join
+
+```{r, echo = FALSE, out.width = "50%" ,fig.align="center"}
+knitr::include_graphics("diagrams/join-anti.png")
+```
+
+
+
+```{r}
+x %>% 
+  anti_join(y, by = "key")
+
+```
+
+
+يبقي المشاهدة الموجودة في 
+x
+لاكن غير موجودة في
+y 
+
+
+
+## المصادر {.appendix}
+
+* https://r4ds.had.co.nz/relational-data.html
+
+* https://github.com/hadley/r4ds
+
+
+
+
