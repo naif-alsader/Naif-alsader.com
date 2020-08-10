@@ -12,23 +12,7 @@
     "date": "2020-08-10",
     "categories": [],
     "preview": "posts/2020-08-10-what-is-rmarkdown/img/open_file.png",
-    "last_modified": "2020-08-10T12:04:49+03:00",
-    "input_file": {}
-  },
-  {
-    "path": "posts/welcome/",
-    "title": "Welcome to Naif Alsader",
-    "description": "Welcome to our new blog, Naif Alsader. We hope you enjoy \nreading what we have to say!",
-    "author": [
-      {
-        "name": "Nora Jones",
-        "url": "https://example.com/norajones"
-      }
-    ],
-    "date": "2020-08-10",
-    "categories": [],
-    "preview": {},
-    "last_modified": "2020-08-10T12:35:41+03:00",
+    "last_modified": "2020-08-10T13:12:53+03:00",
     "input_file": {}
   },
   {
@@ -123,22 +107,6 @@
     "date": "2020-01-30",
     "categories": [],
     "preview": "posts/2020-01-30-depression-in-australia/depression-in-australia_files/figure-html5/unnamed-chunk-2-1.png",
-    "last_modified": "2020-08-10T12:04:49+03:00",
-    "input_file": {}
-  },
-  {
-    "path": "posts/2019-11-14-intro/",
-    "title": "intro",
-    "description": "A short description of the post.",
-    "author": [
-      {
-        "name": "Nora Jones",
-        "url": "https://example.com/norajones"
-      }
-    ],
-    "date": "2019-11-14",
-    "categories": [],
-    "preview": {},
     "last_modified": "2020-08-10T12:04:49+03:00",
     "input_file": {}
   }

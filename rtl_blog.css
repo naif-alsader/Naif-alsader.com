@@ -1,3 +1,5 @@
+/*  https://github.com/shamindras/ss_personal_distill_blog ,
+ https://github.com/naif-alsader/my_blog  */
 body {
   background-color: #f9f9f9;
 }
@@ -85,14 +87,13 @@ d-article {
 }
 
 
-.title, .author, .date, .name{
-  text-align: right;
-    direction: rtl;
 
+.title, .author, .date{
+  text-align: center;
 
 }
 
-p, h1,  h2, h3, h4, h5, h6, ol,li, ul, .nav nav-pills, d-appendix {
+p, h1  ,h2, h3, h4, h5, h6, ol,li, ul, .nav nav-pills  {
   text-align: right;
   direction: rtl;
   letter-spacing: 1px;
@@ -116,12 +117,7 @@ pre.text-output {
 }
 
 
-p code {
-    background-color: rgb(241 231 231);
-    text-align: right;
-    direction: rtl;
 
-}
 
 pre code-container {
 
@@ -134,9 +130,10 @@ pre:not([class]) {
 }
 
 
+body  d-article  p  code {
+    background-color: rgb(241 231 231);
+    text-align: left;
+    direction: ltr;
 
-d-article a {
-  color: #16447d;
 }
-
 
