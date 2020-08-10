@@ -1,8 +1,8 @@
 [
   {
     "path": "posts/2020-08-10-what-is-rmarkdown/",
-    "title": "what-is-rmarkdown",
-    "description": "A short description of the post.",
+    "title": "مدخل الى R Markdown",
+    "description": "شرح لطريقة استخدام R Markdown لإنشاء مستندات تفاعلية",
     "author": [
       {
         "name": "Naif Alsader",
@@ -10,10 +10,15 @@
       }
     ],
     "date": "2020-08-10",
-    "categories": [],
-    "preview": "posts/2020-08-10-what-is-rmarkdown/img/open_file.png",
-    "last_modified": "2020-08-10T13:12:53+03:00",
-    "input_file": {}
+    "categories": [
+      "R Markdown",
+      "Pandoc",
+      "Knitr",
+      "YAML"
+    ],
+    "preview": "posts/2020-08-10-what-is-rmarkdown/img/rmarkdown_markdown_pandoc.png",
+    "last_modified": "2020-08-10T14:12:57+03:00",
+    "input_file": "what-is-rmarkdown.utf8.md"
   },
   {
     "path": "posts/2020-07-04-r/",

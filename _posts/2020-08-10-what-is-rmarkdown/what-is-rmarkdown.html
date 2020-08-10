@@ -19,9 +19,9 @@
  <!--/radix_placeholder_import_source-->
 
   <!--radix_placeholder_meta_tags-->
-  <title>what-is-rmarkdown</title>
+  <title>مدخل الى R Markdown</title>
 
-  <meta property="description" itemprop="description" content="A short description of the post."/>
+  <meta property="description" itemprop="description" content="شرح لطريقة استخدام R Markdown لإنشاء مستندات تفاعلية"/>
 
 
   <!--  https://schema.org/Article -->
@@ -30,21 +30,21 @@
   <meta name="article:author" content="Naif Alsader"/>
 
   <!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
-  <meta property="og:title" content="what-is-rmarkdown"/>
+  <meta property="og:title" content="مدخل الى R Markdown"/>
   <meta property="og:type" content="article"/>
-  <meta property="og:description" content="A short description of the post."/>
+  <meta property="og:description" content="شرح لطريقة استخدام R Markdown لإنشاء مستندات تفاعلية"/>
   <meta property="og:locale" content="en_US"/>
 
   <!--  https://dev.twitter.com/cards/types/summary -->
   <meta property="twitter:card" content="summary"/>
-  <meta property="twitter:title" content="what-is-rmarkdown"/>
-  <meta property="twitter:description" content="A short description of the post."/>
+  <meta property="twitter:title" content="مدخل الى R Markdown"/>
+  <meta property="twitter:description" content="شرح لطريقة استخدام R Markdown لإنشاء مستندات تفاعلية"/>
 
   <!--/radix_placeholder_meta_tags-->
   <!--radix_placeholder_rmarkdown_metadata-->
 
   <script type="text/json" id="radix-rmarkdown-metadata">
-  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output"]}},"value":[{"type":"character","attributes":{},"value":["what-is-rmarkdown"]},{"type":"character","attributes":{},"value":["A short description of the post.\n"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url"]}},"value":[{"type":"character","attributes":{},"value":["Naif Alsader"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":[]}},"value":[]}]}]},{"type":"character","attributes":{},"value":["08-10-2020"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[false]}]}]}]}
+  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","categories","output"]}},"value":[{"type":"character","attributes":{},"value":["مدخل الى R Markdown"]},{"type":"character","attributes":{},"value":["شرح لطريقة استخدام R Markdown لإنشاء مستندات تفاعلية\n"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url"]}},"value":[{"type":"character","attributes":{},"value":["Naif Alsader"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":[]}},"value":[]}]}]},{"type":"character","attributes":{},"value":["08-10-2020"]},{"type":"character","attributes":{},"value":["R Markdown","Pandoc","Knitr","YAML"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[false]}]}]}]}
   </script>
   <!--/radix_placeholder_rmarkdown_metadata-->
   
@@ -953,7 +953,7 @@
 <!--radix_placeholder_front_matter-->
 
 <script id="distill-front-matter" type="text/json">
-{"title":"what-is-rmarkdown","description":"A short description of the post.","authors":[{"author":"Naif Alsader","authorURL":{},"affiliation":"&nbsp;","affiliationURL":"#"}],"publishedDate":"2020-08-10T00:00:00.000+03:00","citationText":"Alsader, 2020"}
+{"title":"مدخل الى R Markdown","description":"شرح لطريقة استخدام R Markdown لإنشاء مستندات تفاعلية","authors":[{"author":"Naif Alsader","authorURL":{},"affiliation":"&nbsp;","affiliationURL":"#"}],"publishedDate":"2020-08-10T00:00:00.000+03:00","citationText":"Alsader, 2020"}
 </script>
 
 <!--/radix_placeholder_front_matter-->
@@ -963,8 +963,8 @@
 <!--/radix_placeholder_site_before_body-->
 
 <div class="d-title">
-<h1>what-is-rmarkdown</h1>
-<p><p>A short description of the post.</p></p>
+<h1>مدخل الى R Markdown</h1>
+<p><p>شرح لطريقة استخدام R Markdown لإنشاء مستندات تفاعلية</p></p>
 </div>
 
 <div class="d-byline">
@@ -1038,11 +1038,14 @@
 <p><code>title</code>: حالة عدد السكان حسب المرحلة التعلمية في المملكة العربية السعودية (2016)</p>
 <p><code>author</code>: <em>اكتب اسمك</em></p>
 <p>ثم قم بمسح جميع ماتحت</p>
-<div dir="ltr">
-<p>```{r setup, include=FALSE}</p>
-<p>knitr::opts_chunk$set(echo = TRUE)</p>
-<p>```</p>
-</div>
+<pre class="md"><code>
+```{r setup, include=FALSE} 
+
+
+knitr::opts_chunk$set(echo = TRUE)
+  
+```
+</code></pre>
 <p>ليصبح شكل المستند بهذا الشكل</p>
 <div class="layout-chunk" data-layout="l-page">
 <p><img src="img/empty_rmd.png" width="1792" /></p>
@@ -1061,7 +1064,7 @@
 <div class="layout-chunk" data-layout="l-page">
 <p><img src="img/Rcodeadded.png" width="1792" /></p>
 </div>
-<div style="background-color:#455a64; color:white; margin-right: 5em;
+<div style="background-color:#455a64; color:white;
     border-radius: 10px;">
 <p style="margin-right: 1em">
 ملاحظة: يمكننا الكتابة بأكثر من لغة وهي awk, bash, coffee, gawk, groovy, haskell, lein, mysql, node, octave, perl, psql, Rscript, ruby, sas, scala, sed, sh, stata, zsh, highlight, Rcpp, tikz, dot, c, fortran, fortran95, asy, cat, asis, stan, block, block2, js, css, sql, go, python, julia, sass and scss
@@ -1071,7 +1074,11 @@
 <p>لاحظنا في الطريقة السابقة انها يمكننا إضافة الكود، لاكنة يكون معزول عن النص هذا يعتبر جيد لاكن في بعض الحالات قد تحتاج ان تكتب الكود مع النص.</p>
 <p>مثلا لنقل انك تريد أن تضيف تاريخ اليوم وتريد لهذا التاريخ ان يكون حديث في كل مره تقوم بتصدير المستند.</p>
 <p>في الواقع يمكنك ذالك بإضافة</p>
-<p><code>` r ثم تكتب الكود هنا`</code></p>
+<pre class="md"><code>
+
+` r ثم تكتب الكود هنا` 
+
+</code></pre>
 <p>مثلا تاريخ اليوم هو <code>` ()r Sys.Date`</code></p>
 <p>وتظهر بهذا الشكل</p>
 <p><em>تاريخ اليوم هو 2020-08-10</em></p>
@@ -1098,13 +1105,20 @@
 <li><p><strong>الضغط على <code>knit</code> في أعلى المستند</strong></p></li>
 </ul>
 <p>لاكن قبل القيام بذالك سوف نقوم بإضافة css code في بداية الصفحة (بعد البيانات الوصفية) لتحسين الدعم للغة العربية</p>
-<div dir="ltr">
-<p>```{css, echo = FALSE}</p>
-<p>body { direction: rtl }</p>
-<p>pre { direction: ltr;</p>
-<p>text-align: left; }</p>
-<p>```</p>
-</div>
+<pre class="md"><code>
+```{css} 
+
+body {
+  direction: rtl
+}
+
+pre {
+  direction: ltr;
+  text-align: left;
+}
+
+```
+</code></pre>
 <div class="layout-chunk" data-layout="l-page">
 <p><img src="img/added_css.png" width="1066" /></p>
 </div>
@@ -1115,44 +1129,64 @@
 <h3 id="التعديل-على-مظهر-التقرير">التعديل على مظهر التقرير</h3>
 <p>هناك شيئين يمكن التحكم بهم وهما</p>
 <ul>
-<li><p>البيانات الوصفية (YAML headr)</p></li>
-<li><p>knitr options (R code)</p></li>
+<li><p>البيانات الوصفية (YAML headr).</p></li>
+<li><p>Knitr Options (Code Chunks).</p></li>
 </ul>
-<h4 id="knitr-options-r-code">knitr options (R code)</h4>
+<h4 id="knitr-options">knitr options</h4>
 <p>بإستخدام <code>knitr</code> تستطيع التحكم بالكود المستخدم</p>
 <p>مثلا</p>
 <ul>
 <li>إذا اردت إزالة الرسائل المزعجة عند تحميل المكتبات</li>
 </ul>
 <p>قم بإضافة <code>message = FALSE</code> و <code>warning = FALSE</code></p>
-<p>الى</p>
-<div dir="ltr">
-<p>```{r, message = FALSE, warning = FALSE}</p>
-<p>library(tidyverse) library(rmarkdown)</p>
-<p>data &lt;- read_csv(“saudi-population-10-years-and-over-by-gender-age-groups-and-educational-status.csv”)</p>
-<p>paged_table(data)</p>
-<p>```</p>
-</div>
+<p>الى بداية ال Code Chunk، بعد حرف ال <code>r</code> ويفصل بين الجميع علامة <code>,</code></p>
+<pre class="md"><code>
+```{r, message = FALSE, warning = FALSE} 
+
+library(tidyverse)
+library(rmarkdown)
+
+data &lt;- read_csv(&quot;saudi-population-10-years-and-over-by-gender-age-groups-and-educational-status.csv&quot;)
+
+paged_table(data)
+
+```</code></pre>
 <ul>
 <li>إظهار او إخفاء الكود</li>
 </ul>
 <p>قم بإضافة</p>
-<p><code>echo = TRUE</code> اذا اردت إظهار او</p>
-<p><code>FALSE</code> إذا إخفاءة</p>
-<div dir="ltr">
-<p>```{r, echo = FALSE}</p>
-<p>library(tidyverse) library(rmarkdown)</p>
-<p>data &lt;- read_csv(“saudi-population-10-years-and-over-by-gender-age-groups-and-educational-status.csv”)</p>
-<p>paged_table(data)</p>
-<p>```</p>
-</div>
+<p><code>echo = TRUE</code> اذا اردت إظهار الكود او</p>
+<p><code>FALSE</code> إذا اردت إخفاءة</p>
+<pre class="md"><code>
+```{r, echo = FALSE} 
+
+
+library(tidyverse)
+library(rmarkdown)
+
+data &lt;- read_csv(&quot;saudi-population-10-years-and-over-by-gender-age-groups-and-educational-status.csv&quot;)
+
+paged_table(data)
+
+```</code></pre>
 <p>وغيرها الكثير تجدها <a href="https://yihui.org/knitr/options/">هنا</a></p>
 <h4 id="البيانات-الوصفية-yaml-header">البيانات الوصفية (YAML header)</h4>
 <p>البيانات الوصفية تساعدنا عى التحكم بمظهر النص</p>
+<p>وابسط صورة لها تكون بهذا الشكل</p>
+<pre class="md"><code>
+---
+title: &quot;حالة عدد السكان حسب المرحلة التعلمية في المملكة العربية السعودية (2016)&quot;
+author: &quot;Naif&quot;
+date: &quot;8/9/2020&quot;
+output: html_document:
+
+---   
+</code></pre>
+<p>لاكن</p>
 <ul>
 <li>مثلا إذا اردنا إضافة الفهرس</li>
 </ul>
-<pre><code>
+<pre class="md"><code>
 ---
 title: &quot;حالة عدد السكان حسب المرحلة التعلمية في المملكة العربية السعودية (2016)&quot;
 author: &quot;Naif&quot;
@@ -1166,7 +1200,7 @@ output:
 <ul>
 <li>إضافة ثيم</li>
 </ul>
-<pre><code>
+<pre class="md"><code>
 ---
 title: &quot;حالة عدد السكان حسب المرحلة التعلمية في المملكة العربية السعودية (2016)&quot;
 author: &quot;Naif&quot;
@@ -1200,20 +1234,19 @@ output:
     theme: darkly
     highlight: tango
     code_folding: hide
-
-
 ---   
 </code></pre>
-<p>وغيرها الكثير تجدها في الكتابين المذكورات في الأعلى</p>
+<p>وغيرها الكثير تجدها في المصادر المذكورة بالأعلي</p>
 <p>هنا الشكل النهائي للمستند</p>
 <div class="layout-chunk" data-layout="l-body">
 <p><img src="img/final_document.gif" /><!-- --></p>
 </div>
+<p>يمكنك تحميل الملف من <a href="https://drive.google.com/file/d/176LbdCQ3DSggcDgWf6dFPpbh_yBdsu1m/view?usp=sharing">هنا</a></p>
 <h2 id="كيف-يتم-تحويل-r-markdown-الى-html-او-غيرها.">كيف يتم تحويل R Markdown الى HTML او غيرها.</h2>
 <p>لاحظ معي المخطط التالي</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="figure"><span id="fig:unnamed-chunk-12"></span>
-<img src="img/rmarkdown_markdown_pandoc.png" alt="source:https://bookdown.org/yihui/rmarkdown-cookbook" width="765" />
+<img src="img/rmarkdown_markdown_pandoc.png" alt="source:https://bookdown.org/yihui/rmarkdown-cookbook" width="765" data-distill-preview=1 />
 <p class="caption">
 Figure 1: source:<a href="https://bookdown.org/yihui/rmarkdown-cookbook" class="uri">https://bookdown.org/yihui/rmarkdown-cookbook</a>
 </p>
