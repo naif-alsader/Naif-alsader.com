@@ -1,0 +1,912 @@
+---
+title: "كيف تنشاء مدونة باستخدام R"
+description: |
+author:name: Naif Alsader
+date: 07-04-2020
+output:
+  distill::distill_article:
+    self_contained: false
+    toc: true
+    toc_depth: 4
+    number_sections: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+# مدخل
+
+شكرا لفريق 
+**Rstudio**
+الأمور صارت سهالات لعمل مدونة شخصية باستخدام
+R
+خلاص ما يحتاج تكون مطور 
+web
+كل إلي تحتاج فقط معرفة في 
+**R**
+و 
+**Rmarkdown**
+
+لان كل الكود الي تبي تكتبه فقط فقط
+R `r emo::ji("victory")`
+
+الشكل النهائي
+[هنا](https://demoblog-naif.netlify.app)
+
+# اكثر من مكتبة
+
+Rstudio team
+قدم لنا ثلاث طرق لعمل مدونة شخصيه
+
+
+* [Blogdown](https://bookdown.org/yihui/blogdown/)
+
+
+* [Hugodown](https://hugodown.r-lib.org/)
+
+
+* [Distill](https://rstudio.github.io/distill/) 
+
+Distill
+هي الي بنستخدمها في هذا المنشور.
+
+
+
+لعل ابرز اختلاف بين الثلاث مكتبات
+هو ان
+Blogdown و Hugodown 
+تم بنائهما على
+[Hugo framework](https://gohugo.io/) 
+و يتميزان بأنهما يمكنانك من استخدام اكثر من 
+[theme](https://themes.gohugo.io/)
+
+
+يمكن القرأة عن
+الفرق بين
+Blogdown و Hugodown 
+[هنا](https://hugodown.r-lib.org/)
+
+
+بينما
+Distill
+
+مبني على
+[Distill web framwork](https://github.com/distillpub/template)
+
+تم تطويرة عن طريق 
+[Distill Machine Learning Journa](https://distill.pub/)
+
+والهدف منة هو توفير مواقع او مدونات ملائمة للكتابة التقنية
+
+
+
+
+
+
+# خطة العمل
+
+
+1- إنشاء المدونة محليا على جهازك الشخصي
+
+2- رفع المدونة الى github
+
+3- استضافة المدونة على netlify.com
+
+الخطوة الأخير سوف تكون لمره واحدة ثم بعد ذالك لن تحتاج الي الرجوع إليها
+
+
+وأخيرا مع كل منشور جديد أو تعديل فقط نعمل
+push
+الى
+github
+
+
+## 1. إعداد Github و Rproject
+
+### Github .I
+
+الفيديو التالي راح يساعدك في إنشاء حساب وعمل
+Repository
+
+كل ما بعد الدقيقة 2.48 لا يهمنا لذالك تجاهله
+
+* سجل حساب
+
+* أنشاء Repsitory
+
+
+```{r}
+
+vembedr::embed_youtube("A2PWF5eAeDo")
+```
+
+
+
+بعد ماتنتهي من إنشاء ال
+Repository
+من
+code
+انسخ ال
+URL
+
+
+```{r}
+knitr::include_graphics("images/githubcodeclone.png")
+```
+
+خلك ماسك الرابط شوي لأتفكه الين نسوي الخطوة الثانية`r emo::ji("laugh")`
+
+### R project .II
+
+الان اذهب الى 
+R
+وإنشاء
+project
+جديد
+
+```{r}
+
+```
+
+
+* New Project
+
+```{r}
+knitr::include_graphics("images/new_proj.png")
+```
+
+
+* Version Control
+
+```{r}
+knitr::include_graphics("images/version_control.png")
+```
+
+
+* git 
+
+```{r}
+knitr::include_graphics("images/git_.png")
+```
+
+
+* وإلصق رابط ال Repository في المربع الأول واختار مكان البروجكت  انا اخترت Desktop
+
+```{r}
+knitr::include_graphics("images/reop_url.png")
+```
+
+
+
+ثم اختر
+create project
+
+
+خلاص الحين فك الرابط
+
+## 2. إنشاء المدونة محليا
+
+### create_blog   .I
+
+قم بتحميل مكتبتي
+**distill** 
+و
+**here**
+
+```{r, echo = T ,eval=FALSE}
+
+install.packages("distill")
+install.packages("here")
+
+library(distill)
+
+```
+
+
+ثم في console اكتب
+
+```{r, echo = T, eval=F}
+distill::create_blog(dir = here::here(),
+                     title = "Demo blog" )
+```
+
+اكتب في
+`title`
+اسم المدونة
+(يمكن التعديل عليه لاحقا)
+
+ثم 
+
+```{r, echo = T, eval=F}
+
+rmarkdown::render_site(input = here::here())
+
+```
+
+ثم Knit
+
+```{r}
+knitr::include_graphics("images/knit_.png")
+```
+
+
+```{r}
+knitr::include_graphics("images/post1.png")
+
+```
+
+
+الان مدونتك شبه جاهزه تحتاج فقط بعض التعديلات
+
+
+### II. هيكل الملفات 
+أولا خلونا نشوف الهيكل تبع الملفات
+
+```{r}
+knitr::include_graphics("images/list_of_files.png")
+```
+
+
+```markup
+~/desktop/demo_blog/
+├── README.md
+├── _posts
+│   ├── welcome
+│       ├── welcome.Rmd
+│       ├── welcome.html
+│       └── welcome_files
+├── _site
+│   ├── about.html
+│   ├── index.html
+│   ├── posts
+│   │   ├── welcome
+│   │   ├── posts.json
+│   └── site_libs
+│       ├── bowser-1.9.3
+│       ├── distill-2.2.21
+│       ├── font-awesome-5.1.0
+│       ├── header-attrs-2.1
+│       ├── headroom-0.9.4
+│       ├── jquery-1.11.3
+│       ├── pagedtable-1.1
+│       └── webcomponents-2.0.0
+├── _site.yml
+├── about.Rmd
+├── demo_blog.Rproj
+├── index.Rmd
+```
+
+
+
+* README.md
+
+هو فقط الصفحة الأولى لل
+Repository 
+في 
+github
+
+غالبا يكتب فيه شرح عن المشروع
+
+تجاهله الان
+
+*  _posts
+
+هو المكان الي توجد فيه جميع المنشورات. بحيث اذا اردت التعديل على منشور سابق تحصله هناك
+
+welcome 
+هو اسم المنشور  ويحتوي في داخلة على ملفات  المنشور اكثر ما يهمك هو الملف المنتهي ب
+.Rmd
+
+ملاحظة:
+كل منشور راح يتكون من مجلد 
+
+مثلا
+
+```markup
+
+│   └── welcome
+│       ├── welcome.Rmd
+│       ├── welcome.html
+│       └── welcome_files
+│   └── how_to_do_x
+│       ├── how_to_do_x.Rmd
+│       ├── how_to_do_x.html
+│       └── how_to_do_x_files
+```
+
+
+الباقي تجاهلها لأنها يتم إنتاجها تلقائيا حسب ملف 
+Rmd
+(Rmarkdown)
+وهو الملف الي راح يحتوي على الكود
+
+
+
+
+* _site
+
+هو المجلد الي راح يحتوي فعليا على المدونة
+
+المجلد هذا خط احمر تجاهله ولا كائن له وجود
+
+
+
+
+* _site.ymal
+
+```{r}
+knitr::include_graphics("images/site_ymal.png")
+```
+
+هذا يعتبر واجهة الموقع
+
+راح أغير 
+`title` و
+`description`
+
+الى
+
+`مدونتي الشخصية`
+و
+`مدونة نايف الشخصية`
+
+وأضيف علية 
+
+``` markup
+collections:
+  posts:
+    citations: false
+```
+
+بحيث شكله النهائي يكون
+
+```markup
+name: "demo_blog"
+title: "مدونتي الشخصية"
+description: |
+  مدونة نايف الشخصية
+output_dir: "_site"
+navbar:
+  right:
+    - text: "Home"
+      href: index.html
+    - text: "About"
+      href: about.html
+output:
+  distill::distill_article:
+    css: rtl_blog.css
+    
+collections:
+  posts:
+    citations: false
+```
+
+لاحظ ايضا إني أضفت ملف 
+css
+
+
+
+* about.Rmd
+
+هي الصفحة الي تحط فيها معلومات عنك 
+
+
+
+
+* index.Rmd 
+
+راح تتحكم بشكل الصفحة الرئيسية للمدونة
+
+فقط عدل 
+`title`
+واكتب
+`المنشورات`
+
+```markup
+title: "المنشورات"
+site: distill::distill_website
+listing: posts
+```
+
+### III. إضافة css 
+
+ الان نبي نضيف ملفين 
+ css
+ الهدف منهم هو تعديل جهة الكتابة من اليسار الى اليمين
+ 
+ فقط انسخ الكود التالي الى 
+ console
+ ثم
+ Enter
+ 
+```{r, eval=F, echo=T}
+
+# Reading files from naif-alsader/my_blog/
+file1 = readLines("https://raw.githubusercontent.com/naif-alsader/my_blog/master/rtl_blog.css") 
+file2  = readLines("https://raw.githubusercontent.com/naif-alsader/my_blog/master/rtl_rmk.css") 
+
+# Creat new file for css 
+file.create(paste0(here::here(),"/rtl_blog.css"))
+
+# writing into rtl_blog
+sink(paste0(here::here(),"/rtl_blog.css"))
+cat("/* https://github.com/shamindras/ss_personal_distill_blog ,\n https://github.com/naif-alsader/my_blog */")
+cat(file1,"\n ", sep = "\n")
+cat(file2, sep = "\n" )
+sink()
+
+```
+
+ثم الان 
+
+```{r, echo = T, eval=F}
+
+rmarkdown::render_site(input = here::here())
+
+```
+
+
+
+خلاص الان رتبنا المظهر كامل خلونا نجرب نكتب منشور
+
+```{r, echo=T, eval=F}
+
+distill::create_post("first_post"، author = "نايف السدر")
+
+```
+
+
+
+ابدا بكتابة المنشور
+
+هنا مثال لمنشور
+
+```{r}
+knitr::include_graphics("images/firstpost.png")
+```
+
+
+
+
+Rstudio
+الى تاريخ اليوم لايدعم الكتابة باللغة العربية بشكل كامل
+
+اقصد هنا انة  يمكنك الكتابة بالعربي لاكن اذا حاولت تعدل على اي كلمة ماراح تستطيع تضع المؤشر عليها 
+
+لذالك اذا حبيت تعدل على كلمة  اضغط
+ctrl+F
+أو
+command+F
+
+ثم اكتب الكلمة التعديل ثم اضغط
+Replace
+
+او قص الجملة كامله والصقها في محرر نصوص وارجع الصقها
+
+ايضا اذا اردت ان تكتب باللغة العربية والانجليزية معا فيمكنك الكتابة بالعربي في سطر ثم الضغط على
+Enter
+وكتابة الكلمة الانجليزية في سطر ثم الضغط على 
+Enter
+ثم تكمل الكتابة
+
+مثال
+
+```rmarkup
+ايضا اذا اردت ان تكتب باللغة العربية والانجليزية معا فيمكنك الكتابة بالعربي في سطر ثم الضغط على
+Enter
+وكتابة الكلمة الانجليزية في سطر ثم الضغط على 
+Enter
+ثم تكمل الكتابه
+```
+
+المسافة بين جملتين تكون بترك مسافة سطر بين الجملتين
+
+مثلا
+
+
+```markup
+المسافة بين جملتين تكون بترك مسافة سطر بين الجملتين
+
+مثلا
+```
+
+سوف احاول في المنشور القادم مناقشة بعض الحيل التي قد تساعد في التعامل مع الكتابة باللغه العربية
+
+
+
+## 3. رفع المدونة الى github
+
+الان اذهب الى
+Git
+
+```{r}
+knitr::include_graphics("images/git_icon.png")
+```
+
+
+ثم قم بتحديد جميع المربعات اسفل الكلمة
+staged
+
+```{r}
+knitr::include_graphics("images/stage.png")
+
+```
+
+ثم اضغط على 
+commit
+
+الان بتفتح معك صفحة جديدة
+اكتب في 
+commit message
+
+`initial commit`
+
+```{r}
+knitr::include_graphics("images/inicommit.png")
+```
+
+
+بعد ما تنتهي اضغط
+close
+
+```{r}
+knitr::include_graphics("images/closr_git_commit.png")
+```
+
+الان اضغط على
+push
+
+
+ راح يطلب منك اسم المستخدم وكلمة المرور إلى أنشأت فيهم حسابك في 
+github
+
+ادخلهم
+
+
+```{r}
+knitr::include_graphics("images/push.png")
+```
+
+وأخيرا راح تظهر لك هذي الرسالة
+
+```{r}
+knitr::include_graphics("images/push_message.png")
+
+```
+
+أخيرا عشان نتأكد ان كل شيء تمام 
+
+نروح لحسابنا في 
+github
+
+```{r}
+knitr::include_graphics("images/github_account.png")
+
+```
+
+
+مبروك `r emo::ji("party")`
+
+باقي آخر وأسهل خطوة
+
+## 4. ضبط إعدادات netlify.com  وإطلاق الموقع
+
+الاستضافة على موقع 
+netlify.com 
+مجانية بشكل كامل
+
+اتبع الرابط هذا
+
+[www.netlify.com](www.netlify.com)
+
+اختر
+
+sign up
+
+```{r}
+
+knitr::include_graphics("images/sign_up.png")
+```
+
+
+github
+
+
+```{r}
+
+knitr::include_graphics("images/link_with_github.png")
+```
+
+
+ثم ادخل بياناتك
+
+ثم
+
+* New site from Git
+
+```{r}
+knitr::include_graphics("images/new_site_from_git.png")
+```
+
+* Github
+
+
+```{r}
+knitr::include_graphics("images/newsite_from_github2.png")
+```
+
+
+* Configure the Netlify app on GitHub
+
+```{r}
+knitr::include_graphics("images/new_site_from_github3.png")
+```
+
+
+الان اختر ال 
+Repository إلى انت عملته للمدونة
+
+أنا اخترت 
+demo_blog
+
+```{r}
+knitr::include_graphics("images/new_site_from_github4.png")
+```
+
+ثم اختر save
+
+```{r}
+knitr::include_graphics("images/new_site_from_github_5.png")
+```
+
+
+هنا قم بإضافة
+
+site_
+الى 
+Publish Directory
+
+```{r}
+knitr::include_graphics("images/change_publush_dir.png")
+
+```
+
+
+باقي بس نغير ال
+Domain
+
+من 
+overview
+
+اختر
+
+```{r}
+knitr::include_graphics("images/site_settings.png")
+```
+
+ثم
+
+```{r}
+knitr::include_graphics("images/new_domain.png")
+```
+
+Edit site name
+
+ثم اكتب الاسم إلي تبي ثم
+save
+
+انتظر تقريبا 10 دقائق والمدونة راح تكون 
+live
+
+`r rep(emo::ji("party"),10)`
+
+
+ال
+Domain 
+الان ينتهي
+demoblog-naif.netlify.app
+
+اذا حبيت يكون  بدون 
+.netlify.app
+
+لازم تحجز واحد 
+مثلا من 
+https://domains.google
+
+تكلفة
+Domain
+تقريبا 
+$12
+في السنة
+
+ثم 
+
+اختر
+add custom domain
+
+```{r}
+knitr::include_graphics("images/addcustomdomain.png")
+```
+
+
+# إضافة منشورات جديدة
+
+الان اذا حبيت تسوي منشور تقدر تستخدم الأمر
+
+```{r, eval=F, echo=T}
+distill::create_post("Second_post")
+```
+
+ثم بعد ما تنتهي تعيد الخطوة هذي من جديد
+
+* Git
+
+```{r}
+knitr::include_graphics("images/git_icon.png")
+```
+
+
+* stage
+
+```{r}
+knitr::include_graphics("images/stage.png")
+
+```
+
+
+* commit
+
+استبدل
+`initial commit`
+ب
+`Second post`
+
+```{r}
+knitr::include_graphics("images/inicommit.png")
+```
+
+
+* push
+
+```{r}
+knitr::include_graphics("images/push.png")
+```
+
+وراح يعمل بشكل ممتاز
+
+لكنها غير مفضلة والأفضل انك تعمل لكل منشور 
+branch
+
+وهي خطوة إضافية راح تجنبك الكثير من المشاكل
+
+
+الطريقه كالتالي
+
+أولا قبل كتابة المنشور 
+
+* New branch
+
+واسميتها
+
+`Second_post`
+
+```{r}
+knitr::include_graphics("images/newbranch.png")
+```
+
+* لاحض إن الاسم تغير من **Master**  إلي **Second_post**
+
+```{r}
+knitr::include_graphics("images/nameofnewbranch.png")
+```
+
+ثم الان أعيد الخطوات السابقة
+
+* Create post
+
+```{r, eval=F, echo=T}
+distill::create_post("Second_post")
+```
+
+* Write the post
+
+* Git
+
+* stage
+
+* commit
+
+`Second post`
+
+* push
+
+الان راح تلاحظ انه غير مسموح لك تسوي
+push
+
+الحل هو من
+
+* `More` > `shell`
+
+
+```{r}
+knitr::include_graphics("images/push_branch.png")
+```
+
+
+* ثم اكتب
+
+```
+git push --set-upstream origin Second_post 
+```
+
+والخطوة الأخيرة هي دمج 
+branch
+مع
+Master
+
+
+ارجع لحسابك في 
+Github
+
+واتبع الخطوات التاليه
+
+
+* Compare & pull Request
+
+```{r}
+knitr::include_graphics("images/merge1.png")
+```
+
+
+* Create pull request
+
+```{r}
+knitr::include_graphics("images/merge2.png")
+```
+
+
+* Merge pull request
+
+```{r}
+knitr::include_graphics("images/merge3.png")
+```
+
+
+* Confirm merge
+
+```{r}
+knitr::include_graphics("images/confirm_merge.png")
+```
+
+
+الان مع كل منشور جديد اتبع نفس الخطوات السابقة
+
+
+
+اخير انت لست ملزم ب rstudio يمكنك استخدام اي محرر اكواد آخر بإذن الله في المنشور القادم بتحدث اكثر عن مزايا
+Rmarkdown وعن الكتابة في محررات اكواد اخرى التي تدعم العربي بشكل افضل
+
+هنا نصائح من الاستاذ حسين  صاحب مدونة
+[المحلل العربي](https://www.arabiananalyst.com/)
+عن الكتابة التقنية باللغة العربية
+
+
+
+
+<iframe type="text/html" width="30%" height="600px" frameborder="2px" allowfullscreen lang="ar" dir="auto" dir = "rtl"  align = "center"  style="position: static; visibility: visible;  
+display: block; flex-grow: 1;  background: #000000; margin: 10px auto; direction:rtl;"  src="https://threadreaderapp.com/embed/1280318988770324482.html"></iframe>
+
+
+اذا واجهتك مشاكل اكتب في التعليقات اسفل
+
+
+
+
+## المصادر {.appendix}
+
+* https://blog.rstudio.com/2018/09/19/radix-for-r-markdown/
+
+* https://happygitwithr.com
+
+* https://www.shamindras.com/posts/2019-07-11-shrotriya2019distillpt1/

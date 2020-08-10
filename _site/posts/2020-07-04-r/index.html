@@ -1,0 +1,2003 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"/>
+  <meta name="generator" content="distill" />
+
+  <style type="text/css">
+  /* Hide doc at startup (prevent jankiness while JS renders/transforms) */
+  body {
+    visibility: hidden;
+  }
+  </style>
+
+ <!--radix_placeholder_import_source-->
+ <!--/radix_placeholder_import_source-->
+
+  <!--radix_placeholder_meta_tags-->
+<title>Naif Alsader: كيف تنشاء مدونة باستخدام R</title>
+
+
+
+<!--  https://schema.org/Article -->
+<meta property="article:published" itemprop="datePublished" content="2020-07-04"/>
+<meta property="article:created" itemprop="dateCreated" content="2020-07-04"/>
+<meta name="article:author" content="Naif Alsader"/>
+
+<!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
+<meta property="og:title" content="Naif Alsader: كيف تنشاء مدونة باستخدام R"/>
+<meta property="og:type" content="article"/>
+<meta property="og:locale" content="en_US"/>
+<meta property="og:site_name" content="Naif Alsader"/>
+
+<!--  https://dev.twitter.com/cards/types/summary -->
+<meta property="twitter:card" content="summary"/>
+<meta property="twitter:title" content="Naif Alsader: كيف تنشاء مدونة باستخدام R"/>
+
+<!--/radix_placeholder_meta_tags-->
+  <!--radix_placeholder_rmarkdown_metadata-->
+
+<script type="text/json" id="radix-rmarkdown-metadata">
+{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author:name","date","output","author"]}},"value":[{"type":"character","attributes":{},"value":["كيف تنشاء مدونة باستخدام R"]},{"type":"NULL"},{"type":"character","attributes":{},"value":["Naif Alsader"]},{"type":"character","attributes":{},"value":["07-04-2020"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained","toc","toc_depth","number_sections"]}},"value":[{"type":"logical","attributes":{},"value":[false]},{"type":"logical","attributes":{},"value":[true]},{"type":"integer","attributes":{},"value":[4]},{"type":"logical","attributes":{},"value":[true]}]}]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name"]}},"value":[{"type":"character","attributes":{},"value":["Naif Alsader"]}]}]}]}
+</script>
+<!--/radix_placeholder_rmarkdown_metadata-->
+  
+  <script type="text/json" id="radix-resource-manifest">
+  {"type":"character","attributes":{},"value":["css/rtl_rmk.css","images/addcustomdomain.png","images/change_publush_dir.png","images/closr_git_commit.png","images/confirm_merge.png","images/firstpost.png","images/git_.png","images/git_icon.png","images/github_account.png","images/githubcodeclone.png","images/inicommit.png","images/knit_.png","images/link_with_github.png","images/list_of_files.png","images/merge1.png","images/merge2.png","images/merge3.png","images/nameofnewbranch.png","images/new_domain.png","images/new_proj.png","images/new_site_from_git.png","images/new_site_from_github_5.png","images/new_site_from_github3.png","images/new_site_from_github4.png","images/newbranch.png","images/newsite_from_github2.png","images/post1.png","images/push_branch.png","images/push_message.png","images/push.png","images/reop_url.png","images/sign_up.png","images/site_settings.png","images/site_ymal.png","images/stage.png","images/version_control.png","r_files/bowser-1.9.3/bowser.min.js","r_files/distill-2.2.21/template.v2.js","r_files/header-attrs-2.1/header-attrs.js","r_files/jquery-1.11.3/jquery.min.js","r_files/webcomponents-2.0.0/webcomponents.js"]}
+  </script>
+  <!--radix_placeholder_navigation_in_header-->
+
+<script type="application/javascript">
+
+  window.headroom_prevent_pin = false;
+
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+
+    // initialize headroom for banner
+    var header = $('header').get(0);
+    var headerHeight = header.offsetHeight;
+    var headroom = new Headroom(header, {
+      onPin : function() {
+        if (window.headroom_prevent_pin) {
+          window.headroom_prevent_pin = false;
+          headroom.unpin();
+        }
+      }
+    });
+    headroom.init();
+    if(window.location.hash)
+      headroom.unpin();
+    $(header).addClass('headroom--transition');
+
+    // offset scroll location for banner on hash change
+    // (see: https://github.com/WickyNilliams/headroom.js/issues/38)
+    window.addEventListener("hashchange", function(event) {
+      window.scrollTo(0, window.pageYOffset - (headerHeight + 25));
+    });
+
+    // responsive menu
+    $('.distill-site-header').each(function(i, val) {
+      var topnav = $(this);
+      var toggle = topnav.find('.nav-toggle');
+      toggle.on('click', function() {
+        topnav.toggleClass('responsive');
+      });
+    });
+
+    // nav dropdowns
+    $('.nav-dropbtn').click(function(e) {
+      $(this).next('.nav-dropdown-content').toggleClass('nav-dropdown-active');
+      $(this).parent().siblings('.nav-dropdown')
+         .children('.nav-dropdown-content').removeClass('nav-dropdown-active');
+    });
+    $("body").click(function(e){
+      $('.nav-dropdown-content').removeClass('nav-dropdown-active');
+    });
+    $(".nav-dropdown").click(function(e){
+      e.stopPropagation();
+    });
+  });
+</script>
+
+<style type="text/css">
+
+/* Theme (user-documented overrideables for nav appearance) */
+
+.distill-site-nav {
+  color: rgba(255, 255, 255, 0.8);
+  background-color: #455a64;
+  font-size: 15px;
+  font-weight: 300;
+}
+
+.distill-site-nav a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.distill-site-nav a:hover {
+  color: white;
+}
+
+@media print {
+  .distill-site-nav {
+    display: none;
+  }
+}
+
+.distill-site-header {
+
+}
+
+.distill-site-footer {
+
+}
+
+
+/* Site Header */
+
+.distill-site-header {
+  width: 100%;
+  box-sizing: border-box;
+  z-index: 3;
+}
+
+.distill-site-header .nav-left {
+  display: inline-block;
+  margin-left: 8px;
+}
+
+@media screen and (max-width: 768px) {
+  .distill-site-header .nav-left {
+    margin-left: 0;
+  }
+}
+
+
+.distill-site-header .nav-right {
+  float: right;
+  margin-right: 8px;
+}
+
+.distill-site-header a,
+.distill-site-header .title {
+  display: inline-block;
+  text-align: center;
+  padding: 14px 10px 14px 10px;
+}
+
+.distill-site-header .title {
+  font-size: 18px;
+}
+
+.distill-site-header .logo {
+  padding: 0;
+}
+
+.distill-site-header .logo img {
+  display: none;
+  max-height: 20px;
+  width: auto;
+  margin-bottom: -4px;
+}
+
+.distill-site-header .nav-image img {
+  max-height: 18px;
+  width: auto;
+  display: inline-block;
+  margin-bottom: -3px;
+}
+
+
+
+@media screen and (min-width: 1000px) {
+  .distill-site-header .logo img {
+    display: inline-block;
+  }
+  .distill-site-header .nav-left {
+    margin-left: 20px;
+  }
+  .distill-site-header .nav-right {
+    margin-right: 20px;
+  }
+  .distill-site-header .title {
+    padding-left: 12px;
+  }
+}
+
+
+.distill-site-header .nav-toggle {
+  display: none;
+}
+
+.nav-dropdown {
+  display: inline-block;
+  position: relative;
+}
+
+.nav-dropdown .nav-dropbtn {
+  border: none;
+  outline: none;
+  color: rgba(255, 255, 255, 0.8);
+  padding: 16px 10px;
+  background-color: transparent;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  margin: 0;
+  margin-top: 1px;
+  z-index: 2;
+}
+
+.nav-dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: white;
+  min-width: 200px;
+  border: 1px solid rgba(0,0,0,0.15);
+  border-radius: 4px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.1);
+  z-index: 1;
+  margin-top: 2px;
+  white-space: nowrap;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.nav-dropdown-content hr {
+  margin-top: 4px;
+  margin-bottom: 4px;
+  border: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.nav-dropdown-active {
+  display: block;
+}
+
+.nav-dropdown-content a, .nav-dropdown-content .nav-dropdown-header {
+  color: black;
+  padding: 6px 24px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+.nav-dropdown-content .nav-dropdown-header {
+  display: block;
+  padding: 5px 24px;
+  padding-bottom: 0;
+  text-transform: uppercase;
+  font-size: 14px;
+  color: #999999;
+  white-space: nowrap;
+}
+
+.nav-dropdown:hover .nav-dropbtn {
+  color: white;
+}
+
+.nav-dropdown-content a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+.nav-right .nav-dropdown-content {
+  margin-left: -45%;
+  right: 0;
+}
+
+@media screen and (max-width: 768px) {
+  .distill-site-header a, .distill-site-header .nav-dropdown  {display: none;}
+  .distill-site-header a.nav-toggle {
+    float: right;
+    display: block;
+  }
+  .distill-site-header .title {
+    margin-left: 0;
+  }
+  .distill-site-header .nav-right {
+    margin-right: 0;
+  }
+  .distill-site-header {
+    overflow: hidden;
+  }
+  .nav-right .nav-dropdown-content {
+    margin-left: 0;
+  }
+}
+
+
+@media screen and (max-width: 768px) {
+  .distill-site-header.responsive {position: relative;}
+  .distill-site-header.responsive a.nav-toggle {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+  .distill-site-header.responsive a,
+  .distill-site-header.responsive .nav-dropdown {
+    display: block;
+    text-align: left;
+  }
+  .distill-site-header.responsive .nav-left,
+  .distill-site-header.responsive .nav-right {
+    width: 100%;
+  }
+  .distill-site-header.responsive .nav-dropdown {float: none;}
+  .distill-site-header.responsive .nav-dropdown-content {position: relative;}
+  .distill-site-header.responsive .nav-dropdown .nav-dropbtn {
+    display: block;
+    width: 100%;
+    text-align: left;
+  }
+}
+
+/* Site Footer */
+
+.distill-site-footer {
+  width: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
+  z-index: 3;
+  margin-top: 30px;
+  padding-top: 30px;
+  padding-bottom: 30px;
+  text-align: center;
+}
+
+/* Headroom */
+
+d-title {
+  padding-top: 6rem;
+}
+
+@media print {
+  d-title {
+    padding-top: 4rem;
+  }
+}
+
+.headroom {
+  z-index: 1000;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.headroom--transition {
+  transition: all .4s ease-in-out;
+}
+
+.headroom--unpinned {
+  top: -100px;
+}
+
+.headroom--pinned {
+  top: 0;
+}
+
+</style>
+
+<link href="../../site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet"/>
+<link href="../../site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet"/>
+<script src="../../site_libs/headroom-0.9.4/headroom.min.js"></script>
+<!--/radix_placeholder_navigation_in_header-->
+  <!--radix_placeholder_distill-->
+
+<style type="text/css">
+
+body {
+  background-color: white;
+}
+
+.pandoc-table {
+  width: 100%;
+}
+
+.pandoc-table>caption {
+  margin-bottom: 10px;
+}
+
+.pandoc-table th:not([align]) {
+  text-align: left;
+}
+
+.pagedtable-footer {
+  font-size: 15px;
+}
+
+.html-widget {
+  margin-bottom: 2.0em;
+}
+
+.l-screen-inset {
+  padding-right: 16px;
+}
+
+.l-screen .caption {
+  margin-left: 10px;
+}
+
+.shaded {
+  background: rgb(247, 247, 247);
+  padding-top: 20px;
+  padding-bottom: 20px;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.shaded .html-widget {
+  margin-bottom: 0;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.shaded .shaded-content {
+  background: white;
+}
+
+.text-output {
+  margin-top: 0;
+  line-height: 1.5em;
+}
+
+.hidden {
+  display: none !important;
+}
+
+d-article {
+  padding-bottom: 30px;
+}
+
+d-appendix {
+  padding-top: 30px;
+}
+
+d-article>p>img {
+  width: 100%;
+}
+
+d-article iframe {
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  margin-bottom: 2.0em;
+  width: 100%;
+}
+
+figure img.external {
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+  padding: 18px;
+  box-sizing: border-box;
+}
+
+/* CSS for table of contents */
+
+.d-toc {
+  color: rgba(0,0,0,0.8);
+  font-size: 0.8em;
+  line-height: 1em;
+}
+
+.d-toc-header {
+  font-size: 0.6rem;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.5);
+  text-transform: uppercase;
+  margin-top: 0;
+  margin-bottom: 1.3em;
+}
+
+.d-toc a {
+  border-bottom: none;
+}
+
+.d-toc ul {
+  padding-left: 0;
+}
+
+.d-toc li>ul {
+  padding-top: 0.8em;
+  padding-left: 16px;
+  margin-bottom: 0.6em;
+}
+
+.d-toc ul,
+.d-toc li {
+  list-style-type: none;
+}
+
+.d-toc li {
+  margin-bottom: 0.9em;
+}
+
+.d-toc-separator {
+  margin-top: 20px;
+  margin-bottom: 2em;
+}
+
+.d-article-with-toc {
+  border-top: none;
+  padding-top: 0;
+}
+
+
+
+/* Tweak code blocks (note that this CSS is repeated above in an injection
+   into the d-code shadow dom) */
+
+d-code {
+  overflow-x: auto !important;
+}
+
+pre.d-code code.d-code {
+  padding-left: 10px;
+  font-size: 12px;
+  border-left: 2px solid rgba(0,0,0,0.1);
+}
+
+pre.text-output {
+
+  font-size: 12px;
+  color: black;
+  background: none;
+  font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  line-height: 1.5;
+
+  -moz-tab-size: 4;
+  -o-tab-size: 4;
+  tab-size: 4;
+
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+}
+
+@media(min-width: 768px) {
+
+d-code {
+  overflow-x: visible !important;
+}
+
+pre.d-code code.d-code  {
+    padding-left: 18px;
+    font-size: 14px;
+}
+pre.text-output {
+  font-size: 14px;
+}
+}
+
+/* Figure */
+
+.figure {
+  position: relative;
+  margin-bottom: 2.5em;
+  margin-top: 1.5em;
+}
+
+.figure img {
+  width: 100%;
+}
+
+.figure .caption {
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 12px;
+  line-height: 1.5em;
+}
+
+.figure img.external {
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+  padding: 18px;
+  box-sizing: border-box;
+}
+
+.figure .caption a {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.figure .caption b,
+.figure .caption strong, {
+  font-weight: 600;
+  color: rgba(0, 0, 0, 1.0);
+}
+
+
+
+/* Tweak 1000px media break to show more text */
+
+@media(min-width: 1000px) {
+  .base-grid,
+  distill-header,
+  d-title,
+  d-abstract,
+  d-article,
+  d-appendix,
+  distill-appendix,
+  d-byline,
+  d-footnote-list,
+  d-citation-list,
+  distill-footer {
+    grid-template-columns: [screen-start] 1fr [page-start kicker-start] 80px [middle-start] 50px [text-start kicker-end] 65px 65px 65px 65px 65px 65px 65px 65px [text-end gutter-start] 65px [middle-end] 65px [page-end gutter-end] 1fr [screen-end];
+    grid-column-gap: 16px;
+  }
+
+  .grid {
+    grid-column-gap: 16px;
+  }
+
+  d-article {
+    font-size: 1.06rem;
+    line-height: 1.7em;
+  }
+  figure .caption, .figure .caption, figure figcaption {
+    font-size: 13px;
+  }
+}
+
+@media(min-width: 1180px) {
+  .base-grid,
+  distill-header,
+  d-title,
+  d-abstract,
+  d-article,
+  d-appendix,
+  distill-appendix,
+  d-byline,
+  d-footnote-list,
+  d-citation-list,
+  distill-footer {
+    grid-template-columns: [screen-start] 1fr [page-start kicker-start] 60px [middle-start] 60px [text-start kicker-end] 60px 60px 60px 60px 60px 60px 60px 60px [text-end gutter-start] 60px [middle-end] 60px [page-end gutter-end] 1fr [screen-end];
+    grid-column-gap: 32px;
+  }
+
+  .grid {
+    grid-column-gap: 32px;
+  }
+}
+
+
+/* Get the citation styles for the appendix (not auto-injected on render since
+   we do our own rendering of the citation appendix) */
+
+d-appendix .citation-appendix,
+.d-appendix .citation-appendix {
+  font-size: 11px;
+  line-height: 15px;
+  border-left: 1px solid rgba(0, 0, 0, 0.1);
+  padding-left: 18px;
+  border: 1px solid rgba(0,0,0,0.1);
+  background: rgba(0, 0, 0, 0.02);
+  padding: 10px 18px;
+  border-radius: 3px;
+  color: rgba(150, 150, 150, 1);
+  overflow: hidden;
+  margin-top: -12px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+
+/* Social footer */
+
+.social_footer {
+  margin-top: 30px;
+  margin-bottom: 0;
+  color: rgba(0,0,0,0.67);
+}
+
+.disqus-comments {
+  margin-right: 30px;
+}
+
+.disqus-comment-count {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+  cursor: pointer;
+}
+
+#disqus_thread {
+  margin-top: 30px;
+}
+
+.article-sharing a {
+  border-bottom: none;
+  margin-right: 8px;
+}
+
+.article-sharing a:hover {
+  border-bottom: none;
+}
+
+.sidebar-section.subscribe {
+  font-size: 12px;
+  line-height: 1.6em;
+}
+
+.subscribe p {
+  margin-bottom: 0.5em;
+}
+
+
+.article-footer .subscribe {
+  font-size: 15px;
+  margin-top: 45px;
+}
+
+
+.sidebar-section.custom {
+  font-size: 12px;
+  line-height: 1.6em;
+}
+
+.custom p {
+  margin-bottom: 0.5em;
+}
+
+
+/* Improve display for browsers without grid (IE/Edge <= 15) */
+
+.downlevel {
+  line-height: 1.6em;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+  margin: 0;
+}
+
+.downlevel .d-title {
+  padding-top: 6rem;
+  padding-bottom: 1.5rem;
+}
+
+.downlevel .d-title h1 {
+  font-size: 50px;
+  font-weight: 700;
+  line-height: 1.1em;
+  margin: 0 0 0.5rem;
+}
+
+.downlevel .d-title p {
+  font-weight: 300;
+  font-size: 1.2rem;
+  line-height: 1.55em;
+  margin-top: 0;
+}
+
+.downlevel .d-byline {
+  padding-top: 0.8em;
+  padding-bottom: 0.8em;
+  font-size: 0.8rem;
+  line-height: 1.8em;
+}
+
+.downlevel .section-separator {
+  border: none;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.downlevel .d-article {
+  font-size: 1.06rem;
+  line-height: 1.7em;
+  padding-top: 1rem;
+  padding-bottom: 2rem;
+}
+
+
+.downlevel .d-appendix {
+  padding-left: 0;
+  padding-right: 0;
+  max-width: none;
+  font-size: 0.8em;
+  line-height: 1.7em;
+  margin-bottom: 0;
+  color: rgba(0,0,0,0.5);
+  padding-top: 40px;
+  padding-bottom: 48px;
+}
+
+.downlevel .footnotes ol {
+  padding-left: 13px;
+}
+
+.downlevel .base-grid,
+.downlevel .distill-header,
+.downlevel .d-title,
+.downlevel .d-abstract,
+.downlevel .d-article,
+.downlevel .d-appendix,
+.downlevel .distill-appendix,
+.downlevel .d-byline,
+.downlevel .d-footnote-list,
+.downlevel .d-citation-list,
+.downlevel .distill-footer,
+.downlevel .appendix-bottom,
+.downlevel .posts-container {
+  padding-left: 40px;
+  padding-right: 40px;
+}
+
+@media(min-width: 768px) {
+  .downlevel .base-grid,
+  .downlevel .distill-header,
+  .downlevel .d-title,
+  .downlevel .d-abstract,
+  .downlevel .d-article,
+  .downlevel .d-appendix,
+  .downlevel .distill-appendix,
+  .downlevel .d-byline,
+  .downlevel .d-footnote-list,
+  .downlevel .d-citation-list,
+  .downlevel .distill-footer,
+  .downlevel .appendix-bottom,
+  .downlevel .posts-container {
+  padding-left: 150px;
+  padding-right: 150px;
+  max-width: 900px;
+}
+}
+
+.downlevel pre code {
+  display: block;
+  border-left: 2px solid rgba(0, 0, 0, .1);
+  padding: 0 0 0 20px;
+  font-size: 14px;
+}
+
+.downlevel code, .downlevel pre {
+  color: black;
+  background: none;
+  font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  line-height: 1.5;
+
+  -moz-tab-size: 4;
+  -o-tab-size: 4;
+  tab-size: 4;
+
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+}
+
+</style>
+
+<script type="application/javascript">
+
+function is_downlevel_browser() {
+  if (bowser.isUnsupportedBrowser({ msie: "12", msedge: "16"},
+                                 window.navigator.userAgent)) {
+    return true;
+  } else {
+    return window.load_distill_framework === undefined;
+  }
+}
+
+// show body when load is complete
+function on_load_complete() {
+
+  // set body to visible
+  document.body.style.visibility = 'visible';
+
+  // force redraw for leaflet widgets
+  if (window.HTMLWidgets) {
+    var maps = window.HTMLWidgets.findAll(".leaflet");
+    $.each(maps, function(i, el) {
+      var map = this.getMap();
+      map.invalidateSize();
+      map.eachLayer(function(layer) {
+        if (layer instanceof L.TileLayer)
+          layer.redraw();
+      });
+    });
+  }
+
+  // trigger 'shown' so htmlwidgets resize
+  $('d-article').trigger('shown');
+}
+
+function init_distill() {
+
+  init_common();
+
+  // create front matter
+  var front_matter = $('<d-front-matter></d-front-matter>');
+  $('#distill-front-matter').wrap(front_matter);
+
+  // create d-title
+  $('.d-title').changeElementType('d-title');
+
+  // create d-byline
+  var byline = $('<d-byline></d-byline>');
+  $('.d-byline').replaceWith(byline);
+
+  // create d-article
+  var article = $('<d-article></d-article>');
+  $('.d-article').wrap(article).children().unwrap();
+
+  // move posts container into article
+  $('.posts-container').appendTo($('d-article'));
+
+  // create d-appendix
+  $('.d-appendix').changeElementType('d-appendix');
+
+  // create d-bibliography
+  var bibliography = $('<d-bibliography></d-bibliography>');
+  $('#distill-bibliography').wrap(bibliography);
+
+  // flag indicating that we have appendix items
+  var appendix = $('.appendix-bottom').children('h3').length > 0;
+
+  // replace citations with <d-cite>
+  $('.citation').each(function(i, val) {
+    appendix = true;
+    var cites = $(this).attr('data-cites').split(" ");
+    var dt_cite = $('<d-cite></d-cite>');
+    dt_cite.attr('key', cites.join());
+    $(this).replaceWith(dt_cite);
+  });
+  // remove refs
+  $('#refs').remove();
+
+  // replace footnotes with <d-footnote>
+  $('.footnote-ref').each(function(i, val) {
+    appendix = true;
+    var href = $(this).attr('href');
+    var id = href.replace('#', '');
+    var fn = $('#' + id);
+    var fn_p = $('#' + id + '>p');
+    fn_p.find('.footnote-back').remove();
+    var text = fn_p.html();
+    var dtfn = $('<d-footnote></d-footnote>');
+    dtfn.html(text);
+    $(this).replaceWith(dtfn);
+  });
+  // remove footnotes
+  $('.footnotes').remove();
+
+  $('h1.appendix, h2.appendix').each(function(i, val) {
+    $(this).changeElementType('h3');
+  });
+  $('h3.appendix').each(function(i, val) {
+    var id = $(this).attr('id');
+    $('.d-toc a[href="#' + id + '"]').parent().remove();
+    appendix = true;
+    $(this).nextUntil($('h1, h2, h3')).addBack().appendTo($('d-appendix'));
+  });
+
+  // show d-appendix if we have appendix content
+  $("d-appendix").css('display', appendix ? 'grid' : 'none');
+
+  // replace code blocks with d-code
+  $('pre>code').each(function(i, val) {
+    var code = $(this);
+    var pre = code.parent();
+    var clz = "";
+    var language = pre.attr('class');
+    if (language) {
+      // map unknown languages to "clike" (without this they just dissapear)
+      if ($.inArray(language, ["bash", "clike", "css", "go", "html",
+                               "javascript", "js", "julia", "lua", "markdown",
+                               "markup", "mathml", "python", "svg", "xml"]) == -1)
+        language = "clike";
+      language = ' language="' + language + '"';
+      var dt_code = $('<d-code block' + language + clz + '></d-code>');
+      dt_code.text(code.text());
+      pre.replaceWith(dt_code);
+    } else {
+      code.addClass('text-output').unwrap().changeElementType('pre');
+    }
+  });
+
+  // localize layout chunks to just output
+  $('.layout-chunk').each(function(i, val) {
+
+    // capture layout
+    var layout = $(this).attr('data-layout');
+
+    // apply layout to markdown level block elements
+    var elements = $(this).children().not('d-code, pre.text-output, script');
+    elements.each(function(i, el) {
+      var layout_div = $('<div class="' + layout + '"></div>');
+      if (layout_div.hasClass('shaded')) {
+        var shaded_content = $('<div class="shaded-content"></div>');
+        $(this).wrap(shaded_content);
+        $(this).parent().wrap(layout_div);
+      } else {
+        $(this).wrap(layout_div);
+      }
+    });
+
+
+    // unwrap the layout-chunk div
+    $(this).children().unwrap();
+  });
+
+  // load distill framework
+  load_distill_framework();
+
+  // wait for window.distillRunlevel == 4 to do post processing
+  function distill_post_process() {
+
+    if (!window.distillRunlevel || window.distillRunlevel < 4)
+      return;
+
+    // hide author/affiliations entirely if we have no authors
+    var front_matter = JSON.parse($("#distill-front-matter").html());
+    var have_authors = front_matter.authors && front_matter.authors.length > 0;
+    if (!have_authors)
+      $('d-byline').addClass('hidden');
+
+    // table of contents
+    if (have_authors) // adjust border if we are in authors
+      $('.d-toc').parent().addClass('d-article-with-toc');
+
+    // strip links that point to #
+    $('.authors-affiliations').find('a[href="#"]').removeAttr('href');
+
+    // hide elements of author/affiliations grid that have no value
+    function hide_byline_column(caption) {
+      $('d-byline').find('h3:contains("' + caption + '")').parent().css('visibility', 'hidden');
+    }
+
+    // affiliations
+    var have_affiliations = false;
+    for (var i = 0; i<front_matter.authors.length; ++i) {
+      var author = front_matter.authors[i];
+      if (author.affiliation !== "&nbsp;") {
+        have_affiliations = true;
+        break;
+      }
+    }
+    if (!have_affiliations)
+      $('d-byline').find('h3:contains("Affiliations")').css('visibility', 'hidden');
+
+    // published date
+    if (!front_matter.publishedDate)
+      hide_byline_column("Published");
+
+    // document object identifier
+    var doi = $('d-byline').find('h3:contains("DOI")');
+    var doi_p = doi.next().empty();
+    if (!front_matter.doi) {
+      // if we have a citation and valid citationText then link to that
+      if ($('#citation').length > 0 && front_matter.citationText) {
+        doi.html('Citation');
+        $('<a href="#citation"></a>')
+          .text(front_matter.citationText)
+          .appendTo(doi_p);
+      } else {
+        hide_byline_column("DOI");
+      }
+    } else {
+      $('<a></a>')
+         .attr('href', "https://doi.org/" + front_matter.doi)
+         .html(front_matter.doi)
+         .appendTo(doi_p);
+    }
+
+     // change plural form of authors/affiliations
+    if (front_matter.authors.length === 1) {
+      var grid = $('.authors-affiliations');
+      grid.children('h3:contains("Authors")').text('Author');
+      grid.children('h3:contains("Affiliations")').text('Affiliation');
+    }
+
+    // inject pre code styles (can't do this with a global stylesheet b/c a shadow root is used)
+    $('d-code').each(function(i, val) {
+      var style = document.createElement('style');
+      style.innerHTML = 'pre code { padding-left: 10px; font-size: 12px; border-left: 2px solid rgba(0,0,0,0.1); } ' +
+                        '@media(min-width: 768px) { pre code { padding-left: 18px; font-size: 14px; } }';
+      if (this.shadowRoot)
+        this.shadowRoot.appendChild(style);
+    });
+
+    // move appendix-bottom entries to the bottom
+    $('.appendix-bottom').appendTo('d-appendix').children().unwrap();
+    $('.appendix-bottom').remove();
+
+    // clear polling timer
+    clearInterval(tid);
+
+    // show body now that everything is ready
+    on_load_complete();
+  }
+
+  var tid = setInterval(distill_post_process, 50);
+  distill_post_process();
+
+}
+
+function init_downlevel() {
+
+  init_common();
+
+   // insert hr after d-title
+  $('.d-title').after($('<hr class="section-separator"/>'));
+
+  // check if we have authors
+  var front_matter = JSON.parse($("#distill-front-matter").html());
+  var have_authors = front_matter.authors && front_matter.authors.length > 0;
+
+  // manage byline/border
+  if (!have_authors)
+    $('.d-byline').remove();
+  $('.d-byline').after($('<hr class="section-separator"/>'));
+  $('.d-byline a').remove();
+
+  // remove toc
+  $('.d-toc-header').remove();
+  $('.d-toc').remove();
+  $('.d-toc-separator').remove();
+
+  // move appendix elements
+  $('h1.appendix, h2.appendix').each(function(i, val) {
+    $(this).changeElementType('h3');
+  });
+  $('h3.appendix').each(function(i, val) {
+    $(this).nextUntil($('h1, h2, h3')).addBack().appendTo($('.d-appendix'));
+  });
+
+
+  // inject headers into references and footnotes
+  var refs_header = $('<h3></h3>');
+  refs_header.text('References');
+  $('#refs').prepend(refs_header);
+
+  var footnotes_header = $('<h3></h3');
+  footnotes_header.text('Footnotes');
+  $('.footnotes').children('hr').first().replaceWith(footnotes_header);
+
+  // move appendix-bottom entries to the bottom
+  $('.appendix-bottom').appendTo('.d-appendix').children().unwrap();
+  $('.appendix-bottom').remove();
+
+  // remove appendix if it's empty
+  if ($('.d-appendix').children().length === 0)
+    $('.d-appendix').remove();
+
+  // prepend separator above appendix
+  $('.d-appendix').before($('<hr class="section-separator" style="clear: both"/>'));
+
+  // trim code
+  $('pre>code').each(function(i, val) {
+    $(this).html($.trim($(this).html()));
+  });
+
+  // move posts-container right before article
+  $('.posts-container').insertBefore($('.d-article'));
+
+  $('body').addClass('downlevel');
+
+  on_load_complete();
+}
+
+
+function init_common() {
+
+  // jquery plugin to change element types
+  (function($) {
+    $.fn.changeElementType = function(newType) {
+      var attrs = {};
+
+      $.each(this[0].attributes, function(idx, attr) {
+        attrs[attr.nodeName] = attr.nodeValue;
+      });
+
+      this.replaceWith(function() {
+        return $("<" + newType + "/>", attrs).append($(this).contents());
+      });
+    };
+  })(jQuery);
+
+  // prevent underline for linked images
+  $('a > img').parent().css({'border-bottom' : 'none'});
+
+  // mark non-body figures created by knitr chunks as 100% width
+  $('.layout-chunk').each(function(i, val) {
+    var figures = $(this).find('img, .html-widget');
+    if ($(this).attr('data-layout') !== "l-body") {
+      figures.css('width', '100%');
+    } else {
+      figures.css('max-width', '100%');
+      figures.filter("[width]").each(function(i, val) {
+        var fig = $(this);
+        fig.css('width', fig.attr('width') + 'px');
+      });
+
+    }
+  });
+
+  // auto-append index.html to post-preview links in file: protocol
+  // and in rstudio ide preview
+  $('.post-preview').each(function(i, val) {
+    if (window.location.protocol === "file:")
+      $(this).attr('href', $(this).attr('href') + "index.html");
+  });
+
+  // get rid of index.html references in header
+  if (window.location.protocol !== "file:") {
+    $('.distill-site-header a[href]').each(function(i,val) {
+      $(this).attr('href', $(this).attr('href').replace("index.html", "./"));
+    });
+  }
+
+  // add class to pandoc style tables
+  $('tr.header').parent('thead').parent('table').addClass('pandoc-table');
+  $('.kable-table').children('table').addClass('pandoc-table');
+
+  // add figcaption style to table captions
+  $('caption').parent('table').addClass("figcaption");
+
+  // initialize posts list
+  if (window.init_posts_list)
+    window.init_posts_list();
+
+  // implmement disqus comment link
+  $('.disqus-comment-count').click(function() {
+    window.headroom_prevent_pin = true;
+    $('#disqus_thread').toggleClass('hidden');
+    if (!$('#disqus_thread').hasClass('hidden')) {
+      var offset = $(this).offset();
+      $(window).resize();
+      $('html, body').animate({
+        scrollTop: offset.top - 35
+      });
+    }
+  });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  if (is_downlevel_browser())
+    init_downlevel();
+  else
+    window.addEventListener('WebComponentsReady', init_distill);
+});
+
+</script>
+
+<!--/radix_placeholder_distill-->
+  <script src="../../site_libs/header-attrs-2.1/header-attrs.js"></script>
+  <script src="../../site_libs/jquery-1.11.3/jquery.min.js"></script>
+  <script src="../../site_libs/bowser-1.9.3/bowser.min.js"></script>
+  <script src="../../site_libs/webcomponents-2.0.0/webcomponents.js"></script>
+  <script src="../../site_libs/distill-2.2.21/template.v2.js"></script>
+  <!--radix_placeholder_site_in_header-->
+<style type="text/css">
+/*  https://github.com/shamindras/ss_personal_distill_blog ,
+ https://github.com/naif-alsader/my_blog  */
+body {
+  background-color: #f9f9f9;
+}
+
+
+
+.posts-list {
+  direction: rtl;
+}
+
+d-article {
+  font-weight: 300;
+}
+
+.distill-site-nav {
+  animation:backgroundtransition 100s;
+  -moz-animation:backgroundtransition 100s infinite; /* Firefox */
+  -webkit-animation:backgroundtransition 100s infinite; /* Safari and Chrome */
+}
+
+@-moz-keyframes backgroundtransition /* Firefox */ {
+   0%   {background: #B71C1C;} /* red */
+   10%  {background: #311b92;} /* deep purlple */
+   20%  {background: #0D47A1;} /* blue */
+   30%  {background: #004D40;} /* teal */
+   40%  {background: #212121;} /* grey */
+   50%  {background: #1A237E;} /* indigo */
+   60%  {background: #33691E;} /* ligth green */
+   70%  {background: #006064;} /* cyan */
+   80%  {background: #827717;} /* lime */
+   90%  {background: #263238;} /* blue gray*/
+   100% {background: #B71C1C;} /* red */
+}
+
+@-webkit-keyframes backgroundtransition /* Safari and Chrome */ {
+   0%   {background: #B71C1C;} /* red */
+   10%  {background: #311b92;} /* deep purlple */
+   20%  {background: #0D47A1;} /* blue */
+   30%  {background: #004D40;} /* teal */
+   40%  {background: #212121;} /* grey */
+   50%  {background: #1A237E;} /* indigo */
+   60%  {background: #33691E;} /* ligth green */
+   70%  {background: #006064;} /* cyan */
+   80%  {background: #827717;} /* lime */
+   90%  {background: #263238;} /* blue gray*/
+   100% {background: #B71C1C;} /* red */
+}
+
+/* https://codepen.io/sdthornton/pen/wBZdXq */
+.distill-site-header {
+   box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+}
+
+/* thunder animation */
+/* from http://jsrocks.org/ */
+.fab:hover, .fa:hover, .fas:hover {
+    animation-name: thunder;
+    animation-duration: 1s;
+    animation-fill-mode: both;
+    animation-iteration-count: infinite;
+
+    -webkit-animation-name: thunder;
+    -webkit-animation-duration: 1s;
+    -webkit-animation-fill-mode: both;
+    -webkit-animation-iteration-count: infinite;
+     transition: all 150ms ease 0s;
+}
+
+@keyframes thunder{
+    0%, 20%, 40%, 60%, 80%, 100% {
+        transform: rotate3d(0, 0, 1, -5deg);
+    }
+    10%, 30%, 50%, 70%, 90% {
+        transform: rotate3d(0, 0, 1, 5deg);
+    }
+}
+
+@-webkit-keyframes thunder{
+    0%, 20%, 40%, 60%, 80%, 100% {
+        transform: rotate3d(0, 0, 1, -5deg);
+    }
+    10%, 30%, 50%, 70%, 90% {
+        transform: rotate3d(0, 0, 1, 5deg);
+    }
+}
+
+
+
+.title, .author, .date{
+  text-align: center;
+
+}
+
+p, h1  ,h2, h3, h4, h5, h6, ol,li, ul, .nav nav-pills  {
+  text-align: right;
+  direction: rtl;
+  letter-spacing: 1px;
+  word-spacing: 3px;
+}
+
+
+h3 {
+  text-decoration: underline
+}
+
+pre code {
+
+
+
+}
+
+pre.text-output {
+  background-color: #f5f5f5;
+  border: 1px solid #ccc
+}
+
+
+
+
+pre code-container {
+
+}
+
+
+
+pre:not([class]) {
+    background-color: #e2dada;
+}
+
+
+body  d-article  p  code {
+    background-color: rgb(241 231 231);
+    text-align: left;
+    direction: ltr;
+
+}
+
+
+</style>
+<!--/radix_placeholder_site_in_header-->
+
+
+</head>
+
+<body>
+
+<!--radix_placeholder_front_matter-->
+
+<script id="distill-front-matter" type="text/json">
+{"title":"كيف تنشاء مدونة باستخدام R","authors":[{"author":"Naif Alsader","authorURL":"#","affiliation":"&nbsp;","affiliationURL":"#"}],"publishedDate":"2020-07-04T00:00:00.000+03:00","citationText":"Alsader, 2020"}
+</script>
+
+<!--/radix_placeholder_front_matter-->
+<!--radix_placeholder_navigation_before_body-->
+<header class="header header--fixed" role="banner">
+<nav class="distill-site-nav distill-site-header">
+<div class="nav-left">
+<a href="../../index.html" class="title">Naif Alsader</a>
+</div>
+<div class="nav-right">
+<a href="../../index.html">Home</a>
+<a href="../../about.html">About</a>
+<a href="javascript:void(0);" class="nav-toggle">&#9776;</a>
+</div>
+</nav>
+</header>
+<!--/radix_placeholder_navigation_before_body-->
+<!--radix_placeholder_site_before_body-->
+<!--/radix_placeholder_site_before_body-->
+
+<div class="d-title">
+<h1>كيف تنشاء مدونة باستخدام R</h1>
+
+</div>
+
+
+<div class="d-article">
+<h3 class="d-toc-header">Table of Contents</h3>
+<nav class="d-toc" id="TOC">
+<ul>
+<li><a href="#مدخل">مدخل</a></li>
+<li><a href="#اكثر-من-مكتبة">اكثر من مكتبة</a></li>
+<li><a href="#خطة-العمل">خطة العمل</a>
+<ul>
+<li><a href="#إعداد-github-و-rproject">1. إعداد Github و Rproject</a>
+<ul>
+<li><a href="#github-.i">Github .I</a></li>
+<li><a href="#r-project-.ii">R project .II</a></li>
+</ul></li>
+<li><a href="#إنشاء-المدونة-محليا">2. إنشاء المدونة محليا</a>
+<ul>
+<li><a href="#create_blog-.i">create_blog .I</a></li>
+<li><a href="#ii.-هيكل-الملفات">II. هيكل الملفات</a></li>
+<li><a href="#iii.-إضافة-css">III. إضافة css</a></li>
+</ul></li>
+<li><a href="#رفع-المدونة-الى-github">3. رفع المدونة الى github</a></li>
+<li><a href="#ضبط-إعدادات-netlify.com-وإطلاق-الموقع">4. ضبط إعدادات netlify.com وإطلاق الموقع</a></li>
+</ul></li>
+<li><a href="#إضافة-منشورات-جديدة">إضافة منشورات جديدة</a>
+<ul>
+<li><a href="#المصادر">المصادر</a></li>
+</ul></li>
+</ul>
+</nav>
+<hr class="d-toc-separator"/>
+<h1 id="مدخل">مدخل</h1>
+<p>شكرا لفريق <strong>Rstudio</strong> الأمور صارت سهالات لعمل مدونة شخصية باستخدام R خلاص ما يحتاج تكون مطور web كل إلي تحتاج فقط معرفة في <strong>R</strong> و <strong>Rmarkdown</strong></p>
+<p>لان كل الكود الي تبي تكتبه فقط فقط R ✌️</p>
+<p>الشكل النهائي <a href="https://demoblog-naif.netlify.app">هنا</a></p>
+<h1 id="اكثر-من-مكتبة">اكثر من مكتبة</h1>
+<p>Rstudio team قدم لنا ثلاث طرق لعمل مدونة شخصيه</p>
+<ul>
+<li><p><a href="https://bookdown.org/yihui/blogdown/">Blogdown</a></p></li>
+<li><p><a href="https://hugodown.r-lib.org/">Hugodown</a></p></li>
+<li><p><a href="https://rstudio.github.io/distill/">Distill</a></p></li>
+</ul>
+<p>Distill هي الي بنستخدمها في هذا المنشور.</p>
+<p>لعل ابرز اختلاف بين الثلاث مكتبات هو ان Blogdown و Hugodown تم بنائهما على <a href="https://gohugo.io/">Hugo framework</a> و يتميزان بأنهما يمكنانك من استخدام اكثر من <a href="https://themes.gohugo.io/">theme</a></p>
+<p>يمكن القرأة عن الفرق بين Blogdown و Hugodown <a href="https://hugodown.r-lib.org/">هنا</a></p>
+<p>بينما Distill</p>
+<p>مبني على <a href="https://github.com/distillpub/template">Distill web framwork</a></p>
+<p>تم تطويرة عن طريق <a href="https://distill.pub/">Distill Machine Learning Journa</a></p>
+<p>والهدف منة هو توفير مواقع او مدونات ملائمة للكتابة التقنية</p>
+<h1 id="خطة-العمل">خطة العمل</h1>
+<p>1- إنشاء المدونة محليا على جهازك الشخصي</p>
+<p>2- رفع المدونة الى github</p>
+<p>3- استضافة المدونة على netlify.com</p>
+<p>الخطوة الأخير سوف تكون لمره واحدة ثم بعد ذالك لن تحتاج الي الرجوع إليها</p>
+<p>وأخيرا مع كل منشور جديد أو تعديل فقط نعمل push الى github</p>
+<h2 id="إعداد-github-و-rproject">1. إعداد Github و Rproject</h2>
+<h3 id="github-.i">Github .I</h3>
+<p>الفيديو التالي راح يساعدك في إنشاء حساب وعمل Repository</p>
+<p>كل ما بعد الدقيقة 2.48 لا يهمنا لذالك تجاهله</p>
+<ul>
+<li><p>سجل حساب</p></li>
+<li><p>أنشاء Repsitory</p></li>
+</ul>
+<div class="layout-chunk" data-layout="l-body">
+<div class="vembedr">
+<div>
+<iframe src="https://www.youtube.com/embed/A2PWF5eAeDo" width="533" height="300" frameborder="0" allowfullscreen=""></iframe>
+</div>
+</div>
+</div>
+<p>بعد ماتنتهي من إنشاء ال Repository من code انسخ ال URL</p>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="images/githubcodeclone.png" width="952" /></p>
+</div>
+<p>خلك ماسك الرابط شوي لأتفكه الين نسوي الخطوة الثانية😂</p>
+<h3 id="r-project-.ii">R project .II</h3>
+<p>الان اذهب الى R وإنشاء project جديد</p>
+<div class="layout-chunk" data-layout="l-body">
+
+</div>
+<ul>
+<li>New Project</li>
+</ul>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="images/new_proj.png" width="1233" /></p>
+</div>
+<ul>
+<li>Version Control</li>
+</ul>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="images/version_control.png" width="1126" /></p>
+</div>
+<ul>
+<li>git</li>
+</ul>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="images/git_.png" width="1009" /></p>
+</div>
+<ul>
+<li>وإلصق رابط ال Repository في المربع الأول واختار مكان البروجكت انا اخترت Desktop</li>
+</ul>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="images/reop_url.png" width="816" /></p>
+</div>
+<p>ثم اختر create project</p>
+<p>خلاص الحين فك الرابط</p>
+<h2 id="إنشاء-المدونة-محليا">2. إنشاء المدونة محليا</h2>
+<h3 id="create_blog-.i">create_blog .I</h3>
+<p>قم بتحميل مكتبتي <strong>distill</strong> و <strong>here</strong></p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+install.packages(&quot;distill&quot;)
+install.packages(&quot;here&quot;)
+
+library(distill)</code></pre>
+</div>
+<p>ثم في console اكتب</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+distill::create_blog(dir = here::here(),
+                     title = &quot;Demo blog&quot; )</code></pre>
+</div>
+<p>اكتب في <code>title</code> اسم المدونة (يمكن التعديل عليه لاحقا)</p>
+<p>ثم</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+rmarkdown::render_site(input = here::here())</code></pre>
+</div>
+<p>ثم Knit</p>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="images/knit_.png" width="961" /></p>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="images/post1.png" width="1792" /></p>
+</div>
+<p>الان مدونتك شبه جاهزه تحتاج فقط بعض التعديلات</p>
+<h3 id="ii.-هيكل-الملفات">II. هيكل الملفات</h3>
+<p>أولا خلونا نشوف الهيكل تبع الملفات</p>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="images/list_of_files.png" width="280" /></p>
+</div>
+<pre class="markup"><code>
+~/desktop/demo_blog/
+├── README.md
+├── _posts
+│   ├── welcome
+│       ├── welcome.Rmd
+│       ├── welcome.html
+│       └── welcome_files
+├── _site
+│   ├── about.html
+│   ├── index.html
+│   ├── posts
+│   │   ├── welcome
+│   │   ├── posts.json
+│   └── site_libs
+│       ├── bowser-1.9.3
+│       ├── distill-2.2.21
+│       ├── font-awesome-5.1.0
+│       ├── header-attrs-2.1
+│       ├── headroom-0.9.4
+│       ├── jquery-1.11.3
+│       ├── pagedtable-1.1
+│       └── webcomponents-2.0.0
+├── _site.yml
+├── about.Rmd
+├── demo_blog.Rproj
+├── index.Rmd</code></pre>
+<ul>
+<li>README.md</li>
+</ul>
+<p>هو فقط الصفحة الأولى لل Repository في github</p>
+<p>غالبا يكتب فيه شرح عن المشروع</p>
+<p>تجاهله الان</p>
+<ul>
+<li>_posts</li>
+</ul>
+<p>هو المكان الي توجد فيه جميع المنشورات. بحيث اذا اردت التعديل على منشور سابق تحصله هناك</p>
+<p>welcome هو اسم المنشور ويحتوي في داخلة على ملفات المنشور اكثر ما يهمك هو الملف المنتهي ب .Rmd</p>
+<p>ملاحظة: كل منشور راح يتكون من مجلد</p>
+<p>مثلا</p>
+<pre class="markup"><code>
+│   └── welcome
+│       ├── welcome.Rmd
+│       ├── welcome.html
+│       └── welcome_files
+│   └── how_to_do_x
+│       ├── how_to_do_x.Rmd
+│       ├── how_to_do_x.html
+│       └── how_to_do_x_files</code></pre>
+<p>الباقي تجاهلها لأنها يتم إنتاجها تلقائيا حسب ملف Rmd (Rmarkdown) وهو الملف الي راح يحتوي على الكود</p>
+<ul>
+<li>_site</li>
+</ul>
+<p>هو المجلد الي راح يحتوي فعليا على المدونة</p>
+<p>المجلد هذا خط احمر تجاهله ولا كائن له وجود</p>
+<ul>
+<li>_site.ymal</li>
+</ul>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="images/site_ymal.png" width="552" /></p>
+</div>
+<p>هذا يعتبر واجهة الموقع</p>
+<p>راح أغير <code>title</code> و <code>description</code></p>
+<p>الى</p>
+<p><code>مدونتي الشخصية</code> و <code>مدونة نايف الشخصية</code></p>
+<p>وأضيف علية</p>
+<pre class="markup"><code>
+collections:
+  posts:
+    citations: false</code></pre>
+<p>بحيث شكله النهائي يكون</p>
+<pre class="markup"><code>
+name: &quot;demo_blog&quot;
+title: &quot;مدونتي الشخصية&quot;
+description: |
+  مدونة نايف الشخصية
+output_dir: &quot;_site&quot;
+navbar:
+  right:
+    - text: &quot;Home&quot;
+      href: index.html
+    - text: &quot;About&quot;
+      href: about.html
+output:
+  distill::distill_article:
+    css: rtl_blog.css
+    
+collections:
+  posts:
+    citations: false</code></pre>
+<p>لاحظ ايضا إني أضفت ملف css</p>
+<ul>
+<li>about.Rmd</li>
+</ul>
+<p>هي الصفحة الي تحط فيها معلومات عنك</p>
+<ul>
+<li>index.Rmd</li>
+</ul>
+<p>راح تتحكم بشكل الصفحة الرئيسية للمدونة</p>
+<p>فقط عدل <code>title</code> واكتب <code>المنشورات</code></p>
+<pre class="markup"><code>
+title: &quot;المنشورات&quot;
+site: distill::distill_website
+listing: posts</code></pre>
+<h3 id="iii.-إضافة-css">III. إضافة css</h3>
+<p>الان نبي نضيف ملفين css الهدف منهم هو تعديل جهة الكتابة من اليسار الى اليمين</p>
+<p>فقط انسخ الكود التالي الى console ثم Enter</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+# Reading files from naif-alsader/my_blog/
+file1 = readLines(&quot;https://raw.githubusercontent.com/naif-alsader/my_blog/master/rtl_blog.css&quot;) 
+file2  = readLines(&quot;https://raw.githubusercontent.com/naif-alsader/my_blog/master/rtl_rmk.css&quot;) 
+
+# Creat new file for css 
+file.create(paste0(here::here(),&quot;/rtl_blog.css&quot;))
+
+# writing into rtl_blog
+sink(paste0(here::here(),&quot;/rtl_blog.css&quot;))
+cat(&quot;/* https://github.com/shamindras/ss_personal_distill_blog ,\n https://github.com/naif-alsader/my_blog */&quot;)
+cat(file1,&quot;\n &quot;, sep = &quot;\n&quot;)
+cat(file2, sep = &quot;\n&quot; )
+sink()</code></pre>
+</div>
+<p>ثم الان</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+rmarkdown::render_site(input = here::here())</code></pre>
+</div>
+<p>خلاص الان رتبنا المظهر كامل خلونا نجرب نكتب منشور</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+distill::create_post(&quot;first_post&quot;، author = &quot;نايف السدر&quot;)</code></pre>
+</div>
+<p>ابدا بكتابة المنشور</p>
+<p>هنا مثال لمنشور</p>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="images/firstpost.png" width="1792" /></p>
+</div>
+<p>Rstudio الى تاريخ اليوم لايدعم الكتابة باللغة العربية بشكل كامل</p>
+<p>اقصد هنا انة يمكنك الكتابة بالعربي لاكن اذا حاولت تعدل على اي كلمة ماراح تستطيع تضع المؤشر عليها</p>
+<p>لذالك اذا حبيت تعدل على كلمة اضغط ctrl+F أو command+F</p>
+<p>ثم اكتب الكلمة التعديل ثم اضغط Replace</p>
+<p>او قص الجملة كامله والصقها في محرر نصوص وارجع الصقها</p>
+<p>ايضا اذا اردت ان تكتب باللغة العربية والانجليزية معا فيمكنك الكتابة بالعربي في سطر ثم الضغط على Enter وكتابة الكلمة الانجليزية في سطر ثم الضغط على Enter ثم تكمل الكتابة</p>
+<p>مثال</p>
+<pre class="rmarkup"><code>
+ايضا اذا اردت ان تكتب باللغة العربية والانجليزية معا فيمكنك الكتابة بالعربي في سطر ثم الضغط على
+Enter
+وكتابة الكلمة الانجليزية في سطر ثم الضغط على 
+Enter
+ثم تكمل الكتابه</code></pre>
+<p>المسافة بين جملتين تكون بترك مسافة سطر بين الجملتين</p>
+<p>مثلا</p>
+<pre class="markup"><code>
+المسافة بين جملتين تكون بترك مسافة سطر بين الجملتين
+
+مثلا</code></pre>
+<p>سوف احاول في المنشور القادم مناقشة بعض الحيل التي قد تساعد في التعامل مع الكتابة باللغه العربية</p>
+<h2 id="رفع-المدونة-الى-github">3. رفع المدونة الى github</h2>
+<p>الان اذهب الى Git</p>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="images/git_icon.png" width="439" /></p>
+</div>
+<p>ثم قم بتحديد جميع المربعات اسفل الكلمة staged</p>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="images/stage.png" width="634" /></p>
+</div>
+<p>ثم اضغط على commit</p>
+<p>الان بتفتح معك صفحة جديدة اكتب في commit message</p>
+<p><code>initial commit</code></p>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="images/inicommit.png" width="1792" /></p>
+</div>
+<p>بعد ما تنتهي اضغط close</p>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="images/closr_git_commit.png" width="939" /></p>
+</div>
+<p>الان اضغط على push</p>
+<p>راح يطلب منك اسم المستخدم وكلمة المرور إلى أنشأت فيهم حسابك في github</p>
+<p>ادخلهم</p>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="images/push.png" width="817" /></p>
+</div>
+<p>وأخيرا راح تظهر لك هذي الرسالة</p>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="images/push_message.png" width="779" /></p>
+</div>
+<p>أخيرا عشان نتأكد ان كل شيء تمام</p>
+<p>نروح لحسابنا في github</p>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="images/github_account.png" width="1532" /></p>
+</div>
+<p>مبروك 🎂</p>
+<p>باقي آخر وأسهل خطوة</p>
+<h2 id="ضبط-إعدادات-netlify.com-وإطلاق-الموقع">4. ضبط إعدادات netlify.com وإطلاق الموقع</h2>
+<p>الاستضافة على موقع netlify.com مجانية بشكل كامل</p>
+<p>اتبع الرابط هذا</p>
+<p><a href="www.netlify.com">www.netlify.com</a></p>
+<p>اختر</p>
+<p>sign up</p>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="images/sign_up.png" width="1189" /></p>
+</div>
+<p>github</p>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="images/link_with_github.png" width="917" /></p>
+</div>
+<p>ثم ادخل بياناتك</p>
+<p>ثم</p>
+<ul>
+<li>New site from Git</li>
+</ul>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="images/new_site_from_git.png" width="538" /></p>
+</div>
+<ul>
+<li>Github</li>
+</ul>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="images/newsite_from_github2.png" width="998" /></p>
+</div>
+<ul>
+<li>Configure the Netlify app on GitHub</li>
+</ul>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="images/new_site_from_github3.png" width="885" /></p>
+</div>
+<p>الان اختر ال Repository إلى انت عملته للمدونة</p>
+<p>أنا اخترت demo_blog</p>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="images/new_site_from_github4.png" width="1048" /></p>
+</div>
+<p>ثم اختر save</p>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="images/new_site_from_github_5.png" width="895" /></p>
+</div>
+<p>هنا قم بإضافة</p>
+<p>site_ الى Publish Directory</p>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="images/change_publush_dir.png" width="821" /></p>
+</div>
+<p>باقي بس نغير ال Domain</p>
+<p>من overview</p>
+<p>اختر</p>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="images/site_settings.png" width="784" /></p>
+</div>
+<p>ثم</p>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="images/new_domain.png" width="1298" /></p>
+</div>
+<p>Edit site name</p>
+<p>ثم اكتب الاسم إلي تبي ثم save</p>
+<p>انتظر تقريبا 10 دقائق والمدونة راح تكون live</p>
+<p>🎉, 🎉, 🎉, 🎉, 🎉, 🎉, 🎉, 🎉, 🎉, 🎉</p>
+<p>ال Domain الان ينتهي demoblog-naif.netlify.app</p>
+<p>اذا حبيت يكون بدون .netlify.app</p>
+<p>لازم تحجز واحد مثلا من <a href="https://domains.google" class="uri">https://domains.google</a></p>
+<p>تكلفة Domain تقريبا $12 في السنة</p>
+<p>ثم</p>
+<p>اختر add custom domain</p>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="images/addcustomdomain.png" width="1272" /></p>
+</div>
+<h1 id="إضافة-منشورات-جديدة">إضافة منشورات جديدة</h1>
+<p>الان اذا حبيت تسوي منشور تقدر تستخدم الأمر</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+distill::create_post(&quot;Second_post&quot;)</code></pre>
+</div>
+<p>ثم بعد ما تنتهي تعيد الخطوة هذي من جديد</p>
+<ul>
+<li>Git</li>
+</ul>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="images/git_icon.png" width="439" /></p>
+</div>
+<ul>
+<li>stage</li>
+</ul>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="images/stage.png" width="634" /></p>
+</div>
+<ul>
+<li>commit</li>
+</ul>
+<p>استبدل <code>initial commit</code> ب <code>Second post</code></p>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="images/inicommit.png" width="1792" /></p>
+</div>
+<ul>
+<li>push</li>
+</ul>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="images/push.png" width="817" /></p>
+</div>
+<p>وراح يعمل بشكل ممتاز</p>
+<p>لكنها غير مفضلة والأفضل انك تعمل لكل منشور branch</p>
+<p>وهي خطوة إضافية راح تجنبك الكثير من المشاكل</p>
+<p>الطريقه كالتالي</p>
+<p>أولا قبل كتابة المنشور</p>
+<ul>
+<li>New branch</li>
+</ul>
+<p>واسميتها</p>
+<p><code>Second_post</code></p>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="images/newbranch.png" width="977" /></p>
+</div>
+<ul>
+<li>لاحض إن الاسم تغير من <strong>Master</strong> إلي <strong>Second_post</strong></li>
+</ul>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="images/nameofnewbranch.png" width="650" /></p>
+</div>
+<p>ثم الان أعيد الخطوات السابقة</p>
+<ul>
+<li>Create post</li>
+</ul>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+distill::create_post(&quot;Second_post&quot;)</code></pre>
+</div>
+<ul>
+<li><p>Write the post</p></li>
+<li><p>Git</p></li>
+<li><p>stage</p></li>
+<li><p>commit</p></li>
+</ul>
+<p><code>Second post</code></p>
+<ul>
+<li>push</li>
+</ul>
+<p>الان راح تلاحظ انه غير مسموح لك تسوي push</p>
+<p>الحل هو من</p>
+<ul>
+<li><code>More</code> &gt; <code>shell</code></li>
+</ul>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="images/push_branch.png" width="1262" /></p>
+</div>
+<ul>
+<li>ثم اكتب</li>
+</ul>
+<pre><code>
+git push --set-upstream origin Second_post </code></pre>
+<p>والخطوة الأخيرة هي دمج branch مع Master</p>
+<p>ارجع لحسابك في Github</p>
+<p>واتبع الخطوات التاليه</p>
+<ul>
+<li>Compare &amp; pull Request</li>
+</ul>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="images/merge1.png" width="1585" /></p>
+</div>
+<ul>
+<li>Create pull request</li>
+</ul>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="images/merge2.png" width="1490" /></p>
+</div>
+<ul>
+<li>Merge pull request</li>
+</ul>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="images/merge3.png" width="1006" /></p>
+</div>
+<ul>
+<li>Confirm merge</li>
+</ul>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="images/confirm_merge.png" width="1510" /></p>
+</div>
+<p>الان مع كل منشور جديد اتبع نفس الخطوات السابقة</p>
+<p>اخير انت لست ملزم ب rstudio يمكنك استخدام اي محرر اكواد آخر بإذن الله في المنشور القادم بتحدث اكثر عن مزايا Rmarkdown وعن الكتابة في محررات اكواد اخرى التي تدعم العربي بشكل افضل</p>
+<p>هنا نصائح من الاستاذ حسين صاحب مدونة <a href="https://www.arabiananalyst.com/">المحلل العربي</a> عن الكتابة التقنية باللغة العربية</p>
+<iframe type="text/html" width="30%" height="600px" frameborder="2px" allowfullscreen lang="ar" dir="auto" dir="rtl" align="center" style="position: static; visibility: visible;  
+display: block; flex-grow: 1;  background: #000000; margin: 10px auto; direction:rtl;" src="https://threadreaderapp.com/embed/1280318988770324482.html">
+</iframe>
+<p>اذا واجهتك مشاكل اكتب في التعليقات اسفل</p>
+<h2 class="appendix" id="المصادر">المصادر</h2>
+<ul>
+<li><p><a href="https://blog.rstudio.com/2018/09/19/radix-for-r-markdown/" class="uri">https://blog.rstudio.com/2018/09/19/radix-for-r-markdown/</a></p></li>
+<li><p><a href="https://happygitwithr.com" class="uri">https://happygitwithr.com</a></p></li>
+<li><p><a href="https://www.shamindras.com/posts/2019-07-11-shrotriya2019distillpt1/" class="uri">https://www.shamindras.com/posts/2019-07-11-shrotriya2019distillpt1/</a></p></li>
+</ul>
+<!--radix_placeholder_article_footer-->
+<!--/radix_placeholder_article_footer-->
+</div>
+
+<div class="d-appendix">
+</div>
+
+
+<!--radix_placeholder_site_after_body-->
+<!--/radix_placeholder_site_after_body-->
+<!--radix_placeholder_appendices-->
+<div class="appendix-bottom"></div>
+<!--/radix_placeholder_appendices-->
+<!--radix_placeholder_navigation_after_body-->
+<!--/radix_placeholder_navigation_after_body-->
+
+</body>
+
+</html>

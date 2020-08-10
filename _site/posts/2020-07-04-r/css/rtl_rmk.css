@@ -1,0 +1,56 @@
+
+.title, .author, .date, .name{
+  text-align: right;
+    direction: rtl;
+
+
+}
+
+p,  h2, h3, h4, h5, h6, ol,li, ul, .nav nav-pills, d-appendix {
+  text-align: right;
+  direction: rtl;
+  letter-spacing: 1px;
+  word-spacing: 3px;
+}
+
+
+h3 {
+  text-decoration: underline
+}
+
+pre code {
+
+
+
+}
+
+pre.text-output {
+  background-color: #f5f5f5;
+  border: 1px solid #ccc
+}
+
+
+p code {
+    background-color: rgb(241 231 231);
+    text-align: right;
+    direction: rtl;
+
+}
+
+pre code-container {
+
+}
+
+
+
+pre:not([class]) {
+    background-color: #e2dada;
+}
+
+
+
+d-article a {
+  color: #16447d;
+}
+
+

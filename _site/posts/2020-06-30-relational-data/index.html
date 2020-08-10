@@ -1,0 +1,1870 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"/>
+  <meta name="generator" content="distill" />
+
+  <style type="text/css">
+  /* Hide doc at startup (prevent jankiness while JS renders/transforms) */
+  body {
+    visibility: hidden;
+  }
+  </style>
+
+ <!--radix_placeholder_import_source-->
+ <!--/radix_placeholder_import_source-->
+
+  <!--radix_placeholder_meta_tags-->
+<title>Naif Alsader: Relational Data</title>
+
+<meta property="description" itemprop="description" content="كيف تتعامل مع االعلاقات بين الجداول"/>
+
+
+<!--  https://schema.org/Article -->
+<meta property="article:published" itemprop="datePublished" content="2020-06-28"/>
+<meta property="article:created" itemprop="dateCreated" content="2020-06-28"/>
+<meta name="article:author" content="Naif Alsader"/>
+
+<!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
+<meta property="og:title" content="Naif Alsader: Relational Data"/>
+<meta property="og:type" content="article"/>
+<meta property="og:description" content="كيف تتعامل مع االعلاقات بين الجداول"/>
+<meta property="og:locale" content="en_US"/>
+<meta property="og:site_name" content="Naif Alsader"/>
+
+<!--  https://dev.twitter.com/cards/types/summary -->
+<meta property="twitter:card" content="summary"/>
+<meta property="twitter:title" content="Naif Alsader: Relational Data"/>
+<meta property="twitter:description" content="كيف تتعامل مع االعلاقات بين الجداول"/>
+
+<!--/radix_placeholder_meta_tags-->
+  <!--radix_placeholder_rmarkdown_metadata-->
+
+<script type="text/json" id="radix-rmarkdown-metadata">
+{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","categories","output"]}},"value":[{"type":"character","attributes":{},"value":["Relational Data"]},{"type":"character","attributes":{},"value":["كيف تتعامل مع االعلاقات بين الجداول"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name"]}},"value":[{"type":"character","attributes":{},"value":["Naif Alsader"]}]}]},{"type":"character","attributes":{},"value":["06-28-2020"]},{"type":"character","attributes":{},"value":["nycflights13","dplyr","left_join()","right_join()","full_join()","inner_join()","semi_join()","anti_join()"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["css","self_contained","toc","toc_depth"]}},"value":[{"type":"character","attributes":{},"value":["css/rtl_rmk.css"]},{"type":"logical","attributes":{},"value":[false]},{"type":"logical","attributes":{},"value":[true]},{"type":"integer","attributes":{},"value":[4]}]}]}]}
+</script>
+<!--/radix_placeholder_rmarkdown_metadata-->
+  
+  <script type="text/json" id="radix-resource-manifest">
+  {"type":"character","attributes":{},"value":["css/rtl_rmk.css","diagrams/data-science-communicate.png","diagrams/data-science-explore.png","diagrams/data-science-model.png","diagrams/data-science-program.png","diagrams/data-science-us.graffle","diagrams/data-science-wrangle.png","diagrams/data-science.graffle","diagrams/data-science.png","diagrams/data-structures-overview.png","diagrams/data-structures.graffle","diagrams/datetimes-arithmetic.png","diagrams/datetimes.graffle","diagrams/join-anti.png","diagrams/join-inner.png","diagrams/join-many-to-many.png","diagrams/join-one-to-many.png","diagrams/join-outer.png","diagrams/join-semi-many.png","diagrams/join-semi.png","diagrams/join-setup.png","diagrams/join-setup2.png","diagrams/join-venn.png","diagrams/join.graffle","diagrams/lists-flatten.png","diagrams/lists-invoke.png","diagrams/lists-map2.png","diagrams/lists-pmap-named.png","diagrams/lists-pmap-unnamed.png","diagrams/lists-structure.png","diagrams/lists-subsetting.png","diagrams/lists-transpose.png","diagrams/lists.graffle","diagrams/relational-nycflights.png","diagrams/relational.graffle","diagrams/rstudio-console.png","diagrams/rstudio-editor.png","diagrams/rstudio.graffle/data.plist","diagrams/rstudio.graffle/image10.png","diagrams/rstudio.graffle/image8.png","diagrams/rstudio.graffle/image9.png","diagrams/sample-rmarkdown.Rmd","diagrams/transform-logical.png","diagrams/transform.graffle","images/0-keynote.key","images/blank.png","images/EDA-boxplot.pdf","images/EDA-boxplot.png","images/EDA-hclust.pdf","images/EDA-hclust.png","images/EDA-kmeans.pdf","images/EDA-kmeans.png","images/EDA-linkage.pdf","images/EDA-linkage.png","images/EDA-plotly.png","images/embed_jpg.R","images/growth-chart.png","images/inline-1-heat.png","images/interactive-1-htmlwidget.png","images/interactive-2-shiny.png","images/markdown-1-markup.png","images/outputs-2-pdf.png","images/outputs-3-toc.png","images/params-1-hawaii.png","images/params-2-aleutians.png","images/params-3-florida.png","images/pepper-1.jpg","images/pepper-2.jpg","images/pepper-3.jpg","images/pepper.jpg","images/rmarkdown-wizard.png","images/RMarkdownFlow.png","images/slides-1-viridis.png","images/tables-2-kable.png","images/tidy-1.png","images/tidy-10.png","images/tidy-11.png","images/tidy-12.png","images/tidy-13.png","images/tidy-14.png","images/tidy-15.png","images/tidy-16.png","images/tidy-17.png","images/tidy-18.png","images/tidy-2.png","images/tidy-3.png","images/tidy-3a.png","images/tidy-4.png","images/tidy-5.png","images/tidy-6.png","images/tidy-7.png","images/tidy-8.png","images/tidy-9.png","images/visualization-coordinate-systems.png","images/visualization-geoms-1.png","images/visualization-geoms-2.png","images/visualization-geoms-3.png","images/visualization-geoms-4.png","images/visualization-grammar-1.png","images/visualization-grammar-2.png","images/visualization-grammar-3.png","images/visualization-stat-bar.png","images/visualization-stat-point.png","images/visualization-stats.png","images/visualization-themes.png","images/website-2-website.png","relational-data_files/bowser-1.9.3/bowser.min.js","relational-data_files/distill-2.2.21/template.v2.js","relational-data_files/header-attrs-2.1/header-attrs.js","relational-data_files/jquery-1.11.3/jquery.min.js","relational-data_files/webcomponents-2.0.0/webcomponents.js"]}
+  </script>
+  <!--radix_placeholder_navigation_in_header-->
+
+<script type="application/javascript">
+
+  window.headroom_prevent_pin = false;
+
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+
+    // initialize headroom for banner
+    var header = $('header').get(0);
+    var headerHeight = header.offsetHeight;
+    var headroom = new Headroom(header, {
+      onPin : function() {
+        if (window.headroom_prevent_pin) {
+          window.headroom_prevent_pin = false;
+          headroom.unpin();
+        }
+      }
+    });
+    headroom.init();
+    if(window.location.hash)
+      headroom.unpin();
+    $(header).addClass('headroom--transition');
+
+    // offset scroll location for banner on hash change
+    // (see: https://github.com/WickyNilliams/headroom.js/issues/38)
+    window.addEventListener("hashchange", function(event) {
+      window.scrollTo(0, window.pageYOffset - (headerHeight + 25));
+    });
+
+    // responsive menu
+    $('.distill-site-header').each(function(i, val) {
+      var topnav = $(this);
+      var toggle = topnav.find('.nav-toggle');
+      toggle.on('click', function() {
+        topnav.toggleClass('responsive');
+      });
+    });
+
+    // nav dropdowns
+    $('.nav-dropbtn').click(function(e) {
+      $(this).next('.nav-dropdown-content').toggleClass('nav-dropdown-active');
+      $(this).parent().siblings('.nav-dropdown')
+         .children('.nav-dropdown-content').removeClass('nav-dropdown-active');
+    });
+    $("body").click(function(e){
+      $('.nav-dropdown-content').removeClass('nav-dropdown-active');
+    });
+    $(".nav-dropdown").click(function(e){
+      e.stopPropagation();
+    });
+  });
+</script>
+
+<style type="text/css">
+
+/* Theme (user-documented overrideables for nav appearance) */
+
+.distill-site-nav {
+  color: rgba(255, 255, 255, 0.8);
+  background-color: #455a64;
+  font-size: 15px;
+  font-weight: 300;
+}
+
+.distill-site-nav a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.distill-site-nav a:hover {
+  color: white;
+}
+
+@media print {
+  .distill-site-nav {
+    display: none;
+  }
+}
+
+.distill-site-header {
+
+}
+
+.distill-site-footer {
+
+}
+
+
+/* Site Header */
+
+.distill-site-header {
+  width: 100%;
+  box-sizing: border-box;
+  z-index: 3;
+}
+
+.distill-site-header .nav-left {
+  display: inline-block;
+  margin-left: 8px;
+}
+
+@media screen and (max-width: 768px) {
+  .distill-site-header .nav-left {
+    margin-left: 0;
+  }
+}
+
+
+.distill-site-header .nav-right {
+  float: right;
+  margin-right: 8px;
+}
+
+.distill-site-header a,
+.distill-site-header .title {
+  display: inline-block;
+  text-align: center;
+  padding: 14px 10px 14px 10px;
+}
+
+.distill-site-header .title {
+  font-size: 18px;
+}
+
+.distill-site-header .logo {
+  padding: 0;
+}
+
+.distill-site-header .logo img {
+  display: none;
+  max-height: 20px;
+  width: auto;
+  margin-bottom: -4px;
+}
+
+.distill-site-header .nav-image img {
+  max-height: 18px;
+  width: auto;
+  display: inline-block;
+  margin-bottom: -3px;
+}
+
+
+
+@media screen and (min-width: 1000px) {
+  .distill-site-header .logo img {
+    display: inline-block;
+  }
+  .distill-site-header .nav-left {
+    margin-left: 20px;
+  }
+  .distill-site-header .nav-right {
+    margin-right: 20px;
+  }
+  .distill-site-header .title {
+    padding-left: 12px;
+  }
+}
+
+
+.distill-site-header .nav-toggle {
+  display: none;
+}
+
+.nav-dropdown {
+  display: inline-block;
+  position: relative;
+}
+
+.nav-dropdown .nav-dropbtn {
+  border: none;
+  outline: none;
+  color: rgba(255, 255, 255, 0.8);
+  padding: 16px 10px;
+  background-color: transparent;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  margin: 0;
+  margin-top: 1px;
+  z-index: 2;
+}
+
+.nav-dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: white;
+  min-width: 200px;
+  border: 1px solid rgba(0,0,0,0.15);
+  border-radius: 4px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.1);
+  z-index: 1;
+  margin-top: 2px;
+  white-space: nowrap;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.nav-dropdown-content hr {
+  margin-top: 4px;
+  margin-bottom: 4px;
+  border: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.nav-dropdown-active {
+  display: block;
+}
+
+.nav-dropdown-content a, .nav-dropdown-content .nav-dropdown-header {
+  color: black;
+  padding: 6px 24px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+.nav-dropdown-content .nav-dropdown-header {
+  display: block;
+  padding: 5px 24px;
+  padding-bottom: 0;
+  text-transform: uppercase;
+  font-size: 14px;
+  color: #999999;
+  white-space: nowrap;
+}
+
+.nav-dropdown:hover .nav-dropbtn {
+  color: white;
+}
+
+.nav-dropdown-content a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+.nav-right .nav-dropdown-content {
+  margin-left: -45%;
+  right: 0;
+}
+
+@media screen and (max-width: 768px) {
+  .distill-site-header a, .distill-site-header .nav-dropdown  {display: none;}
+  .distill-site-header a.nav-toggle {
+    float: right;
+    display: block;
+  }
+  .distill-site-header .title {
+    margin-left: 0;
+  }
+  .distill-site-header .nav-right {
+    margin-right: 0;
+  }
+  .distill-site-header {
+    overflow: hidden;
+  }
+  .nav-right .nav-dropdown-content {
+    margin-left: 0;
+  }
+}
+
+
+@media screen and (max-width: 768px) {
+  .distill-site-header.responsive {position: relative;}
+  .distill-site-header.responsive a.nav-toggle {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+  .distill-site-header.responsive a,
+  .distill-site-header.responsive .nav-dropdown {
+    display: block;
+    text-align: left;
+  }
+  .distill-site-header.responsive .nav-left,
+  .distill-site-header.responsive .nav-right {
+    width: 100%;
+  }
+  .distill-site-header.responsive .nav-dropdown {float: none;}
+  .distill-site-header.responsive .nav-dropdown-content {position: relative;}
+  .distill-site-header.responsive .nav-dropdown .nav-dropbtn {
+    display: block;
+    width: 100%;
+    text-align: left;
+  }
+}
+
+/* Site Footer */
+
+.distill-site-footer {
+  width: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
+  z-index: 3;
+  margin-top: 30px;
+  padding-top: 30px;
+  padding-bottom: 30px;
+  text-align: center;
+}
+
+/* Headroom */
+
+d-title {
+  padding-top: 6rem;
+}
+
+@media print {
+  d-title {
+    padding-top: 4rem;
+  }
+}
+
+.headroom {
+  z-index: 1000;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.headroom--transition {
+  transition: all .4s ease-in-out;
+}
+
+.headroom--unpinned {
+  top: -100px;
+}
+
+.headroom--pinned {
+  top: 0;
+}
+
+</style>
+
+<link href="../../site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet"/>
+<link href="../../site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet"/>
+<script src="../../site_libs/headroom-0.9.4/headroom.min.js"></script>
+<!--/radix_placeholder_navigation_in_header-->
+  <!--radix_placeholder_distill-->
+
+<style type="text/css">
+
+body {
+  background-color: white;
+}
+
+.pandoc-table {
+  width: 100%;
+}
+
+.pandoc-table>caption {
+  margin-bottom: 10px;
+}
+
+.pandoc-table th:not([align]) {
+  text-align: left;
+}
+
+.pagedtable-footer {
+  font-size: 15px;
+}
+
+.html-widget {
+  margin-bottom: 2.0em;
+}
+
+.l-screen-inset {
+  padding-right: 16px;
+}
+
+.l-screen .caption {
+  margin-left: 10px;
+}
+
+.shaded {
+  background: rgb(247, 247, 247);
+  padding-top: 20px;
+  padding-bottom: 20px;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.shaded .html-widget {
+  margin-bottom: 0;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.shaded .shaded-content {
+  background: white;
+}
+
+.text-output {
+  margin-top: 0;
+  line-height: 1.5em;
+}
+
+.hidden {
+  display: none !important;
+}
+
+d-article {
+  padding-bottom: 30px;
+}
+
+d-appendix {
+  padding-top: 30px;
+}
+
+d-article>p>img {
+  width: 100%;
+}
+
+d-article iframe {
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  margin-bottom: 2.0em;
+  width: 100%;
+}
+
+figure img.external {
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+  padding: 18px;
+  box-sizing: border-box;
+}
+
+/* CSS for table of contents */
+
+.d-toc {
+  color: rgba(0,0,0,0.8);
+  font-size: 0.8em;
+  line-height: 1em;
+}
+
+.d-toc-header {
+  font-size: 0.6rem;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.5);
+  text-transform: uppercase;
+  margin-top: 0;
+  margin-bottom: 1.3em;
+}
+
+.d-toc a {
+  border-bottom: none;
+}
+
+.d-toc ul {
+  padding-left: 0;
+}
+
+.d-toc li>ul {
+  padding-top: 0.8em;
+  padding-left: 16px;
+  margin-bottom: 0.6em;
+}
+
+.d-toc ul,
+.d-toc li {
+  list-style-type: none;
+}
+
+.d-toc li {
+  margin-bottom: 0.9em;
+}
+
+.d-toc-separator {
+  margin-top: 20px;
+  margin-bottom: 2em;
+}
+
+.d-article-with-toc {
+  border-top: none;
+  padding-top: 0;
+}
+
+
+
+/* Tweak code blocks (note that this CSS is repeated above in an injection
+   into the d-code shadow dom) */
+
+d-code {
+  overflow-x: auto !important;
+}
+
+pre.d-code code.d-code {
+  padding-left: 10px;
+  font-size: 12px;
+  border-left: 2px solid rgba(0,0,0,0.1);
+}
+
+pre.text-output {
+
+  font-size: 12px;
+  color: black;
+  background: none;
+  font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  line-height: 1.5;
+
+  -moz-tab-size: 4;
+  -o-tab-size: 4;
+  tab-size: 4;
+
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+}
+
+@media(min-width: 768px) {
+
+d-code {
+  overflow-x: visible !important;
+}
+
+pre.d-code code.d-code  {
+    padding-left: 18px;
+    font-size: 14px;
+}
+pre.text-output {
+  font-size: 14px;
+}
+}
+
+/* Figure */
+
+.figure {
+  position: relative;
+  margin-bottom: 2.5em;
+  margin-top: 1.5em;
+}
+
+.figure img {
+  width: 100%;
+}
+
+.figure .caption {
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 12px;
+  line-height: 1.5em;
+}
+
+.figure img.external {
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+  padding: 18px;
+  box-sizing: border-box;
+}
+
+.figure .caption a {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.figure .caption b,
+.figure .caption strong, {
+  font-weight: 600;
+  color: rgba(0, 0, 0, 1.0);
+}
+
+
+
+/* Tweak 1000px media break to show more text */
+
+@media(min-width: 1000px) {
+  .base-grid,
+  distill-header,
+  d-title,
+  d-abstract,
+  d-article,
+  d-appendix,
+  distill-appendix,
+  d-byline,
+  d-footnote-list,
+  d-citation-list,
+  distill-footer {
+    grid-template-columns: [screen-start] 1fr [page-start kicker-start] 80px [middle-start] 50px [text-start kicker-end] 65px 65px 65px 65px 65px 65px 65px 65px [text-end gutter-start] 65px [middle-end] 65px [page-end gutter-end] 1fr [screen-end];
+    grid-column-gap: 16px;
+  }
+
+  .grid {
+    grid-column-gap: 16px;
+  }
+
+  d-article {
+    font-size: 1.06rem;
+    line-height: 1.7em;
+  }
+  figure .caption, .figure .caption, figure figcaption {
+    font-size: 13px;
+  }
+}
+
+@media(min-width: 1180px) {
+  .base-grid,
+  distill-header,
+  d-title,
+  d-abstract,
+  d-article,
+  d-appendix,
+  distill-appendix,
+  d-byline,
+  d-footnote-list,
+  d-citation-list,
+  distill-footer {
+    grid-template-columns: [screen-start] 1fr [page-start kicker-start] 60px [middle-start] 60px [text-start kicker-end] 60px 60px 60px 60px 60px 60px 60px 60px [text-end gutter-start] 60px [middle-end] 60px [page-end gutter-end] 1fr [screen-end];
+    grid-column-gap: 32px;
+  }
+
+  .grid {
+    grid-column-gap: 32px;
+  }
+}
+
+
+/* Get the citation styles for the appendix (not auto-injected on render since
+   we do our own rendering of the citation appendix) */
+
+d-appendix .citation-appendix,
+.d-appendix .citation-appendix {
+  font-size: 11px;
+  line-height: 15px;
+  border-left: 1px solid rgba(0, 0, 0, 0.1);
+  padding-left: 18px;
+  border: 1px solid rgba(0,0,0,0.1);
+  background: rgba(0, 0, 0, 0.02);
+  padding: 10px 18px;
+  border-radius: 3px;
+  color: rgba(150, 150, 150, 1);
+  overflow: hidden;
+  margin-top: -12px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+
+/* Social footer */
+
+.social_footer {
+  margin-top: 30px;
+  margin-bottom: 0;
+  color: rgba(0,0,0,0.67);
+}
+
+.disqus-comments {
+  margin-right: 30px;
+}
+
+.disqus-comment-count {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+  cursor: pointer;
+}
+
+#disqus_thread {
+  margin-top: 30px;
+}
+
+.article-sharing a {
+  border-bottom: none;
+  margin-right: 8px;
+}
+
+.article-sharing a:hover {
+  border-bottom: none;
+}
+
+.sidebar-section.subscribe {
+  font-size: 12px;
+  line-height: 1.6em;
+}
+
+.subscribe p {
+  margin-bottom: 0.5em;
+}
+
+
+.article-footer .subscribe {
+  font-size: 15px;
+  margin-top: 45px;
+}
+
+
+.sidebar-section.custom {
+  font-size: 12px;
+  line-height: 1.6em;
+}
+
+.custom p {
+  margin-bottom: 0.5em;
+}
+
+
+/* Improve display for browsers without grid (IE/Edge <= 15) */
+
+.downlevel {
+  line-height: 1.6em;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+  margin: 0;
+}
+
+.downlevel .d-title {
+  padding-top: 6rem;
+  padding-bottom: 1.5rem;
+}
+
+.downlevel .d-title h1 {
+  font-size: 50px;
+  font-weight: 700;
+  line-height: 1.1em;
+  margin: 0 0 0.5rem;
+}
+
+.downlevel .d-title p {
+  font-weight: 300;
+  font-size: 1.2rem;
+  line-height: 1.55em;
+  margin-top: 0;
+}
+
+.downlevel .d-byline {
+  padding-top: 0.8em;
+  padding-bottom: 0.8em;
+  font-size: 0.8rem;
+  line-height: 1.8em;
+}
+
+.downlevel .section-separator {
+  border: none;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.downlevel .d-article {
+  font-size: 1.06rem;
+  line-height: 1.7em;
+  padding-top: 1rem;
+  padding-bottom: 2rem;
+}
+
+
+.downlevel .d-appendix {
+  padding-left: 0;
+  padding-right: 0;
+  max-width: none;
+  font-size: 0.8em;
+  line-height: 1.7em;
+  margin-bottom: 0;
+  color: rgba(0,0,0,0.5);
+  padding-top: 40px;
+  padding-bottom: 48px;
+}
+
+.downlevel .footnotes ol {
+  padding-left: 13px;
+}
+
+.downlevel .base-grid,
+.downlevel .distill-header,
+.downlevel .d-title,
+.downlevel .d-abstract,
+.downlevel .d-article,
+.downlevel .d-appendix,
+.downlevel .distill-appendix,
+.downlevel .d-byline,
+.downlevel .d-footnote-list,
+.downlevel .d-citation-list,
+.downlevel .distill-footer,
+.downlevel .appendix-bottom,
+.downlevel .posts-container {
+  padding-left: 40px;
+  padding-right: 40px;
+}
+
+@media(min-width: 768px) {
+  .downlevel .base-grid,
+  .downlevel .distill-header,
+  .downlevel .d-title,
+  .downlevel .d-abstract,
+  .downlevel .d-article,
+  .downlevel .d-appendix,
+  .downlevel .distill-appendix,
+  .downlevel .d-byline,
+  .downlevel .d-footnote-list,
+  .downlevel .d-citation-list,
+  .downlevel .distill-footer,
+  .downlevel .appendix-bottom,
+  .downlevel .posts-container {
+  padding-left: 150px;
+  padding-right: 150px;
+  max-width: 900px;
+}
+}
+
+.downlevel pre code {
+  display: block;
+  border-left: 2px solid rgba(0, 0, 0, .1);
+  padding: 0 0 0 20px;
+  font-size: 14px;
+}
+
+.downlevel code, .downlevel pre {
+  color: black;
+  background: none;
+  font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  line-height: 1.5;
+
+  -moz-tab-size: 4;
+  -o-tab-size: 4;
+  tab-size: 4;
+
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+}
+
+</style>
+
+<script type="application/javascript">
+
+function is_downlevel_browser() {
+  if (bowser.isUnsupportedBrowser({ msie: "12", msedge: "16"},
+                                 window.navigator.userAgent)) {
+    return true;
+  } else {
+    return window.load_distill_framework === undefined;
+  }
+}
+
+// show body when load is complete
+function on_load_complete() {
+
+  // set body to visible
+  document.body.style.visibility = 'visible';
+
+  // force redraw for leaflet widgets
+  if (window.HTMLWidgets) {
+    var maps = window.HTMLWidgets.findAll(".leaflet");
+    $.each(maps, function(i, el) {
+      var map = this.getMap();
+      map.invalidateSize();
+      map.eachLayer(function(layer) {
+        if (layer instanceof L.TileLayer)
+          layer.redraw();
+      });
+    });
+  }
+
+  // trigger 'shown' so htmlwidgets resize
+  $('d-article').trigger('shown');
+}
+
+function init_distill() {
+
+  init_common();
+
+  // create front matter
+  var front_matter = $('<d-front-matter></d-front-matter>');
+  $('#distill-front-matter').wrap(front_matter);
+
+  // create d-title
+  $('.d-title').changeElementType('d-title');
+
+  // create d-byline
+  var byline = $('<d-byline></d-byline>');
+  $('.d-byline').replaceWith(byline);
+
+  // create d-article
+  var article = $('<d-article></d-article>');
+  $('.d-article').wrap(article).children().unwrap();
+
+  // move posts container into article
+  $('.posts-container').appendTo($('d-article'));
+
+  // create d-appendix
+  $('.d-appendix').changeElementType('d-appendix');
+
+  // create d-bibliography
+  var bibliography = $('<d-bibliography></d-bibliography>');
+  $('#distill-bibliography').wrap(bibliography);
+
+  // flag indicating that we have appendix items
+  var appendix = $('.appendix-bottom').children('h3').length > 0;
+
+  // replace citations with <d-cite>
+  $('.citation').each(function(i, val) {
+    appendix = true;
+    var cites = $(this).attr('data-cites').split(" ");
+    var dt_cite = $('<d-cite></d-cite>');
+    dt_cite.attr('key', cites.join());
+    $(this).replaceWith(dt_cite);
+  });
+  // remove refs
+  $('#refs').remove();
+
+  // replace footnotes with <d-footnote>
+  $('.footnote-ref').each(function(i, val) {
+    appendix = true;
+    var href = $(this).attr('href');
+    var id = href.replace('#', '');
+    var fn = $('#' + id);
+    var fn_p = $('#' + id + '>p');
+    fn_p.find('.footnote-back').remove();
+    var text = fn_p.html();
+    var dtfn = $('<d-footnote></d-footnote>');
+    dtfn.html(text);
+    $(this).replaceWith(dtfn);
+  });
+  // remove footnotes
+  $('.footnotes').remove();
+
+  $('h1.appendix, h2.appendix').each(function(i, val) {
+    $(this).changeElementType('h3');
+  });
+  $('h3.appendix').each(function(i, val) {
+    var id = $(this).attr('id');
+    $('.d-toc a[href="#' + id + '"]').parent().remove();
+    appendix = true;
+    $(this).nextUntil($('h1, h2, h3')).addBack().appendTo($('d-appendix'));
+  });
+
+  // show d-appendix if we have appendix content
+  $("d-appendix").css('display', appendix ? 'grid' : 'none');
+
+  // replace code blocks with d-code
+  $('pre>code').each(function(i, val) {
+    var code = $(this);
+    var pre = code.parent();
+    var clz = "";
+    var language = pre.attr('class');
+    if (language) {
+      // map unknown languages to "clike" (without this they just dissapear)
+      if ($.inArray(language, ["bash", "clike", "css", "go", "html",
+                               "javascript", "js", "julia", "lua", "markdown",
+                               "markup", "mathml", "python", "svg", "xml"]) == -1)
+        language = "clike";
+      language = ' language="' + language + '"';
+      var dt_code = $('<d-code block' + language + clz + '></d-code>');
+      dt_code.text(code.text());
+      pre.replaceWith(dt_code);
+    } else {
+      code.addClass('text-output').unwrap().changeElementType('pre');
+    }
+  });
+
+  // localize layout chunks to just output
+  $('.layout-chunk').each(function(i, val) {
+
+    // capture layout
+    var layout = $(this).attr('data-layout');
+
+    // apply layout to markdown level block elements
+    var elements = $(this).children().not('d-code, pre.text-output, script');
+    elements.each(function(i, el) {
+      var layout_div = $('<div class="' + layout + '"></div>');
+      if (layout_div.hasClass('shaded')) {
+        var shaded_content = $('<div class="shaded-content"></div>');
+        $(this).wrap(shaded_content);
+        $(this).parent().wrap(layout_div);
+      } else {
+        $(this).wrap(layout_div);
+      }
+    });
+
+
+    // unwrap the layout-chunk div
+    $(this).children().unwrap();
+  });
+
+  // load distill framework
+  load_distill_framework();
+
+  // wait for window.distillRunlevel == 4 to do post processing
+  function distill_post_process() {
+
+    if (!window.distillRunlevel || window.distillRunlevel < 4)
+      return;
+
+    // hide author/affiliations entirely if we have no authors
+    var front_matter = JSON.parse($("#distill-front-matter").html());
+    var have_authors = front_matter.authors && front_matter.authors.length > 0;
+    if (!have_authors)
+      $('d-byline').addClass('hidden');
+
+    // table of contents
+    if (have_authors) // adjust border if we are in authors
+      $('.d-toc').parent().addClass('d-article-with-toc');
+
+    // strip links that point to #
+    $('.authors-affiliations').find('a[href="#"]').removeAttr('href');
+
+    // hide elements of author/affiliations grid that have no value
+    function hide_byline_column(caption) {
+      $('d-byline').find('h3:contains("' + caption + '")').parent().css('visibility', 'hidden');
+    }
+
+    // affiliations
+    var have_affiliations = false;
+    for (var i = 0; i<front_matter.authors.length; ++i) {
+      var author = front_matter.authors[i];
+      if (author.affiliation !== "&nbsp;") {
+        have_affiliations = true;
+        break;
+      }
+    }
+    if (!have_affiliations)
+      $('d-byline').find('h3:contains("Affiliations")').css('visibility', 'hidden');
+
+    // published date
+    if (!front_matter.publishedDate)
+      hide_byline_column("Published");
+
+    // document object identifier
+    var doi = $('d-byline').find('h3:contains("DOI")');
+    var doi_p = doi.next().empty();
+    if (!front_matter.doi) {
+      // if we have a citation and valid citationText then link to that
+      if ($('#citation').length > 0 && front_matter.citationText) {
+        doi.html('Citation');
+        $('<a href="#citation"></a>')
+          .text(front_matter.citationText)
+          .appendTo(doi_p);
+      } else {
+        hide_byline_column("DOI");
+      }
+    } else {
+      $('<a></a>')
+         .attr('href', "https://doi.org/" + front_matter.doi)
+         .html(front_matter.doi)
+         .appendTo(doi_p);
+    }
+
+     // change plural form of authors/affiliations
+    if (front_matter.authors.length === 1) {
+      var grid = $('.authors-affiliations');
+      grid.children('h3:contains("Authors")').text('Author');
+      grid.children('h3:contains("Affiliations")').text('Affiliation');
+    }
+
+    // inject pre code styles (can't do this with a global stylesheet b/c a shadow root is used)
+    $('d-code').each(function(i, val) {
+      var style = document.createElement('style');
+      style.innerHTML = 'pre code { padding-left: 10px; font-size: 12px; border-left: 2px solid rgba(0,0,0,0.1); } ' +
+                        '@media(min-width: 768px) { pre code { padding-left: 18px; font-size: 14px; } }';
+      if (this.shadowRoot)
+        this.shadowRoot.appendChild(style);
+    });
+
+    // move appendix-bottom entries to the bottom
+    $('.appendix-bottom').appendTo('d-appendix').children().unwrap();
+    $('.appendix-bottom').remove();
+
+    // clear polling timer
+    clearInterval(tid);
+
+    // show body now that everything is ready
+    on_load_complete();
+  }
+
+  var tid = setInterval(distill_post_process, 50);
+  distill_post_process();
+
+}
+
+function init_downlevel() {
+
+  init_common();
+
+   // insert hr after d-title
+  $('.d-title').after($('<hr class="section-separator"/>'));
+
+  // check if we have authors
+  var front_matter = JSON.parse($("#distill-front-matter").html());
+  var have_authors = front_matter.authors && front_matter.authors.length > 0;
+
+  // manage byline/border
+  if (!have_authors)
+    $('.d-byline').remove();
+  $('.d-byline').after($('<hr class="section-separator"/>'));
+  $('.d-byline a').remove();
+
+  // remove toc
+  $('.d-toc-header').remove();
+  $('.d-toc').remove();
+  $('.d-toc-separator').remove();
+
+  // move appendix elements
+  $('h1.appendix, h2.appendix').each(function(i, val) {
+    $(this).changeElementType('h3');
+  });
+  $('h3.appendix').each(function(i, val) {
+    $(this).nextUntil($('h1, h2, h3')).addBack().appendTo($('.d-appendix'));
+  });
+
+
+  // inject headers into references and footnotes
+  var refs_header = $('<h3></h3>');
+  refs_header.text('References');
+  $('#refs').prepend(refs_header);
+
+  var footnotes_header = $('<h3></h3');
+  footnotes_header.text('Footnotes');
+  $('.footnotes').children('hr').first().replaceWith(footnotes_header);
+
+  // move appendix-bottom entries to the bottom
+  $('.appendix-bottom').appendTo('.d-appendix').children().unwrap();
+  $('.appendix-bottom').remove();
+
+  // remove appendix if it's empty
+  if ($('.d-appendix').children().length === 0)
+    $('.d-appendix').remove();
+
+  // prepend separator above appendix
+  $('.d-appendix').before($('<hr class="section-separator" style="clear: both"/>'));
+
+  // trim code
+  $('pre>code').each(function(i, val) {
+    $(this).html($.trim($(this).html()));
+  });
+
+  // move posts-container right before article
+  $('.posts-container').insertBefore($('.d-article'));
+
+  $('body').addClass('downlevel');
+
+  on_load_complete();
+}
+
+
+function init_common() {
+
+  // jquery plugin to change element types
+  (function($) {
+    $.fn.changeElementType = function(newType) {
+      var attrs = {};
+
+      $.each(this[0].attributes, function(idx, attr) {
+        attrs[attr.nodeName] = attr.nodeValue;
+      });
+
+      this.replaceWith(function() {
+        return $("<" + newType + "/>", attrs).append($(this).contents());
+      });
+    };
+  })(jQuery);
+
+  // prevent underline for linked images
+  $('a > img').parent().css({'border-bottom' : 'none'});
+
+  // mark non-body figures created by knitr chunks as 100% width
+  $('.layout-chunk').each(function(i, val) {
+    var figures = $(this).find('img, .html-widget');
+    if ($(this).attr('data-layout') !== "l-body") {
+      figures.css('width', '100%');
+    } else {
+      figures.css('max-width', '100%');
+      figures.filter("[width]").each(function(i, val) {
+        var fig = $(this);
+        fig.css('width', fig.attr('width') + 'px');
+      });
+
+    }
+  });
+
+  // auto-append index.html to post-preview links in file: protocol
+  // and in rstudio ide preview
+  $('.post-preview').each(function(i, val) {
+    if (window.location.protocol === "file:")
+      $(this).attr('href', $(this).attr('href') + "index.html");
+  });
+
+  // get rid of index.html references in header
+  if (window.location.protocol !== "file:") {
+    $('.distill-site-header a[href]').each(function(i,val) {
+      $(this).attr('href', $(this).attr('href').replace("index.html", "./"));
+    });
+  }
+
+  // add class to pandoc style tables
+  $('tr.header').parent('thead').parent('table').addClass('pandoc-table');
+  $('.kable-table').children('table').addClass('pandoc-table');
+
+  // add figcaption style to table captions
+  $('caption').parent('table').addClass("figcaption");
+
+  // initialize posts list
+  if (window.init_posts_list)
+    window.init_posts_list();
+
+  // implmement disqus comment link
+  $('.disqus-comment-count').click(function() {
+    window.headroom_prevent_pin = true;
+    $('#disqus_thread').toggleClass('hidden');
+    if (!$('#disqus_thread').hasClass('hidden')) {
+      var offset = $(this).offset();
+      $(window).resize();
+      $('html, body').animate({
+        scrollTop: offset.top - 35
+      });
+    }
+  });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  if (is_downlevel_browser())
+    init_downlevel();
+  else
+    window.addEventListener('WebComponentsReady', init_distill);
+});
+
+</script>
+
+<!--/radix_placeholder_distill-->
+  <script src="../../site_libs/header-attrs-2.1/header-attrs.js"></script>
+  <script src="../../site_libs/jquery-1.11.3/jquery.min.js"></script>
+  <script src="../../site_libs/bowser-1.9.3/bowser.min.js"></script>
+  <script src="../../site_libs/webcomponents-2.0.0/webcomponents.js"></script>
+  <script src="../../site_libs/distill-2.2.21/template.v2.js"></script>
+  <!--radix_placeholder_site_in_header-->
+<style type="text/css">
+/*  https://github.com/shamindras/ss_personal_distill_blog ,
+ https://github.com/naif-alsader/my_blog  */
+body {
+  background-color: #f9f9f9;
+}
+
+
+
+.posts-list {
+  direction: rtl;
+}
+
+d-article {
+  font-weight: 300;
+}
+
+.distill-site-nav {
+  animation:backgroundtransition 100s;
+  -moz-animation:backgroundtransition 100s infinite; /* Firefox */
+  -webkit-animation:backgroundtransition 100s infinite; /* Safari and Chrome */
+}
+
+@-moz-keyframes backgroundtransition /* Firefox */ {
+   0%   {background: #B71C1C;} /* red */
+   10%  {background: #311b92;} /* deep purlple */
+   20%  {background: #0D47A1;} /* blue */
+   30%  {background: #004D40;} /* teal */
+   40%  {background: #212121;} /* grey */
+   50%  {background: #1A237E;} /* indigo */
+   60%  {background: #33691E;} /* ligth green */
+   70%  {background: #006064;} /* cyan */
+   80%  {background: #827717;} /* lime */
+   90%  {background: #263238;} /* blue gray*/
+   100% {background: #B71C1C;} /* red */
+}
+
+@-webkit-keyframes backgroundtransition /* Safari and Chrome */ {
+   0%   {background: #B71C1C;} /* red */
+   10%  {background: #311b92;} /* deep purlple */
+   20%  {background: #0D47A1;} /* blue */
+   30%  {background: #004D40;} /* teal */
+   40%  {background: #212121;} /* grey */
+   50%  {background: #1A237E;} /* indigo */
+   60%  {background: #33691E;} /* ligth green */
+   70%  {background: #006064;} /* cyan */
+   80%  {background: #827717;} /* lime */
+   90%  {background: #263238;} /* blue gray*/
+   100% {background: #B71C1C;} /* red */
+}
+
+/* https://codepen.io/sdthornton/pen/wBZdXq */
+.distill-site-header {
+   box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+}
+
+/* thunder animation */
+/* from http://jsrocks.org/ */
+.fab:hover, .fa:hover, .fas:hover {
+    animation-name: thunder;
+    animation-duration: 1s;
+    animation-fill-mode: both;
+    animation-iteration-count: infinite;
+
+    -webkit-animation-name: thunder;
+    -webkit-animation-duration: 1s;
+    -webkit-animation-fill-mode: both;
+    -webkit-animation-iteration-count: infinite;
+     transition: all 150ms ease 0s;
+}
+
+@keyframes thunder{
+    0%, 20%, 40%, 60%, 80%, 100% {
+        transform: rotate3d(0, 0, 1, -5deg);
+    }
+    10%, 30%, 50%, 70%, 90% {
+        transform: rotate3d(0, 0, 1, 5deg);
+    }
+}
+
+@-webkit-keyframes thunder{
+    0%, 20%, 40%, 60%, 80%, 100% {
+        transform: rotate3d(0, 0, 1, -5deg);
+    }
+    10%, 30%, 50%, 70%, 90% {
+        transform: rotate3d(0, 0, 1, 5deg);
+    }
+}
+
+
+
+.title, .author, .date{
+  text-align: center;
+
+}
+
+p, h1  ,h2, h3, h4, h5, h6, ol,li, ul, .nav nav-pills  {
+  text-align: right;
+  direction: rtl;
+  letter-spacing: 1px;
+  word-spacing: 3px;
+}
+
+
+h3 {
+  text-decoration: underline
+}
+
+pre code {
+
+
+
+}
+
+pre.text-output {
+  background-color: #f5f5f5;
+  border: 1px solid #ccc
+}
+
+
+
+
+pre code-container {
+
+}
+
+
+
+pre:not([class]) {
+    background-color: #e2dada;
+}
+
+
+body  d-article  p  code {
+    background-color: rgb(241 231 231);
+    text-align: left;
+    direction: ltr;
+
+}
+
+
+</style>
+<!--/radix_placeholder_site_in_header-->
+
+  <link rel="stylesheet" href="css/rtl_rmk.css" type="text/css"/>
+
+</head>
+
+<body>
+
+<!--radix_placeholder_front_matter-->
+
+<script id="distill-front-matter" type="text/json">
+{"title":"Relational Data","description":"كيف تتعامل مع االعلاقات بين الجداول","authors":[{"author":"Naif Alsader","authorURL":"#","affiliation":"&nbsp;","affiliationURL":"#"}],"publishedDate":"2020-06-28T00:00:00.000+03:00","citationText":"Alsader, 2020"}
+</script>
+
+<!--/radix_placeholder_front_matter-->
+<!--radix_placeholder_navigation_before_body-->
+<header class="header header--fixed" role="banner">
+<nav class="distill-site-nav distill-site-header">
+<div class="nav-left">
+<a href="../../index.html" class="title">Naif Alsader</a>
+</div>
+<div class="nav-right">
+<a href="../../index.html">Home</a>
+<a href="../../about.html">About</a>
+<a href="javascript:void(0);" class="nav-toggle">&#9776;</a>
+</div>
+</nav>
+</header>
+<!--/radix_placeholder_navigation_before_body-->
+<!--radix_placeholder_site_before_body-->
+<!--/radix_placeholder_site_before_body-->
+
+<div class="d-title">
+<h1>Relational Data</h1>
+<p><p>كيف تتعامل مع االعلاقات بين الجداول</p></p>
+</div>
+
+<div class="d-byline">
+  
+  Naif Alsader
+  
+<br/>06-28-2020
+</div>
+
+<div class="d-article">
+<h3 class="d-toc-header">Table of Contents</h3>
+<nav class="d-toc" id="TOC">
+<ul>
+<li><a href="#مدخل">مدخل</a></li>
+<li><a href="#keys">Keys</a>
+<ul>
+<li><a href="#اضافة">اضافة</a></li>
+</ul></li>
+<li><a href="#mutating-joins">Mutating joins</a></li>
+<li><a href="#كيف-يعمل-_join">كيف يعمل <code>*()_join</code></a>
+<ul>
+<li><a href="#inner-join-الربط-الداخلي">inner join الربط الداخلي</a></li>
+<li><a href="#outer-join-الربط-الخارجي">outer join الربط الخارجي</a></li>
+<li><a href="#left-join">left join</a></li>
+<li><a href="#right-join">right join</a></li>
+<li><a href="#full-join">full join</a></li>
+</ul></li>
+<li><a href="#filter-join">filter join</a>
+<ul>
+<li><a href="#semi-join">Semi join</a></li>
+<li><a href="#anti-join">anti join</a></li>
+</ul></li>
+<li><a href="#المصادر">المصادر</a></li>
+</ul>
+</nav>
+<hr class="d-toc-separator"/>
+<p>هذا العمل هو تلخيص وترجمه للباب الثاني (Wrangle &gt; Relational Data) من كتاب R for Data Science للكاتبين Hadly Wickham و Garrett Grolemund مع بعض الاضافات</p>
+<p>الكود كامل هنا <a href="https://github.com/naif-alsader/my_blog/blob/master/_posts/2020-06-30-relational-data/relational-data.Rmd">code</a></p>
+<p>تحتاج في البداية ان تقوم بتحميل مكتبة <code>tidyverse</code></p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+library(tidyverse)</code></pre>
+</div>
+<h2 id="مدخل">مدخل</h2>
+<p>ال relational data تاتي في غالب الاحوال من قواعد البيانات (RDBMS)</p>
+<p>وهي البيانات الي تكون مقسمة على اكثر من جدول مثلا ان يكون لديك جدول للرواتب وجدول لمعلومات الموظف الشخصية</p>
+<p>.هناك ثلاث طرق لاضافة اكثر من جدول الى بعض</p>
+<p>1- <strong>Mutating joins</strong>: اضافه اعمده جديده من جدول A تتطابق احد اعمدتها مع احد اعمدة جدول B</p>
+<p>2- <strong>Filtering joins</strong> : ازاله بعض المشاهدات من الجدول A التي تطابق البيانات في احد الاعمدة من الجدولB</p>
+<p>3- <strong>Set operations</strong>: مثل عمليات المجموعات في الرياضيات (تقاطع، اتحاد)</p>
+<p>للتوضيح اكثر سوف نعمل على عده جداول تخص شركات الطيران من مكتبة <code>nycflights13</code></p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+library(nycflights13)</code></pre>
+</div>
+<p>الجداول هي:</p>
+<ul>
+<li><code>airlines</code></li>
+</ul>
+<p>يعطينا اسم شركه الطيران مع الرمز الثنائي للشركة.</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+    airlines</code></pre>
+<pre><code>
+# A tibble: 16 x 2
+   carrier name                       
+   &lt;chr&gt;   &lt;chr&gt;                      
+ 1 9E      Endeavor Air Inc.          
+ 2 AA      American Airlines Inc.     
+ 3 AS      Alaska Airlines Inc.       
+ 4 B6      JetBlue Airways            
+ 5 DL      Delta Air Lines Inc.       
+ 6 EV      ExpressJet Airlines Inc.   
+ 7 F9      Frontier Airlines Inc.     
+ 8 FL      AirTran Airways Corporation
+ 9 HA      Hawaiian Airlines Inc.     
+10 MQ      Envoy Air                  
+11 OO      SkyWest Airlines Inc.      
+12 UA      United Air Lines Inc.      
+13 US      US Airways Inc.            
+14 VX      Virgin America             
+15 WN      Southwest Airlines Co.     
+16 YV      Mesa Airlines Inc.         </code></pre>
+</div>
+<ul>
+<li><code>airports</code></li>
+</ul>
+<p>يعطينا معلومات المطار. نستطيع ان نميز كل مطار عن طريق العمود <code>faa</code> اي رمز المطار .</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+    airports</code></pre>
+<pre><code>
+# A tibble: 1,458 x 8
+   faa   name                 lat    lon   alt    tz dst   tzone      
+   &lt;chr&gt; &lt;chr&gt;              &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;      
+ 1 04G   Lansdowne Airport   41.1  -80.6  1044    -5 A     America/Ne…
+ 2 06A   Moton Field Munic…  32.5  -85.7   264    -6 A     America/Ch…
+ 3 06C   Schaumburg Region…  42.0  -88.1   801    -6 A     America/Ch…
+ 4 06N   Randall Airport     41.4  -74.4   523    -5 A     America/Ne…
+ 5 09J   Jekyll Island Air…  31.1  -81.4    11    -5 A     America/Ne…
+ 6 0A9   Elizabethton Muni…  36.4  -82.2  1593    -5 A     America/Ne…
+ 7 0G6   Williams County A…  41.5  -84.5   730    -5 A     America/Ne…
+ 8 0G7   Finger Lakes Regi…  42.9  -76.8   492    -5 A     America/Ne…
+ 9 0P2   Shoestring Aviati…  39.8  -76.6  1000    -5 U     America/Ne…
+10 0S9   Jefferson County …  48.1 -123.    108    -8 A     America/Lo…
+# … with 1,448 more rows</code></pre>
+</div>
+<ul>
+<li><code>planes</code></li>
+</ul>
+<p>يعطينا معلومات كل طائرة، نستطيع تمييز كل طائره باستخدام العمود <code>tailnum</code> .</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+    planes</code></pre>
+<pre><code>
+# A tibble: 3,322 x 9
+   tailnum  year type    manufacturer model engines seats speed engine
+   &lt;chr&gt;   &lt;int&gt; &lt;chr&gt;   &lt;chr&gt;        &lt;chr&gt;   &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt; 
+ 1 N10156   2004 Fixed … EMBRAER      EMB-…       2    55    NA Turbo…
+ 2 N102UW   1998 Fixed … AIRBUS INDU… A320…       2   182    NA Turbo…
+ 3 N103US   1999 Fixed … AIRBUS INDU… A320…       2   182    NA Turbo…
+ 4 N104UW   1999 Fixed … AIRBUS INDU… A320…       2   182    NA Turbo…
+ 5 N10575   2002 Fixed … EMBRAER      EMB-…       2    55    NA Turbo…
+ 6 N105UW   1999 Fixed … AIRBUS INDU… A320…       2   182    NA Turbo…
+ 7 N107US   1999 Fixed … AIRBUS INDU… A320…       2   182    NA Turbo…
+ 8 N108UW   1999 Fixed … AIRBUS INDU… A320…       2   182    NA Turbo…
+ 9 N109UW   1999 Fixed … AIRBUS INDU… A320…       2   182    NA Turbo…
+10 N110UW   1999 Fixed … AIRBUS INDU… A320…       2   182    NA Turbo…
+# … with 3,312 more rows</code></pre>
+</div>
+<ul>
+<li><code>weather</code></li>
+</ul>
+<p>يعطينا معلومات الطقس في مطارات NYC لكل ساعة .</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+    weather</code></pre>
+<pre><code>
+# A tibble: 26,115 x 15
+   origin  year month   day  hour  temp  dewp humid wind_dir
+   &lt;chr&gt;  &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;
+ 1 EWR     2013     1     1     1  39.0  26.1  59.4      270
+ 2 EWR     2013     1     1     2  39.0  27.0  61.6      250
+ 3 EWR     2013     1     1     3  39.0  28.0  64.4      240
+ 4 EWR     2013     1     1     4  39.9  28.0  62.2      250
+ 5 EWR     2013     1     1     5  39.0  28.0  64.4      260
+ 6 EWR     2013     1     1     6  37.9  28.0  67.2      240
+ 7 EWR     2013     1     1     7  39.0  28.0  64.4      240
+ 8 EWR     2013     1     1     8  39.9  28.0  62.2      250
+ 9 EWR     2013     1     1     9  39.9  28.0  62.2      260
+10 EWR     2013     1     1    10  41    28.0  59.6      260
+# … with 26,105 more rows, and 6 more variables: wind_speed &lt;dbl&gt;,
+#   wind_gust &lt;dbl&gt;, precip &lt;dbl&gt;, pressure &lt;dbl&gt;, visib &lt;dbl&gt;,
+#   time_hour &lt;dttm&gt;</code></pre>
+</div>
+<p>ال Diagram التالي يشرح العلاقات بين جميع الجداول السابقة</p>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="diagrams/relational-nycflights.png" width="100%" height="100%" data-distill-preview=1 style="display: block; margin: auto;" /></p>
+</div>
+<p>الهدف من ال Diagram هو ان نعرف كيف نربط الجداول السابقة مع بعض .</p>
+<p>مثلا</p>
+<ul>
+<li><p><code>flights</code> يرتبط ب <code>planes</code> عن طريق العمود <code>tailnum</code> .</p></li>
+<li><p><code>flights</code> يرتبط ب <code>airlines</code> عن طريق العمود <code>carrier</code> .</p></li>
+<li><p><code>flights</code> يرتبط ب <code>airports</code> بطريقتين الاولى عن طريق <code>origin</code> وذالك اذا اردنا الحصول عل معلومات مطار الاقلاع والثانيه عن طريق <code>dest</code> وذالك اذا اردنا الحصول على معلومات مطار الوصول .</p></li>
+<li><p><code>flights</code> يرتبط ب <code>weather</code> عن طريق الاعمده التي تثمل الوقت ( <code>year</code>, <code>month</code>, <code>day</code> and <code>hour</code> ) وعمود الموقع <code>origin</code></p></li>
+</ul>
+<h2 id="keys">Keys</h2>
+<ul>
+<li><p><strong>primary key</strong> : يميز كل مشاهدة في جدولها</p>
+<p>مثال : <code>planes$tailnum</code> هي primary key للجدول <code>plans</code> لان كل طائره لها مشاهدة واحدة فقط</p></li>
+<li><p><strong>foreign key</strong> : يميز كل مشاهدة في جدول آخر</p></li>
+</ul>
+<p>مثال : <code>flights$tailnum</code> هو foreign key لانه موجود في جدول <code>flights</code> لاكن يمكن ان يتكرر (لان الطائره ممكن تعمل اكثر من رحلة) لاكنة primaray key لان من خلالة يمكننا الربط مع جدول <code>planes</code></p>
+<p>الان لنتاكد ان ان الشروط تنطبق هنا</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+#tailnum هنا نختبر اذا كان لدينا اكثر من قيمه في العمود 
+# planes في الجدول  primary key حيث انه هو ال
+
+planes %&gt;% 
+  count(tailnum) %&gt;% 
+  filter(n &gt; 1)</code></pre>
+<pre><code>
+# A tibble: 0 x 2
+# … with 2 variables: tailnum &lt;chr&gt;, n &lt;int&gt;</code></pre>
+<pre class="r"><code>
+weather %&gt;% 
+  count(year, month, day, hour, origin) %&gt;% 
+  filter(n &gt; 1)</code></pre>
+<pre><code>
+# A tibble: 3 x 6
+   year month   day  hour origin     n
+  &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;  &lt;int&gt;
+1  2013    11     3     1 EWR        2
+2  2013    11     3     1 JFK        2
+3  2013    11     3     1 LGA        2</code></pre>
+</div>
+<p>لاحظ ان الاعمده التي يجب ان تكون primary key في الجدول weather، لم تفي بالشروط لذالك لايمكن اعتبارها primary key .</p>
+<p>احيانا قد يكون كل صف بالفعل يمثل مشاهدة لاكن لانستطيع ايجاد التوليفة المناسبه من الاعمدة لتشكيل primary key</p>
+<p>في هذه الحاله ربما تحتاج الى البحث عن عمود يساعد في جعل كل مشاهده مميزه او يمكنك اضافه <code>row_number()</code> ويسمى هذا ال key <strong>surrogate key</strong></p>
+<h3 id="اضافة">اضافة</h3>
+<p>مصممو قواعد البيانات لايحبون تكرار البيانات لذالك يقومون بعملية تسمى .Decomposition</p>
+<p>.الهدف من هذه العملية هي ازاله البيانات المتكرره ووضعها في جدول اخر</p>
+<p>مثال</p>
+<p>كل شركة تزود موضفيها برقم وضيفي، الهدف منه هو تمييز كل موضف عن الاخر، بحيث اننا نستطيع معرفه .معلومات الموضف بمعرفه رقمة الوضيفي</p>
+<p>الان لنفرض اننا نريد عمل قاعده بيانات توضح رواتب الموظفين. هل نضع جميع معلومات الموضفين في جدول .الرواتب او نكتفي فقط برقمهم الوظيفي</p>
+<p>مصممين قواعد البيانات يرون انه من الافضل عمل جدولين. واحد لمعلومات الموضفين والاخر للرواتب</p>
+<p>.بحيث يكون الرقم الوضيفي هو الرابط بين الجدولين</p>
+<p>الان نطلق على الرقم الوضيفي لقب <strong>Primary key</strong></p>
+<p>لنفرض مثلا بان لدينا جدول اخر يمثل الحضور والغياب. لجميع الموضفين خلال السنه الفائته، يحتوي مثلا على رقم الموضف و التاريخ و الحاله</p>
+<p>في هذه الحاله الرقم الوضيفي يفقد في هذا الجدول لقب <strong>Primary key</strong></p>
+<p>لاننا لانستطيع من خلالة تميز المشاهدات. ويكون ال <strong>Primary key</strong> هو تاريخ اليوم + الرقم الوضيفي. ويصبح الرقم الوضيفي <strong>foreign key</strong></p>
+<p>لاحظ انه الان الرقم الوضيفي اصبح <strong>Primary key</strong> في جدول العلومات الشخصية و جدول الرواتب</p>
+<p>و <strong>foreign key</strong><br />
+في جدول الحضور</p>
+<p>واصبح الرقم الوضيفي مع التاريخ هو <strong>Primary key</strong> في جدول الحضور</p>
+<h2 id="mutating-joins">Mutating joins</h2>
+<p>وهي عمليه عمليه شبية ب <code>()mutate</code> .حيث نقوم بإضافة اعمده اضافيه</p>
+<p>على سبيل المثال خذ الجدول <code>flights2</code></p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+flights2 &lt;- flights %&gt;% 
+  select(year:day, hour, origin, dest, tailnum, carrier)
+flights2</code></pre>
+<pre><code>
+# A tibble: 336,776 x 8
+    year month   day  hour origin dest  tailnum carrier
+   &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;  
+ 1  2013     1     1     5 EWR    IAH   N14228  UA     
+ 2  2013     1     1     5 LGA    IAH   N24211  UA     
+ 3  2013     1     1     5 JFK    MIA   N619AA  AA     
+ 4  2013     1     1     5 JFK    BQN   N804JB  B6     
+ 5  2013     1     1     6 LGA    ATL   N668DN  DL     
+ 6  2013     1     1     5 EWR    ORD   N39463  UA     
+ 7  2013     1     1     6 EWR    FLL   N516JB  B6     
+ 8  2013     1     1     6 LGA    IAD   N829AS  EV     
+ 9  2013     1     1     6 JFK    MCO   N593JB  B6     
+10  2013     1     1     6 LGA    ORD   N3ALAA  AA     
+# … with 336,766 more rows</code></pre>
+</div>
+<p>الان سوف نقوم باضافة اسماء شركات الطيران من جدول <code>airlines</code></p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+flights2 %&gt;%
+  select(-origin, -dest) %&gt;% 
+  left_join(airlines, by = &quot;carrier&quot;)</code></pre>
+<pre><code>
+# A tibble: 336,776 x 7
+    year month   day  hour tailnum carrier name                    
+   &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;                   
+ 1  2013     1     1     5 N14228  UA      United Air Lines Inc.   
+ 2  2013     1     1     5 N24211  UA      United Air Lines Inc.   
+ 3  2013     1     1     5 N619AA  AA      American Airlines Inc.  
+ 4  2013     1     1     5 N804JB  B6      JetBlue Airways         
+ 5  2013     1     1     6 N668DN  DL      Delta Air Lines Inc.    
+ 6  2013     1     1     5 N39463  UA      United Air Lines Inc.   
+ 7  2013     1     1     6 N516JB  B6      JetBlue Airways         
+ 8  2013     1     1     6 N829AS  EV      ExpressJet Airlines Inc.
+ 9  2013     1     1     6 N593JB  B6      JetBlue Airways         
+10  2013     1     1     6 N3ALAA  AA      American Airlines Inc.  
+# … with 336,766 more rows</code></pre>
+</div>
+<h2 id="كيف-يعمل-_join">كيف يعمل <code>*()_join</code></h2>
+<p>سوف نقوم بشرح طريقة الدمج باستخدام الجدولين التليين</p>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="diagrams/join-setup.png" width="50%" height="100%" style="display: block; margin: auto;" /></p>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+x &lt;- tribble(
+  ~key, ~val_x,
+     1, &quot;x1&quot;,
+     2, &quot;x2&quot;,
+     3, &quot;x3&quot;
+)
+y &lt;- tribble(
+  ~key, ~val_y,
+     1, &quot;y1&quot;,
+     2, &quot;y2&quot;,
+     4, &quot;y3&quot;
+)</code></pre>
+</div>
+<h3 id="inner-join-الربط-الداخلي">inner join الربط الداخلي</h3>
+<p>في الربط الداخلي نبقي فقط المشاهدات المتشابهة الموجوده في العمود key</p>
+<p>في كل من الجدول x and y</p>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="diagrams/join-inner.png" width="50%" height="100%" style="display: block; margin: auto;" /></p>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+x %&gt;% 
+  inner_join(y, by = &quot;key&quot;)</code></pre>
+<pre><code>
+# A tibble: 2 x 3
+    key val_x val_y
+  &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;
+1     1 x1    y1   
+2     2 x2    y2   </code></pre>
+</div>
+<h3 id="outer-join-الربط-الخارجي">outer join الربط الخارجي</h3>
+<p>في الربط الخارجي نبقي كل المشاهدات الموجودة في الجدول x</p>
+<p>مع مايتقاطع معها من الجدول<br />
+y</p>
+<p>وهي ثلاث انواع</p>
+<ul>
+<li><p>left join</p></li>
+<li><p>right join</p></li>
+<li><p>full join</p></li>
+</ul>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="diagrams/join-outer.png" width="50%" height="100%" style="display: block; margin: auto;" /></p>
+</div>
+<h3 id="left-join">left join</h3>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+x %&gt;% 
+  left_join(y, by = &quot;key&quot;)</code></pre>
+<pre><code>
+# A tibble: 3 x 3
+    key val_x val_y
+  &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;
+1     1 x1    y1   
+2     2 x2    y2   
+3     3 x3    &lt;NA&gt; </code></pre>
+</div>
+<h3 id="right-join">right join</h3>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+x %&gt;% 
+  right_join(y, by = &quot;key&quot;)</code></pre>
+<pre><code>
+# A tibble: 3 x 3
+    key val_x val_y
+  &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;
+1     1 x1    y1   
+2     2 x2    y2   
+3     4 &lt;NA&gt;  y3   </code></pre>
+</div>
+<h3 id="full-join">full join</h3>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+x %&gt;% 
+  full_join(y, by = &quot;key&quot;)</code></pre>
+<pre><code>
+# A tibble: 4 x 3
+    key val_x val_y
+  &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;
+1     1 x1    y1   
+2     2 x2    y2   
+3     3 x3    &lt;NA&gt; 
+4     4 &lt;NA&gt;  y3   </code></pre>
+</div>
+<h2 id="filter-join">filter join</h2>
+<h3 id="semi-join">Semi join</h3>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="diagrams/join-semi.png" width="50%" height="100%" style="display: block; margin: auto;" /></p>
+</div>
+<p>يبقي فقط المشاهدات الموجودة في x التي تتطابق مع<br />
+y لاكن بدون تضمين قيم y</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+x %&gt;% 
+  semi_join(y, by = &quot;key&quot;)</code></pre>
+<pre><code>
+# A tibble: 2 x 2
+    key val_x
+  &lt;dbl&gt; &lt;chr&gt;
+1     1 x1   
+2     2 x2   </code></pre>
+</div>
+<h3 id="anti-join">anti join</h3>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="diagrams/join-anti.png" width="50%" height="100%" style="display: block; margin: auto;" /></p>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+x %&gt;% 
+  anti_join(y, by = &quot;key&quot;)</code></pre>
+<pre><code>
+# A tibble: 1 x 2
+    key val_x
+  &lt;dbl&gt; &lt;chr&gt;
+1     3 x3   </code></pre>
+</div>
+<p>يبقي المشاهدة الموجودة في x لاكن غير موجودة في y</p>
+<h2 class="appendix" id="المصادر">المصادر</h2>
+<ul>
+<li><p><a href="https://r4ds.had.co.nz/tidy-data.html" class="uri">https://r4ds.had.co.nz/tidy-data.html</a></p></li>
+<li><p><a href="https://r4ds.had.co.nz/relational-data.html" class="uri">https://r4ds.had.co.nz/relational-data.html</a></p></li>
+</ul>
+<!--radix_placeholder_article_footer-->
+<!--/radix_placeholder_article_footer-->
+</div>
+
+<div class="d-appendix">
+</div>
+
+
+<!--radix_placeholder_site_after_body-->
+<!--/radix_placeholder_site_after_body-->
+<!--radix_placeholder_appendices-->
+<div class="appendix-bottom"></div>
+<!--/radix_placeholder_appendices-->
+<!--radix_placeholder_navigation_after_body-->
+<!--/radix_placeholder_navigation_after_body-->
+
+</body>
+
+</html>

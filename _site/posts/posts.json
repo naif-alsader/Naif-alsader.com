@@ -1,0 +1,113 @@
+[
+  {
+    "path": "posts/2020-08-10-what-is-rmarkdown/",
+    "title": "what-is-rmarkdown",
+    "description": "A short description of the post.",
+    "author": [
+      {
+        "name": "Naif Alsader",
+        "url": {}
+      }
+    ],
+    "date": "2020-08-10",
+    "categories": [],
+    "preview": "posts/2020-08-10-what-is-rmarkdown/img/open_file.png",
+    "last_modified": "2020-08-10T13:12:53+03:00",
+    "input_file": {}
+  },
+  {
+    "path": "posts/2020-07-04-r/",
+    "title": "كيف تنشاء مدونة باستخدام R",
+    "description": {},
+    "author": [
+      {
+        "name": "Naif Alsader",
+        "url": {}
+      }
+    ],
+    "date": "2020-07-04",
+    "categories": [],
+    "preview": "posts/2020-07-04-r/images/githubcodeclone.png",
+    "last_modified": "2020-08-10T12:04:49+03:00",
+    "input_file": {}
+  },
+  {
+    "path": "posts/2020-06-29-how-to-get-data-using-ckanr/",
+    "title": "كيف تجلب البيانات من منصة البيانات المفتوحة السعودية الي R",
+    "description": "باستخدام CKANR",
+    "author": [
+      {
+        "name": "Naif Alsader",
+        "url": {}
+      }
+    ],
+    "date": "2020-06-29",
+    "categories": [],
+    "preview": "posts/2020-06-29-how-to-get-data-using-ckanr/images/Screen Shot 2020-06-25 at 4.05.29 AM.png",
+    "last_modified": "2020-08-10T12:04:49+03:00",
+    "input_file": {}
+  },
+  {
+    "path": "posts/2020-06-30-relational-data/",
+    "title": "Relational Data",
+    "description": "كيف تتعامل مع االعلاقات بين الجداول",
+    "author": [
+      {
+        "name": "Naif Alsader",
+        "url": {}
+      }
+    ],
+    "date": "2020-06-28",
+    "categories": [
+      "nycflights13",
+      "dplyr",
+      "left_join()",
+      "right_join()",
+      "full_join()",
+      "inner_join()",
+      "semi_join()",
+      "anti_join()"
+    ],
+    "preview": "posts/2020-06-30-relational-data/diagrams/relational-nycflights.png",
+    "last_modified": "2020-08-10T12:04:48+03:00",
+    "input_file": {}
+  },
+  {
+    "path": "posts/2020-06-30-tidy-data/",
+    "title": "Tidy Data",
+    "description": "الطريقة الامثل لترتيب وعرض البيانات حسب Wickham",
+    "author": [
+      {
+        "name": "Naif Alsader",
+        "url": {}
+      }
+    ],
+    "date": "2020-06-28",
+    "categories": [
+      "mutate()",
+      "separate()",
+      "unite()",
+      "pivot_wider()",
+      "pivot_longer()"
+    ],
+    "preview": "posts/2020-06-30-tidy-data/images/tidy-1.png",
+    "last_modified": "2020-08-10T12:04:49+03:00",
+    "input_file": {}
+  },
+  {
+    "path": "posts/2020-01-30-depression-in-australia/",
+    "title": "Depression in Australia",
+    "description": "A short description of the post.",
+    "author": [
+      {
+        "name": "Nora Jones",
+        "url": "https://example.com/norajones"
+      }
+    ],
+    "date": "2020-01-30",
+    "categories": [],
+    "preview": "posts/2020-01-30-depression-in-australia/depression-in-australia_files/figure-html5/unnamed-chunk-2-1.png",
+    "last_modified": "2020-08-10T12:04:49+03:00",
+    "input_file": {}
+  }
+]

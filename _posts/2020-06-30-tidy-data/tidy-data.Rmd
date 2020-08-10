@@ -1,0 +1,333 @@
+---
+title: "Tidy Data"
+description: |
+   الطريقة الامثل لترتيب وعرض البيانات حسب Wickham
+author: Naif Alsader
+date: 06-28-2020
+categories:
+  - mutate()
+  - separate()
+  - unite()
+  - pivot_wider()
+  - pivot_longer()
+output:
+  distill::distill_article:
+    css: "css/rtl_rmk.css" 
+    self_contained: false
+    toc: true
+    toc_depth: 3
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = T)
+knitr::opts_chunk$set(fig.align = "center")
+
+```
+
+
+هذا العمل هو تلخيص وترجمه للباب الثاني 
+(Wrangle > tidy data) 
+من كتاب R for Data Science
+للكاتبين Hadly Wickham  و Garrett Grolemund
+مع بعض الاضافات
+
+الكود كامل هنا
+[code](https://github.com/naif-alsader/my_blog/blob/master/_posts/2020-06-30-tidy-data/tidy-data.Rmd)
+
+
+
+ تحتاج في البداية ان تقوم بتحميل مكتبة `tidyverse`  
+ 
+ 
+```{r, message = FALSE}
+library(tidyverse)
+```
+
+## مدخل
+
+الجداول التاليه كلها تحتي على نفس البيانات لاكن طريقة العرض تختلف من جدول لآخر 
+
+المتغيرات هنا هي `country`, `year`, `cases` and `population`
+
+
+
+```{r}
+table1
+table2
+table3
+
+# Spread across two tibbles
+# مقسمة على اكثر من جدول
+table4a  # cases
+table4b  # population
+```
+
+
+ فقط واحد من هذي الجداول هو الاصلح للاستخدام مع
+ `tidyverse` 
+ ونطلق علية tidy dataset
+ 
+ 
+شروط ال 
+Tidy dataset
+هي كالتالي :
+
+1- كل عمود يمثل متغير
+
+2- كل صف يمثل مشاهدة
+
+3- كل قيمه تكون في خليه
+
+
+الصورة اسفل قد تكون اوضح
+
+
+```{r tidy-structure, echo = FALSE, out.width = "100%", preview=TRUE}
+knitr::include_graphics("images/tidy-1.png")
+```
+
+*برأيك اي من الجداول تنطبق علية الشروط؟*
+
+بالتاكيد ليس اي من الجدولين
+`table4a`
+و
+`table4b`
+
+لثلاث اسباب:
+
+* الاول ان البيانات مفصولة مثلا لو اردنا حساب عدد الحالات نسبة الى عدد السكان لكل سنة فإننا سوف نحتاج الى دمج الجدولين اولا.
+
+* الثاني، اننا لو قرئنا اول صف من اليسار الى اليمين
+`Afghanistan   19987071   20595360`
+سوف نجد بان لدينا مشاهدتين لسنتين مختلفتين الاولى لعام
+`1999`
+والثانية لعام
+`2000`
+
+* الثالث هو ان المتغير 
+`year` 
+و المتغير
+`population` و `casese`
+ليسو في اعمدة خاصه بهم
+
+سوف نقوم بحل هذة المشكلة لاحصقا في المقال.
+
+
+
+
+
+
+
+
+
+
+
+ طبعا من الواضح ان 
+ `table1`
+هو الوحيد الذي تنطبق علية الشروط.   
+
+
+الهدف من ال 
+Tidy data
+هو انها تمكننا من استخدام 
+Tidyverse
+بالطريقة الامثل
+
+
+على سبيل المثال
+
+```{r, out.width = "50%"}
+# Compute rate per 10,000
+# حساب معدل الاصابات لكل 10 الاف شخص
+
+table1 %>% 
+  mutate(rate = cases / population * 10000)
+
+# Compute cases per year
+# حساب عدد الاصابات لكل سنه
+
+table1 %>% 
+  count(year, wt = cases)
+
+# Visualise changes over time
+# تصوير التغير خلال السنوات
+library(ggplot2)
+ggplot(table1, aes(year, cases)) + 
+  geom_line(aes(group = country), colour = "grey50") + 
+  geom_point(aes(colour = country))
+```
+
+
+احيانا البيانات لاتكون في شكل ال
+Tidy data
+لذلك هناك مجموعة من ال 
+functions
+التي تساعدنا في تحويلها
+
+ 
+## Pivoting ( التحويل من والى Tidy data )
+
+
+هناك نوعين من المشاكل الشائعة في جداول البيانات هما ان يكون هناك
+
+1- متغير واحد مقسم على اكثر من عمود
+
+2- اكثر من متغير في عمود واحد
+
+
+
+### Pivot longer
+
+متغير واحد مقسم على اكثر من عمود
+
+
+```{r}
+# Cases table
+table4a
+```
+
+
+1-  لاحظ ان `year` بدل ان تكون في عمود واحد توزعت على عمودين  
+
+
+2- لاحظ ان  `cases` لم يعد لها عمود 
+
+
+
+
+
+الان سوف نقوم بوضع عمود خاص لكل من  `year` and `cases` 
+
+
+
+```{r}
+table4a %>% 
+  pivot_longer(c(`1999`, `2000`), names_to = "year", values_to = "cases")
+```
+ 
+بامكانك اختيار اي اسم تريد بدل  `cases` او `year` 
+
+
+استخدام `'` حول 1999 و 2000 هو بسبب انها تبدا برقم وليس اسم. انت لست بحاجة اليها اذا كان العمود يبدا بحرف.
+
+
+
+```{r tidy-gather, echo = FALSE, out.width = "100%", }
+knitr::include_graphics("images/tidy-9.png")
+```
+
+
+###  Pivot wider
+
+اكثر من متغير في عمود واحد
+
+
+```{r}
+table2
+```
+
+
+ لاحظ ان المتغيرين `population` و `cases` مدموجين في عمود واحد
+
+
+
+
+لاحظ ايضا ان 
+
+1- العمود الذي يحتوي على اسماء المتغيرات اسمه `type` 
+
+2-  العمود الذي يحتوي على القيم اسمه  `count`
+
+```{r}
+table2 %>%
+    pivot_wider(names_from = type, values_from = count)
+```
+
+
+```{r tidy-spread, echo = FALSE, out.width = "100%"}
+knitr::include_graphics("images/tidy-8.png")
+```
+
+
+
+## Spreading and uniting
+
+
+### Spread
+لاحظ الجدول التالي
+
+```{r}
+table3
+```
+
+
+العمود `rate` يحتوي على المتغيرين `population` و `cases`  ويفصل بينهم `/` 
+
+
+```{r eval = FALSE}
+table3 %>% 
+  separate(rate, into = c("cases", "population"), sep = "/")
+```
+
+
+
+```{r tidy-separate, echo = FALSE, out.width = "75%"}
+knitr::include_graphics("images/tidy-17.png")
+```
+
+يمكنك استخدام `sep` مع regular expression  
+
+احيانا قد تحتاج الى تحويل type العمود 
+
+```{r}
+table3 %>% 
+  separate(rate, into = c("cases", "population"), convert = TRUE)
+```
+
+
+ اذا كانت قيمة `sep` عدد صحيح فإن `()separate` سوف تقسم العمود حسب العدد 
+
+
+```{r}
+table3 %>% 
+  separate(year, into = c("century", "year"), sep = 2)
+```
+
+
+
+### Unite
+
+
+تقوم بعملية عكسية لما تقوم به  `()separate`
+
+```{r tidy-unite, echo = FALSE, out.width = "75%"}
+knitr::include_graphics("images/tidy-18.png")
+```
+
+
+```{r}
+table5 %>% 
+  unite(new, century, year)
+```
+
+او 
+
+
+```{r}
+table5 %>% 
+  unite(new, century, year, sep = "")
+```
+
+
+قيمه ال default هي `_` 
+
+
+
+
+## المصادر {.appendix}
+
+* https://r4ds.had.co.nz/tidy-data.html
+
+* https://github.com/hadley/r4ds
+
+
