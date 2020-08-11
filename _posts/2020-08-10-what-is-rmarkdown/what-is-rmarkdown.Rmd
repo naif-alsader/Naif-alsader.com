@@ -317,6 +317,7 @@ css code
 (بعد البيانات الوصفية)
 لتحسين الدعم للغة العربية
 
+(راجع هذا [المنشور](https://www.naif-alsader.com/posts/2020-08-10-how-to-write-arabic-text-in-rmarkdown/) الذي شرحت فية طريقة الكتابة باللغة العربية في Rstudio و  R Markdown)
 
 ````md
 

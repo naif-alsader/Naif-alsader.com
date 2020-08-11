@@ -1,5 +1,21 @@
 [
   {
+    "path": "posts/2020-08-10-how-to-write-arabic-text-in-rmarkdown/",
+    "title": "كيف تكتب باللغة العربية في R Markdown و Rstudio",
+    "description": "تجربة شخصية",
+    "author": [
+      {
+        "name": "Naif Alsader",
+        "url": {}
+      }
+    ],
+    "date": "2020-08-10",
+    "categories": [],
+    "preview": "posts/2020-08-10-how-to-write-arabic-text-in-rmarkdown/img/rmarkdown_prop1.png",
+    "last_modified": "2020-08-11T11:05:16+03:00",
+    "input_file": "how-to-write-arabic-text-in-rmarkdown.utf8.md"
+  },
+  {
     "path": "posts/2020-08-10-what-is-rmarkdown/",
     "title": "مدخل الى R Markdown",
     "description": "شرح لطريقة استخدام R Markdown لإنشاء مستندات تفاعلية",
@@ -17,24 +33,8 @@
       "YAML"
     ],
     "preview": "posts/2020-08-10-what-is-rmarkdown/img/rmarkdown_markdown_pandoc.png",
-    "last_modified": "2020-08-10T14:12:57+03:00",
+    "last_modified": "2020-08-11T12:10:57+03:00",
     "input_file": "what-is-rmarkdown.utf8.md"
-  },
-  {
-    "path": "posts/2020-08-10-how-to-write-arabic-text-in-rmarkdown/",
-    "title": "كيف تكتب باللغة العربية في R Markdown و Rstudio",
-    "description": "تجربة شخصية",
-    "author": [
-      {
-        "name": "Naif Alsader",
-        "url": {}
-      }
-    ],
-    "date": "2020-08-10",
-    "categories": [],
-    "preview": "posts/2020-08-10-how-to-write-arabic-text-in-rmarkdown/img/rmarkdown_prop1.png",
-    "last_modified": "2020-08-11T11:05:16+03:00",
-    "input_file": "how-to-write-arabic-text-in-rmarkdown.utf8.md"
   },
   {
     "path": "posts/2020-07-04-r/",
