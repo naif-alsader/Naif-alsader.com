@@ -12,8 +12,8 @@
     "date": "2020-08-10",
     "categories": [],
     "preview": "posts/2020-08-10-how-to-write-arabic-text-in-rmarkdown/img/rmarkdown_prop1.png",
-    "last_modified": "2020-08-11T11:05:16+03:00",
-    "input_file": "how-to-write-arabic-text-in-rmarkdown.utf8.md"
+    "last_modified": "2020-08-11T11:05:17+03:00",
+    "input_file": {}
   },
   {
     "path": "posts/2020-08-10-what-is-rmarkdown/",
@@ -33,8 +33,8 @@
       "YAML"
     ],
     "preview": "posts/2020-08-10-what-is-rmarkdown/img/rmarkdown_markdown_pandoc.png",
-    "last_modified": "2020-08-11T12:20:18+03:00",
-    "input_file": "what-is-rmarkdown.utf8.md"
+    "last_modified": "2020-08-11T12:20:19+03:00",
+    "input_file": {}
   },
   {
     "path": "posts/2020-07-04-r/",
@@ -57,7 +57,7 @@
     ],
     "preview": "posts/2020-07-04-r/images/githubcodeclone.png",
     "last_modified": "2020-08-10T14:23:45+03:00",
-    "input_file": "r.utf8.md"
+    "input_file": {}
   },
   {
     "path": "posts/2020-06-29-how-to-get-data-using-ckanr/",

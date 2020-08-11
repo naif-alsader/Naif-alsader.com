@@ -3,6 +3,7 @@ title: "Naif Alsader"
 description: |
   Naif Alsader
 output_dir: "_site"
+google_analytics: "UA-175183831-1"
 navbar:
   right:
     - text: "Home"
