@@ -1,9 +1,15 @@
 ---
-title: "About this blog"
+title: "نايف السدر"
 description: |
-  Some additional details about the blog
+  ماجستير إحصاء و بحوث العمليات
+output:
+ distill::distill_article:
+    css: "rtl_rmk.css" 
+    self_contained: false
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
 ```
+
+## حياك الله في مدونتي الشخصية التي من خلالها سوف اقوم بالنشر بشكل دوري عن موضوعات مختلفة في علم البيانات باستخدام لغة R مع قليلا من python اذا كان هناك حاجة لذالك.
